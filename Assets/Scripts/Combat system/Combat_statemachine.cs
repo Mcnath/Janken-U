@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class Combat_statemachine : MonoBehaviour {
 
+	public Player_base player;
+
 	public enum battleState
 	{
 		START,

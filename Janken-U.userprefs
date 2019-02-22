@@ -2,7 +2,8 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Combat system\Combat_statemachine.cs">
     <Files>
-      <File FileName="Assets\Scripts\Combat system\Combat_statemachine.cs" Line="12" Column="15" />
+      <File FileName="Assets\Scripts\Combat system\Combat_statemachine.cs" Line="8" Column="21" />
+      <File FileName="Assets\Scripts\Player Classes\Player_base.cs" Line="6" Column="25" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

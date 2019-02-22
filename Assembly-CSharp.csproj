@@ -47,7 +47,8 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\Combat system\Combat_statemachine.cs" />
-     <Compile Include="Assets\Scripts\Player Classes\Freshmores.cs" />
+     <Compile Include="Assets\Scripts\Player Classes\Enemy_base.cs" />
+     <Compile Include="Assets\Scripts\Player Classes\Player_base.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>D:/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
