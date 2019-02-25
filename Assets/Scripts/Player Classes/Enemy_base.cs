@@ -6,8 +6,9 @@ using UnityEngine;
 public class Enemy_base {
 
 	public string name;
-	public int hitcount_base = 2;
-	public int hitcount_current;
+	public enum leftHand_state{ IDLE, CHOSEN, INACTIVE}
+	public enum rightHand_state{ IDLE, CHOSEN, INACTIVE}
+	private int killCount;
 
 
 }
