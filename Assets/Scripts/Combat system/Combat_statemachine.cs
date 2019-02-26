@@ -9,8 +9,10 @@ public class Combat_statemachine : MonoBehaviour {
 	public Enemy_base AI_1;
 	public Enemy_base AI_2;
 	public Enemy_base AI_3;
+	private int seconds_current;
+	private int seconds_max;
 
-	public enum battleState{
+	public enum turnState{
 		START,
 		PLAYERCHOICE,
 		ENEMYCHOICE,
@@ -20,13 +22,13 @@ public class Combat_statemachine : MonoBehaviour {
 
 	public enum janken{ ROCK, PAPER, SCISSORS}
 
-	private battleState currentState;
+	private turnState currentState;
 	private Player_base.leftHand_state playerLeftState;
 	private Player_base.rightHand_state playerRightState;
 
 	// Use this for initialization
 	void Start () {
-		currentState = battleState.START;
+		currentState = turnState.START;
 		playerLeftState = Player_base.leftHand_state.IDLE;
 		playerRightState = Player_base.rightHand_state.IDLE;
 
@@ -36,27 +38,28 @@ public class Combat_statemachine : MonoBehaviour {
 	void Update () {
 		Debug.Log (currentState);
 		switch(currentState){
-		case(battleState.START):
-			//currentState = battleState.PLAYERCHOICE;
-		case(battleState.PLAYERCHOICE):
+		case(turnState.START):
+			currentState == turnState.PLAYERCHOICE;
+			break;
+		case(turnState.PLAYERCHOICE):
 			if(playerLeftState == Player_base.leftHand_state.CHOSEN && playerRightState == Player_base.rightHand_state.CHOSEN){
-				currentState = battleState.ENEMYCHOICE;
+				currentState = turnState.ENEMYCHOICE;
 			}
 			else if(playerLeftState == Player_base.leftHand_state.INACTIVE && playerRightState == Player_base.rightHand_state.INACTIVE){
-				currentState = battleState.LOSE;
+				currentState = turnState.LOSE;
 			}
 			break;
-		case(battleState.ENEMYCHOICE):
+		case(turnState.ENEMYCHOICE):
 			
 			break;
-		case(battleState.LOSE):
+		case(turnState.LOSE):
 			break;
-		case(battleState.WIN):
+		case(turnState.WIN):
 			break;
 		}
 	}
 
-	void choose(){
+	void timerPlayer(){
 		
 	}
 }
