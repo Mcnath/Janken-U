@@ -24,8 +24,9 @@ public class Combat_statemachine : MonoBehaviour {
 	public List<HandleTurn> PerformList = new List<HandleTurn> ();
 	public List<GameObject> PlayerInBattle = new List<GameObject>();
 
-	public enum PlayerGUI{ ACTIVATE, WAITING, INPUT1, INPUT2,DONE}
+	public enum PlayerGUI{ ACTIVATE, WAITING, INPUT1, INPUT2, DONE}
 	public PlayerGUI playerInput;
+	private HandleTurn playerChoice;
 
 	//initialization
 	void Start () {
