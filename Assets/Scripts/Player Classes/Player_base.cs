@@ -6,8 +6,6 @@ using UnityEngine;
 public class Player_base {
 
 	public string name;
-	public enum leftHand_state{ IDLE, CHOSEN, INACTIVE}
-	public enum rightHand_state{ IDLE, CHOSEN, INACTIVE}
 	private int killCount;
 
 

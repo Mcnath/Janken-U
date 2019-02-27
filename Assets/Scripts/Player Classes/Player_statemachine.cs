@@ -31,12 +31,13 @@ public class Player_statemachine : MonoBehaviour {
 	void Update () {
 		switch (currentState) {
 		case(turnState.START):
-
+			currentState = turnState.CHOOSEACTION;
 			break;
 		case(turnState.CHOOSEACTION):
-
+			chooseAction ();
+			currentState = turnState.WAITING;
 			break;
-		case(turnState.WAITING):
+		case(turnState.WAITING): // idle
 
 			break;
 		case(turnState.ACTION):
@@ -45,6 +46,14 @@ public class Player_statemachine : MonoBehaviour {
 		case(turnState.LOSE):
 
 			break;
-		}	
+		}
+	}
+
+	void chooseAction(){
+		HandleTurn myAttack = new HandleTurn ();
+		myAttack.Attacker = player.name;
+		myAttack.AttackGameObject = this.gameObject;
+		myAttack.AttackTarget = CSM.PlayerInBattle[Random.Range(0, CSM.PlayerInBattle.Count)];
+		CSM.CollectActions (myAttack);
 	}
 }

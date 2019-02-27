@@ -27,7 +27,7 @@ public class Emeny_AIstatemachine : MonoBehaviour {
 		currentState = turnState.START;
 		eLFS = leftHand_state.IDLE;
 		eRHS = rightHand_state.IDLE;
-		CSM = GameObject.Find ("BattleManager").GetComponent<Combat_statemachine> ();
+		CSM = GameObject.Find("BattleManager").GetComponent<Combat_statemachine> ();
 		startPosition = transform.position;
 	}
 	
@@ -35,7 +35,7 @@ public class Emeny_AIstatemachine : MonoBehaviour {
 	void Update () {
 		switch (currentState) {
 		case(turnState.START):
-
+			currentState = turnState.CHOOSEACTION;
 			break;
 		case(turnState.CHOOSEACTION):
 			chooseAction ();
@@ -55,9 +55,10 @@ public class Emeny_AIstatemachine : MonoBehaviour {
 
 	void chooseAction(){
 		HandleTurn myAttack = new HandleTurn ();
-		myAttack.Attack = enemy.name;
+		myAttack.Attacker = enemy.name;
 		myAttack.AttackGameObject = this.gameObject;
 		myAttack.AttackTarget = CSM.PlayerInBattle[Random.Range(0, CSM.PlayerInBattle.Count)];
+		//myAttack.AttackType = Random.Range(0,2);
 		CSM.CollectActions (myAttack);
 	}
 }
