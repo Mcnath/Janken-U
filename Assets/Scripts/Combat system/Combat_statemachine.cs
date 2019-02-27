@@ -5,12 +5,12 @@ using UnityEngine.UI;
 
 public class Combat_statemachine : MonoBehaviour {
 
-	public Player_base player;
-	public Enemy_base AI_1;
-	public Enemy_base AI_2;
-	public Enemy_base AI_3;
-	private int seconds_current;
-	private int seconds_max;
+	//public Player_base player;
+	//public Enemy_base AI_1;
+	//public Enemy_base AI_2;
+	//public Enemy_base AI_3;
+	//private int seconds_current;
+	//private int seconds_max;
 
 	public enum turnState{
 		START,
@@ -19,16 +19,22 @@ public class Combat_statemachine : MonoBehaviour {
 		LOSE,
 		WIN
 	}
+	public turnState currentState;
+
+	public List<HandleTurn> PerformList = new List<HandleTurn> ();
+	public List<GameObject> PlayerInBattle = new List<GameObject>();
 
 	public enum janken{ ROCK, PAPER, SCISSORS}
 
-	private turnState currentState;
+
 	private Player_base.leftHand_state playerLeftState;
 	private Player_base.rightHand_state playerRightState;
 
-	// Use this for initialization
+	//initialization
 	void Start () {
 		currentState = turnState.START;
+		PlayerInBattle.AddRange (GameObject.FindGameObjectsWithTag("Player"));
+		PlayerInBattle.AddRange (GameObject.FindGameObjectsWithTag("AI"));
 		playerLeftState = Player_base.leftHand_state.IDLE;
 		playerRightState = Player_base.rightHand_state.IDLE;
 
@@ -39,7 +45,7 @@ public class Combat_statemachine : MonoBehaviour {
 		Debug.Log (currentState);
 		switch(currentState){
 		case(turnState.START):
-			currentState == turnState.PLAYERCHOICE;
+			
 			break;
 		case(turnState.PLAYERCHOICE):
 			if(playerLeftState == Player_base.leftHand_state.CHOSEN && playerRightState == Player_base.rightHand_state.CHOSEN){
@@ -61,6 +67,10 @@ public class Combat_statemachine : MonoBehaviour {
 
 	void timerPlayer(){
 		
+	}
+
+	public void CollectActions(HandleTurn input){
+		PerformList.Add (input);
 	}
 }
 

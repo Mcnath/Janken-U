@@ -119,7 +119,7 @@ MonoBehaviour:
   m_MinSize: {x: 406, y: 221}
   m_MaxSize: {x: 8006, y: 4021}
   vertical: 0
-  controlID: 23
+  controlID: 11
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -143,7 +143,7 @@ MonoBehaviour:
   m_MinSize: {x: 709, y: 492}
   m_MaxSize: {x: 18004, y: 14042}
   vertical: 0
-  controlID: 21
+  controlID: 9
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -216,7 +216,7 @@ MonoBehaviour:
     y: 0
     width: 1536
     height: 781
-  m_MinSize: {x: 950, y: 542}
+  m_MinSize: {x: 950, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
 --- !u!114 &10
 MonoBehaviour:
@@ -282,7 +282,7 @@ MonoBehaviour:
   m_MinSize: {x: 434, y: 492}
   m_MaxSize: {x: 14004, y: 14042}
   vertical: 1
-  controlID: 22
+  controlID: 10
 --- !u!114 &13
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -406,19 +406,19 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SearchArea: 0
     m_Folders:
-    - Assets/Scripts/Combat system
+    - Assets/Scripts/Player Classes
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Scripts/Combat system
+  - Assets/Scripts/Player Classes
   m_LastFoldersGridSize: -1
   m_LastProjectPath: D:\SUTD\50.003 Elements of Software Contruction\Project\Janken-U
   m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: fc240000
-    m_LastClickedID: 9468
-    m_ExpandedIDs: 00000000b62400003c25000000ca9a3bffffff7f
+    m_SelectedIDs: 02250000
+    m_LastClickedID: 9474
+    m_ExpandedIDs: 00000000ba2400004025000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -446,7 +446,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000b62400003c250000
+    m_ExpandedIDs: 00000000ba24000040250000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -562,9 +562,9 @@ MonoBehaviour:
     height: 362
   m_TreeViewState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: a4060000
-    m_LastClickedID: 0
-    m_ExpandedIDs: dcfbffff00000000
+    m_SelectedIDs: 2cfbffff
+    m_LastClickedID: -1236
+    m_ExpandedIDs: 2cfbffffdefbffff000000005a25000030260000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -614,14 +614,14 @@ MonoBehaviour:
     width: 774
     height: 362
   m_SceneLighting: 1
-  lastFramingTime: 337.68315135982937
+  lastFramingTime: 78.01555219550244
   m_2DMode: 1
   m_isRotationLocked: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 0, y: 0, z: -20}
+    m_Target: {x: 0.6286599, y: -0.5998293, z: -0.58984375}
     speed: 2
-    m_Value: {x: 0, y: 0, z: -20}
+    m_Value: {x: 0.6286599, y: -0.5998293, z: -0.58984375}
   m_RenderMode: 0
   m_ValidateTrueMetals: 0
   m_SceneViewState:
@@ -648,9 +648,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 12.249928
+    m_Target: 11.83838
     speed: 2
-    m_Value: 12.249928
+    m_Value: 11.83838
   m_Ortho:
     m_Target: 1
     speed: 2
