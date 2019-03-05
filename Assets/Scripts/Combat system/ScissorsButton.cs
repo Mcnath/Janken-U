@@ -1,16 +1,13 @@
 ﻿using System.Collections;
+using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ScissorsButton : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+	public void scissorsClick(){
+		Debug.Log ("Choose Scissors");
+		HandleTurn attack = new HandleTurn();
+		attack.AttackType = HandleTurn.janken.SCISSORS;
 	}
 }
