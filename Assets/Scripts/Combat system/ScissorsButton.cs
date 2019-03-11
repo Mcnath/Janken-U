@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ScissorsButton : MonoBehaviour {
-
+	private Combat_statemachine CSM;
+	//click scissors button
 	public void scissorsClick(){
 		Debug.Log ("Choose Scissors");
-		HandleTurn attack = new HandleTurn();
-		attack.AttackType = HandleTurn.janken.SCISSORS;
+		CSM.playerChoice.AttackType = HandleTurn.janken.SCISSORS;
 	}
 }

@@ -4,10 +4,11 @@ using UnityEngine.SceneManagement;
 using UnityEngine;
 
 public class PaperButton : MonoBehaviour {
-
+	private Combat_statemachine CSM;
+	//click paper button
 	public void paperClick(){
-		Debug.Log ("Choose Scissors");
+		Debug.Log ("Choose Paper");
 		HandleTurn attack = new HandleTurn();
-		attack.AttackType = HandleTurn.janken.PAPER;
+		CSM.playerChoice.AttackType = HandleTurn.janken.PAPER;
 	}
 }

@@ -7,9 +7,7 @@ public class Combat_statemachine : MonoBehaviour {
 
 	//Initialized players(may not need)
 	//public Player_base player;
-	//public Enemy_base AI_1;
-	//public Enemy_base AI_2;
-	//public Enemy_base AI_3;
+
 
 	//variable for timers
 	private int seconds_current = 0;
@@ -20,23 +18,26 @@ public class Combat_statemachine : MonoBehaviour {
 		START,
 		PLAYERCHOICE,
 		ENEMYCHOICE,
-		LOSE,
-		WIN
+		ACTION
 	}
 	public turnState currentState;
 
-	//List for detecting players exists
+	//List for storing existing players
 	public List<HandleTurn> PerformList = new List<HandleTurn> ();
 	public List<GameObject> PlayerInBattle = new List<GameObject>();
 
 	//initialize player input
-	public enum PlayerGUI{ ACTIVATE, WAITING, INPUT1, INPUT2, DONE}
+	public enum PlayerGUI{ ACTIVATE, INPUT, DONE}
 	public PlayerGUI playerInput;
-	private HandleTurn playerChoice;
+	public HandleTurn playerChoice;
+	//public List<GameObject> PlayerToManage = new List<GameObject>;
+	public GameObject AttackPanel;
+	public GameObject EnemySelect;
 
 	//initialization of state
 	void Start () {
 		currentState = turnState.START;
+		playerInput = PlayerGUI.ACTIVATE;
 		PlayerInBattle.AddRange (GameObject.FindGameObjectsWithTag("Player"));
 		PlayerInBattle.AddRange (GameObject.FindGameObjectsWithTag("AI"));
 	}
@@ -44,18 +45,46 @@ public class Combat_statemachine : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		Debug.Log (currentState);
+		//how the battle is progressed each turn
 		switch(currentState){
 		case(turnState.START):
+				//DelayedAttribute (100);// Replace with transition animation
+				currentState = turnState.PLAYERCHOICE;
 			break;
 		case(turnState.PLAYERCHOICE):
-
+			if (playerInput == PlayerGUI.DONE) {currentState = turnState.ENEMYCHOICE;}
 			break;
 		case(turnState.ENEMYCHOICE):
-			
+			currentState = turnState.ACTION;
 			break;
-		case(turnState.LOSE):
+		case(turnState.ACTION):
+			//put in the logic here
+			if (playerChoice.AttackType == HandleTurn.janken.ROCK) {
+				for (int i = 1; i < 3; i++) {
+					if (PerformList [i].AttackType == HandleTurn.janken.SCISSORS) {
+						//win
+					} else if (PerformList [i].AttackType == HandleTurn.janken.PAPER) {
+						//lose
+					} else { 
+						//draw
+					}	
+				}
+			}
+			//DelayedAttribute (100);// R					eplace with transition animation
+			currentState = turnState.START;
 			break;
-		case(turnState.WIN):
+		}
+
+		//how the player turn is progressed
+		switch (playerInput){
+		case(PlayerGUI.ACTIVATE):
+			//DelayedAttribute (100);// Replace with transition animation
+			playerInput = PlayerGUI.INPUT;
+			break;
+		case(PlayerGUI.INPUT):
+			break;
+		case(PlayerGUI.DONE):
+			if(currentState == turnState.PLAYERCHOICE){playerInput = PlayerGUI.ACTIVATE;}
 			break;
 		}
 	}
@@ -66,6 +95,18 @@ public class Combat_statemachine : MonoBehaviour {
 
 	public void CollectActions(HandleTurn input){
 		PerformList.Add (input); // recorded actions chosen by each players
+	}
+
+	void enemyButton(){
+		foreach (GameObject AI in PlayerInBattle) {
+			//GameObject newButton = Instantiate (enemyButton) as GameObject;
+			//EnemySelectButton button = newButton.GetComponent<EnemySelectButton>();
+
+			//Emeny_AIstatemachine cur_enemy = AI.GetComponents<Emeny_AIstatemachine>();
+			//Text buttonText = newButton.transform.Findchild ("Text").gameObject.GetComponents<Text> ();
+			//buttonText = cur_enemy.enemy.name;
+			//button.EnemyPrefab = enemy;
+		}
 	}
 }
 

@@ -6,6 +6,7 @@ public class Emeny_AIstatemachine : MonoBehaviour {
 	private Combat_statemachine CSM;
 	public Player_base enemy;
 
+	// Initialized Enemy's turn progression
 	public enum turnState{
 		START,
 		CHOOSEACTION,
@@ -22,7 +23,7 @@ public class Emeny_AIstatemachine : MonoBehaviour {
 
 	private Vector3 startPosition;
 
-	// Use this for initialization
+	// inintialized enemy state
 	void Start () {
 		currentState = turnState.START;
 		eLFS = leftHand_state.IDLE;
@@ -38,7 +39,7 @@ public class Emeny_AIstatemachine : MonoBehaviour {
 			currentState = turnState.CHOOSEACTION;
 			break;
 		case(turnState.CHOOSEACTION):
-			chooseAction ();
+			chooseAction();
 			currentState = turnState.WAITING;
 			break;
 		case(turnState.WAITING): // idle
@@ -54,6 +55,7 @@ public class Emeny_AIstatemachine : MonoBehaviour {
 	}
 
 	void chooseAction(){
+		//record action chosen by the AI
 		HandleTurn myAttack = new HandleTurn ();
 		myAttack.Attacker = enemy.name;
 		myAttack.AttackGameObject = this.gameObject;

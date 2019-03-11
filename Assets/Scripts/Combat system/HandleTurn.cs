@@ -10,7 +10,7 @@ public class HandleTurn {
 	public string Attacker; //attack option
 	public GameObject AttackGameObject;// for animation
 	public GameObject AttackTarget;//choosen target for attack
-	public janken AttackType;
+	public janken AttackType;//chosen attack type
 	//attack is performed
 
 

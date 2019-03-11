@@ -4,10 +4,11 @@ using UnityEngine.SceneManagement;
 using UnityEngine;
 
 public class RockButton : MonoBehaviour {
-
+	private Combat_statemachine CSM;
+	// click rock button
 	public void rockClick(){
-		Debug.Log ("Choose Scissors");
+		Debug.Log ("Choose Rock");
 		HandleTurn attack = new HandleTurn();
-		attack.AttackType = HandleTurn.janken.ROCK;
+		CSM.playerChoice.AttackType = HandleTurn.janken.ROCK;
 	}
 }
