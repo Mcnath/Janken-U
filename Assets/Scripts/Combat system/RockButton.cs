@@ -1,14 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.SceneManagement;
 using UnityEngine;
 
 public class RockButton : MonoBehaviour {
 	private Combat_statemachine CSM;
-	// click rock button
-	public void rockClick(){
-		Debug.Log ("Choose Rock");
-		HandleTurn attack = new HandleTurn();
+	public void chooseRock(){
+		Debug.Log ("Chosen Rock");
 		CSM.playerChoice.AttackType = HandleTurn.janken.ROCK;
 	}
 }

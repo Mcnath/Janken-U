@@ -6,14 +6,12 @@ using UnityEngine.UI;
 public class Combat_statemachine : MonoBehaviour {
 
 	//Initialized players(may not need)
-	public Player_base player;
+	//public Player_base player;
+
+
 	//variable for timers
 	private int seconds_current = 0;
 	private int seconds_max = 60;
-
-	//initialize buttons
-	RockButton LRB;
-	RockButton RRB;
 
 	//battle turn state
 	public enum turnState{
@@ -27,10 +25,9 @@ public class Combat_statemachine : MonoBehaviour {
 	//List for storing existing players
 	public List<HandleTurn> PerformList = new List<HandleTurn> ();
 	public List<GameObject> PlayerInBattle = new List<GameObject>();
-	public List<GameObject> EnemyInBattle = new List<GameObject>();
 
 	//initialize player input
-	public enum PlayerGUI{ ACTIVATE, INPUT, TARGET, DONE}
+	public enum PlayerGUI{ ACTIVATE, INPUT, DONE}
 	public PlayerGUI playerInput;
 	public HandleTurn playerChoice;
 	//public List<GameObject> PlayerToManage = new List<GameObject>;
@@ -42,9 +39,7 @@ public class Combat_statemachine : MonoBehaviour {
 		currentState = turnState.START;
 		playerInput = PlayerGUI.ACTIVATE;
 		PlayerInBattle.AddRange (GameObject.FindGameObjectsWithTag("Player"));
-		EnemyInBattle.AddRange (GameObject.FindGameObjectsWithTag("AI"));
-		//AttackPanel.SetActive (false);
-		//EnemySelect.SetActive (false);
+		PlayerInBattle.AddRange (GameObject.FindGameObjectsWithTag("AI"));
 	}
 	
 	// Update is called once per frame
@@ -64,8 +59,40 @@ public class Combat_statemachine : MonoBehaviour {
 			break;
 		case(turnState.ACTION):
 			//put in the logic here
-
-			//DelayedAttribute (100);// Replace with transition animation
+			if (playerChoice.AttackType == HandleTurn.janken.ROCK) {
+				for (int i = 1; i < 3; i++) {
+					if (PerformList [i].AttackType == HandleTurn.janken.SCISSORS) {
+						//win
+					} else if (PerformList [i].AttackType == HandleTurn.janken.PAPER) {
+						//lose
+					} else { 
+						//draw
+					}	
+				}
+			}
+			if (playerChoice.AttackType == HandleTurn.janken.PAPER) {
+				for (int i = 1; i < 3; i++) {
+					if (PerformList [i].AttackType == HandleTurn.janken.ROCK) {
+						//win
+					} else if (PerformList [i].AttackType == HandleTurn.janken.SCISSORS) {
+						//lose
+					} else { 
+						//draw
+					}	
+				}
+			}
+			if (playerChoice.AttackType == HandleTurn.janken.SCISSORS) {
+				for (int i = 1; i < 3; i++) {
+					if (PerformList [i].AttackType == HandleTurn.janken.PAPER) {
+						//win
+					} else if (PerformList [i].AttackType == HandleTurn.janken.ROCK) {
+						//lose
+					} else { 
+						//draw
+					}	
+				}
+			}
+			//DelayedAttribute (100);// R					eplace with transition animation
 			currentState = turnState.START;
 			break;
 		}
@@ -74,7 +101,6 @@ public class Combat_statemachine : MonoBehaviour {
 		switch (playerInput){
 		case(PlayerGUI.ACTIVATE):
 			//DelayedAttribute (100);// Replace with transition animation
-			//playerChoice = new HandleTurn();
 			playerInput = PlayerGUI.INPUT;
 			break;
 		case(PlayerGUI.INPUT):
@@ -83,8 +109,6 @@ public class Combat_statemachine : MonoBehaviour {
 			if(currentState == turnState.PLAYERCHOICE){playerInput = PlayerGUI.ACTIVATE;}
 			break;
 		}
-
-
 	}
 
 	void timerPlayer(){
@@ -92,22 +116,21 @@ public class Combat_statemachine : MonoBehaviour {
 	}
 
 	public void CollectActions(HandleTurn input){
-		PerformList.Add (input); // recorded actions chosen by enemy
+		PerformList.Add (input); // recorded actions chosen by each players
 	}
 
-	public void actionChosen(){ // update the chosen type of action
-		playerChoice.Attacker = PlayerInBattle[0].name;
-		playerChoice.AttackGameObject = PlayerInBattle [0];
+	void enemyButton(){
+		foreach (GameObject AI in PlayerInBattle) {
+			//GameObject newButton = Instantiate (enemyButton) as GameObject;
+			//EnemySelectButton button = newButton.GetComponent<EnemySelectButton>();
 
-
-		AttackPanel.SetActive (true);
-		EnemySelect.SetActive (true);
+			//Emeny_AIstatemachine cur_enemy = AI.GetComponents<Emeny_AIstatemachine>();
+			//Text buttonText = newButton.transform.Findchild ("Text").gameObject.GetComponents<Text> ();
+			//buttonText = cur_enemy.enemy.name;
+			//button.EnemyPrefab = enemy;
+		}
 	}
 
-	public void chooseRock(){
-		Debug.Log ("Chosen Rock");
-		GameObject.Find ("Left_Rock");
-		playerChoice.AttackType = HandleTurn.janken.ROCK;
-	}
+
 }
 

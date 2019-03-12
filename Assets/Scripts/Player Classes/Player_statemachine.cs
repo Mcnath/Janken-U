@@ -9,7 +9,6 @@ public class Player_statemachine : MonoBehaviour {
 		START,
 		CHOOSEACTION,
 		WAITING,
-		ACTION,
 		LOSE
 	}
 	public enum leftHand_state{ IDLE, CHOSEN, INACTIVE}
@@ -41,10 +40,7 @@ public class Player_statemachine : MonoBehaviour {
 			currentState = turnState.WAITING;
 			break;
 		case(turnState.WAITING): // idle
-
-			break;
-		case(turnState.ACTION):
-
+			currentState = turnState.START;
 			break;
 		case(turnState.LOSE):
 			
