@@ -11,33 +11,33 @@ public class AttackAll : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if (CSM.playerChoice.AttackType == HandleTurn.janken.ROCK) {
+		if (CSM.playerChoice.LeftAttackType == HandleTurn.janken.ROCK) {
 			for (int i = 1; i < 3; i++) {
-				if (CSM.PerformList [i].AttackType == HandleTurn.janken.SCISSORS) {
+				if (CSM.PerformList [i].RightAttackType == HandleTurn.janken.SCISSORS) {
 					//win
-				} else if (CSM.PerformList [i].AttackType == HandleTurn.janken.PAPER) {
+				} else if (CSM.PerformList [i].RightAttackType == HandleTurn.janken.PAPER) {
 					//lose
 				} else { 
 					//draw
 				}	
 			}
 		}
-		if (CSM.playerChoice.AttackType == HandleTurn.janken.PAPER) {
+		if (CSM.playerChoice.LeftAttackType == HandleTurn.janken.PAPER) {
 			for (int i = 1; i < 3; i++) {
-				if (CSM.PerformList [i].AttackType == HandleTurn.janken.ROCK) {
+				if (CSM.PerformList [i].RightAttackType == HandleTurn.janken.ROCK) {
 					//win
-				} else if (CSM.PerformList [i].AttackType == HandleTurn.janken.SCISSORS) {
+				} else if (CSM.PerformList [i].RightAttackType == HandleTurn.janken.SCISSORS) {
 					//lose
 				} else { 
 					//draw
 				}	
 			}
 		}
-		if (CSM.playerChoice.AttackType == HandleTurn.janken.SCISSORS) {
+		if (CSM.playerChoice.LeftAttackType == HandleTurn.janken.SCISSORS) {
 			for (int i = 1; i < 3; i++) {
-				if (CSM.PerformList [i].AttackType == HandleTurn.janken.PAPER) {
+				if (CSM.PerformList [i].RightAttackType == HandleTurn.janken.PAPER) {
 					//win
-				} else if (CSM.PerformList [i].AttackType == HandleTurn.janken.ROCK) {
+				} else if (CSM.PerformList [i].RightAttackType == HandleTurn.janken.ROCK) {
 					//lose
 				} else { 
 					//draw

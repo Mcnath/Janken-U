@@ -11,10 +11,6 @@ public class Combat_statemachine : MonoBehaviour {
 	private int seconds_current = 0;
 	private int seconds_max = 60;
 
-	//initialize buttons
-	RockButton LRB;
-	RockButton RRB;
-
 	//battle turn state
 	public enum turnState{
 		START,
@@ -27,7 +23,7 @@ public class Combat_statemachine : MonoBehaviour {
 	//List for storing existing players
 	public List<HandleTurn> PerformList = new List<HandleTurn> ();
 	public List<GameObject> PlayerInBattle = new List<GameObject>();
-	public List<GameObject> EnemyInBattle = new List<GameObject>();
+	//public List<GameObject> EnemyInBattle = new List<GameObject>();
 
 	//initialize player input
 	public enum PlayerGUI{ ACTIVATE, INPUT, TARGET, DONE}
@@ -42,7 +38,7 @@ public class Combat_statemachine : MonoBehaviour {
 		currentState = turnState.START;
 		playerInput = PlayerGUI.ACTIVATE;
 		PlayerInBattle.AddRange (GameObject.FindGameObjectsWithTag("Player"));
-		EnemyInBattle.AddRange (GameObject.FindGameObjectsWithTag("AI"));
+		PlayerInBattle.AddRange (GameObject.FindGameObjectsWithTag("AI"));
 		//AttackPanel.SetActive (false);
 		//EnemySelect.SetActive (false);
 	}
@@ -104,10 +100,38 @@ public class Combat_statemachine : MonoBehaviour {
 		EnemySelect.SetActive (true);
 	}
 
-	public void chooseRock(){
-		Debug.Log ("Chosen Rock");
-		GameObject.Find ("Left_Rock");
-		playerChoice.AttackType = HandleTurn.janken.ROCK;
+	public void chooseRockLeft(){
+		Debug.Log ("Chosen Rock on the left");
+		playerChoice.LeftAttackType = HandleTurn.janken.ROCK;
+	}
+
+	public void chooseScissorsLeft(){
+		Debug.Log ("Chosen Scissors on the left");
+		playerChoice.LeftAttackType = HandleTurn.janken.SCISSORS;
+	}
+
+	public void choosePaperLeft(){
+		Debug.Log ("Chosen Paper on the left");
+		playerChoice.LeftAttackType = HandleTurn.janken.PAPER;
+	}
+
+	public void chooseRockRight(){
+		Debug.Log ("Chosen Rock on the right");
+		playerChoice.RightAttackType = HandleTurn.janken.ROCK;
+	}
+
+	public void chooseScissorsRight(){
+		Debug.Log ("Chosen Scissors on the right");
+		playerChoice.RightAttackType = HandleTurn.janken.SCISSORS;
+	}
+
+	public void choosePaperRight(){
+		Debug.Log ("Chosen Paper on the right");
+		playerChoice.RightAttackType = HandleTurn.janken.PAPER;
+	}
+
+	public void battleLogic(){
+	
 	}
 }
 

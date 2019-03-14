@@ -60,7 +60,8 @@ public class Emeny_AIstatemachine : MonoBehaviour {
 		myAttack.Attacker = enemy.name;
 		myAttack.AttackGameObject = this.gameObject;
 		myAttack.AttackTarget = CSM.PlayerInBattle[Random.Range(0, CSM.PlayerInBattle.Count)];
-		//myAttack.AttackType = Random.Range(0,2);
+		//myAttack.LeftAttackType = myAttack.RandomChoice();
+		//myAttack.RightAttackType = myAttack.RandomChoice();
 		CSM.CollectActions (myAttack);
 	}
 }

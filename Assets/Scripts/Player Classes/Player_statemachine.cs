@@ -36,7 +36,7 @@ public class Player_statemachine : MonoBehaviour {
 			currentState = turnState.CHOOSEACTION;
 			break;
 		case(turnState.CHOOSEACTION):
-			chooseAction ();
+			//chooseAction ();
 			currentState = turnState.WAITING;
 			break;
 		case(turnState.WAITING): // idle
@@ -71,13 +71,5 @@ public class Player_statemachine : MonoBehaviour {
 			break;
 		}
 	}
-
-	void chooseAction(){
-		// record player action(will be updated)
-		HandleTurn myAttack = new HandleTurn ();
-		myAttack.Attacker = player.name;
-		myAttack.AttackGameObject = this.gameObject;
-		myAttack.AttackTarget = CSM.PlayerInBattle[Random.Range(0, CSM.PlayerInBattle.Count)];
-		CSM.CollectActions (myAttack);
-	}
+		
 }
