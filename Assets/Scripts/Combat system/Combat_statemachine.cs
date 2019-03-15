@@ -7,6 +7,8 @@ public class Combat_statemachine : MonoBehaviour {
 
 	//Initialized players(may not need)
 	public Player_base player;
+	private Player_statemachine PSM;
+	private Emeny_AIstatemachine ESM; 
 	//variable for timers
 	private int seconds_current = 0;
 	private int seconds_max = 60;
@@ -60,7 +62,7 @@ public class Combat_statemachine : MonoBehaviour {
 			break;
 		case(turnState.ACTION):
 			//put in the logic here
-
+			battleLogic();
 			//DelayedAttribute (100);// Replace with transition animation
 			currentState = turnState.START;
 			break;
@@ -130,8 +132,88 @@ public class Combat_statemachine : MonoBehaviour {
 		playerChoice.RightAttackType = HandleTurn.janken.PAPER;
 	}
 
-	public void battleLogic(){
-	
+	public void enemySelected(){
+		// update player choice of Attack target
+		playerChoice.AttackTarget = 
 	}
+	public void battleLogic(){
+		for (int i = 0; i < PlayerInBattle.Count; i++) {
+			// logic for the player 
+			if(PSM.pLHS != Player_statemachine.leftHand_state.INACTIVE && PSM.pRHS != Player_statemachine.rightHand_state.INACTIVE){
+				//Left Hand
+				if (playerChoice.LeftAttackType == HandleTurn.janken.ROCK) {
+					if (PerformList [i].RightAttackType == HandleTurn.janken.SCISSORS) {
+						//win
+						ESM.eRHS = Emeny_AIstatemachine.rightHand_state.INACTIVE;
+					} else if (PerformList [i].RightAttackType == HandleTurn.janken.PAPER) {
+						//lose
+						PSM.pLHS = Player_statemachine.leftHand_state.INACTIVE;
+					} else { 
+						//draw
+					}
+				}
+				else if (playerChoice.LeftAttackType == HandleTurn.janken.PAPER) {
+						if (PerformList [i].RightAttackType == HandleTurn.janken.ROCK) {
+							//win
+							ESM.eRHS = Emeny_AIstatemachine.rightHand_state.INACTIVE;
+						} else if (PerformList [i].RightAttackType == HandleTurn.janken.SCISSORS) {
+							//lose
+							PSM.pLHS = Player_statemachine.leftHand_state.INACTIVE;
+						} else { 
+							//draw
+						}	
+				}
+				else if (playerChoice.LeftAttackType == HandleTurn.janken.SCISSORS) {
+						if (PerformList [i].RightAttackType == HandleTurn.janken.PAPER) {
+							//win
+							ESM.eRHS = Emeny_AIstatemachine.rightHand_state.INACTIVE;
+						} else if (PerformList [i].RightAttackType == HandleTurn.janken.ROCK) {
+							//lose
+							PSM.pLHS = Player_statemachine.leftHand_state.INACTIVE;
+						} else { 
+							//draw
+						}	
+					//right hand
+					if (playerChoice.RightAttackType == HandleTurn.janken.ROCK) {
+						if (PerformList [i].LeftAttackType == HandleTurn.janken.SCISSORS) {
+							//win
+							ESM.eLHS = Emeny_AIstatemachine.leftHand_state.INACTIVE;
+						} else if (PerformList [i].LeftAttackType == HandleTurn.janken.PAPER) {
+							//lose
+							PSM.pRHS = Player_statemachine.rightHand_state.INACTIVE;
+						} else { 
+							//draw
+						}
+					}
+					else if (playerChoice.RightAttackType == HandleTurn.janken.PAPER) {
+						if (PerformList [i].LeftAttackType == HandleTurn.janken.ROCK) {
+							//win
+							ESM.eLHS = Emeny_AIstatemachine.leftHand_state.INACTIVE;
+						} else if (PerformList [i].LeftAttackType == HandleTurn.janken.SCISSORS) {
+							//lose
+							PSM.pRHS = Player_statemachine.rightHand_state.INACTIVE;
+						} else { 
+							//draw
+						}	
+					}
+					else if (playerChoice.RightAttackType == HandleTurn.janken.SCISSORS) {
+						if (PerformList [i].LeftAttackType == HandleTurn.janken.PAPER) {
+							//win
+							ESM.eLHS = Emeny_AIstatemachine.leftHand_state.INACTIVE;
+						} else if (PerformList [i].LeftAttackType == HandleTurn.janken.ROCK) {
+							//lose
+							PSM.pRHS = Player_statemachine.rightHand_state.INACTIVE;
+						} else { 
+							//draw
+						}	
+				}
+			}
+			else{//player lose
+			}
+
+			// for enemy target enemy
+		}
+	}
+ }
 }
 

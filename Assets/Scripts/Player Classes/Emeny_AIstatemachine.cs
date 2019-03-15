@@ -18,7 +18,7 @@ public class Emeny_AIstatemachine : MonoBehaviour {
 	public enum rightHand_state{ IDLE, CHOSEN, INACTIVE}
 
 	public turnState currentState;
-	public leftHand_state eLFS;
+	public leftHand_state eLHS;
 	public rightHand_state eRHS;
 
 	private Vector3 startPosition;
@@ -26,7 +26,7 @@ public class Emeny_AIstatemachine : MonoBehaviour {
 	// inintialized enemy state
 	void Start () {
 		currentState = turnState.START;
-		eLFS = leftHand_state.IDLE;
+		eLHS = leftHand_state.IDLE;
 		eRHS = rightHand_state.IDLE;
 		CSM = GameObject.Find("BattleManager").GetComponent<Combat_statemachine> ();
 		startPosition = transform.position;
