@@ -5,9 +5,10 @@ using UnityEngine;
 public class EnemySelect : MonoBehaviour {
 
 	// enemy selection
-	public GameObject EnemyPreFab;
+	private Combat_statemachine CSM;
 
-	public void SelectEnemy(){
-		GameObject.Find ("BattleManager").GetComponents<Combat_statemachine>(); // save input of enemy prefab
+	public void enemySelected(){
+		// update player choice of Attack target
+		CSM.playerChoice.AttackTarget = this.gameObject;
 	}
 }

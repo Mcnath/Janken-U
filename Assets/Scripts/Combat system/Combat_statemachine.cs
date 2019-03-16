@@ -33,7 +33,7 @@ public class Combat_statemachine : MonoBehaviour {
 	public HandleTurn playerChoice;
 	//public List<GameObject> PlayerToManage = new List<GameObject>;
 	public GameObject AttackPanel;
-	public GameObject EnemySelect;
+	//public GameObject EnemySelect;
 
 	//initialization of state
 	void Start () {
@@ -99,7 +99,7 @@ public class Combat_statemachine : MonoBehaviour {
 
 
 		AttackPanel.SetActive (true);
-		EnemySelect.SetActive (true);
+		//EnemySelect.SetActive (true);
 	}
 
 	public void chooseRockLeft(){
@@ -134,7 +134,7 @@ public class Combat_statemachine : MonoBehaviour {
 
 	public void enemySelected(){
 		// update player choice of Attack target
-		playerChoice.AttackTarget = 
+		playerChoice.AttackTarget = this.gameObject;
 	}
 	public void battleLogic(){
 		for (int i = 0; i < PlayerInBattle.Count; i++) {

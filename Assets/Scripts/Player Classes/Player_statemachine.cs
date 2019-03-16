@@ -11,8 +11,8 @@ public class Player_statemachine : MonoBehaviour {
 		WAITING,
 		LOSE
 	}
-	public enum leftHand_state{ IDLE, CHOSEN, INACTIVE}
-	public enum rightHand_state{ IDLE, CHOSEN, INACTIVE}
+	public enum leftHand_state{ ACTIVE, INACTIVE}
+	public enum rightHand_state{ ACTIVE, INACTIVE}
 
 	public turnState currentState;
 	public leftHand_state pLHS;
@@ -21,8 +21,8 @@ public class Player_statemachine : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		currentState = turnState.START;
-		pLHS = leftHand_state.IDLE;
-		pRHS = rightHand_state.IDLE;
+		pLHS = leftHand_state.ACTIVE;
+		pRHS = rightHand_state.ACTIVE;
 		CSM = GameObject.Find ("BattleManager").GetComponent<Combat_statemachine> ();
 	}
 
@@ -48,10 +48,7 @@ public class Player_statemachine : MonoBehaviour {
 		}
 		//state of player's left hand
 		switch(pLHS){
-		case(leftHand_state.IDLE): // idle
-
-			break;
-		case(leftHand_state.CHOSEN):
+		case(leftHand_state.ACTIVE): // alive
 
 			break;
 		case(leftHand_state.INACTIVE):

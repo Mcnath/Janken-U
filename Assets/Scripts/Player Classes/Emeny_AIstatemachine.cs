@@ -14,8 +14,8 @@ public class Emeny_AIstatemachine : MonoBehaviour {
 		ACTION,
 		LOSE
 	}
-	public enum leftHand_state{ IDLE, CHOSEN, INACTIVE}
-	public enum rightHand_state{ IDLE, CHOSEN, INACTIVE}
+	public enum leftHand_state{ ACTIVE, INACTIVE}
+	public enum rightHand_state{ ACTIVE, INACTIVE}
 
 	public turnState currentState;
 	public leftHand_state eLHS;
@@ -26,8 +26,8 @@ public class Emeny_AIstatemachine : MonoBehaviour {
 	// inintialized enemy state
 	void Start () {
 		currentState = turnState.START;
-		eLHS = leftHand_state.IDLE;
-		eRHS = rightHand_state.IDLE;
+		eLHS = leftHand_state.ACTIVE;
+		eRHS = rightHand_state.ACTIVE;
 		CSM = GameObject.Find("BattleManager").GetComponent<Combat_statemachine> ();
 		startPosition = transform.position;
 	}
@@ -63,5 +63,10 @@ public class Emeny_AIstatemachine : MonoBehaviour {
 		//myAttack.LeftAttackType = myAttack.RandomChoice();
 		//myAttack.RightAttackType = myAttack.RandomChoice();
 		CSM.CollectActions (myAttack);
+	}
+
+	public void isSelected(){
+		// update player choice of Attack target
+		CSM.playerChoice.AttackTarget = this.gameObject;
 	}
 }
