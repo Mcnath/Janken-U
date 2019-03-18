@@ -9,11 +9,13 @@ public class Player_statemachine : MonoBehaviour {
 		START,
 		CHOOSEACTION,
 		WAITING,
+		ACTION,
 		LOSE
 	}
 	public enum leftHand_state{ ACTIVE, INACTIVE}
 	public enum rightHand_state{ ACTIVE, INACTIVE}
-
+	public Queue<string> leftIncoming = new Queue<string> ();
+	public Queue<string> rightIncoming = new Queue<string> ();
 	public turnState currentState;
 	public leftHand_state pLHS;
 	public rightHand_state pRHS;
@@ -39,7 +41,18 @@ public class Player_statemachine : MonoBehaviour {
 			//chooseAction ();
 			currentState = turnState.WAITING;
 			break;
-		case(turnState.WAITING): // idle
+		case(turnState.WAITING):
+			// change to ACTION once all player have chosen a move\
+			readyToBattle();
+			for (int i = 0; i < 2 ; i++) {
+				if (CSM.PerformList [i].AttackTarget == this) {
+					incomingAttack(i);
+				}
+			}
+			currentState = turnState.ACTION;
+			break;
+		case(turnState.ACTION): // idle
+			
 			currentState = turnState.START;
 			break;
 		case(turnState.LOSE):
@@ -57,10 +70,7 @@ public class Player_statemachine : MonoBehaviour {
 		}
 		//state of player's right hand
 		switch(pRHS){
-		case(rightHand_state.IDLE): // idle
-
-			break;
-		case(rightHand_state.CHOSEN):
+		case(rightHand_state.ACTIVE):
 
 			break;
 		case(rightHand_state.INACTIVE):
@@ -68,5 +78,13 @@ public class Player_statemachine : MonoBehaviour {
 			break;
 		}
 	}
-		
+	void readyToBattle(){
+		CSM.PerformList.Add (CSM.playerChoice);
+	}
+
+	void incomingAttack(int index){
+		Debug.Log("Taking: "+leftIncoming.Peek()+"and "+rightIncoming.Peek());
+		leftIncoming.Enqueue(CSM.PerformList[index].LeftAttackType);
+		rightIncoming.Enqueue(CSM.PerformList[index].RightAttackType);
+	}
 }

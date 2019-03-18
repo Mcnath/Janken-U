@@ -24,6 +24,8 @@ public class Combat_statemachine : MonoBehaviour {
 
 	//List for storing existing players
 	public List<HandleTurn> PerformList = new List<HandleTurn> ();
+	public Queue<string> LeftAttackQueue = new Queue<string> ();
+	public Queue<string> RightAttackQueue = new Queue<string> ();
 	public List<GameObject> PlayerInBattle = new List<GameObject>();
 	//public List<GameObject> EnemyInBattle = new List<GameObject>();
 
@@ -34,6 +36,9 @@ public class Combat_statemachine : MonoBehaviour {
 	//public List<GameObject> PlayerToManage = new List<GameObject>;
 	public GameObject AttackPanel;
 	//public GameObject EnemySelect;
+
+	//initialize attack choice here
+
 
 	//initialization of state
 	void Start () {
@@ -47,7 +52,7 @@ public class Combat_statemachine : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		Debug.Log (currentState);
+		//Debug.Log (currentState);
 		//how the battle is progressed each turn
 		switch(currentState){
 		case(turnState.START):
@@ -90,7 +95,9 @@ public class Combat_statemachine : MonoBehaviour {
 	}
 
 	public void CollectActions(HandleTurn input){
-		PerformList.Add (input); // recorded actions chosen by enemy
+		for(int count = 0 ;count < PlayerInBattle.Count; count++) {
+			PerformList.Add (input); // recorded actions chosen by enemy
+		}
 	}
 
 	public void actionChosen(){ // update the chosen type of action
@@ -104,32 +111,32 @@ public class Combat_statemachine : MonoBehaviour {
 
 	public void chooseRockLeft(){
 		Debug.Log ("Chosen Rock on the left");
-		playerChoice.LeftAttackType = HandleTurn.janken.ROCK;
+		LeftAttackQueue.Enqueue(playerChoice.LeftAttackType = playerChoice.janken[0]);
 	}
 
 	public void chooseScissorsLeft(){
 		Debug.Log ("Chosen Scissors on the left");
-		playerChoice.LeftAttackType = HandleTurn.janken.SCISSORS;
+		LeftAttackQueue.Enqueue(playerChoice.LeftAttackType = playerChoice.janken[2]);
 	}
 
 	public void choosePaperLeft(){
 		Debug.Log ("Chosen Paper on the left");
-		playerChoice.LeftAttackType = HandleTurn.janken.PAPER;
+		LeftAttackQueue.Enqueue(playerChoice.LeftAttackType = playerChoice.janken[1]);
 	}
 
 	public void chooseRockRight(){
 		Debug.Log ("Chosen Rock on the right");
-		playerChoice.RightAttackType = HandleTurn.janken.ROCK;
+		RightAttackQueue.Enqueue(playerChoice.RightAttackType = playerChoice.janken[0]);
 	}
 
 	public void chooseScissorsRight(){
 		Debug.Log ("Chosen Scissors on the right");
-		playerChoice.RightAttackType = HandleTurn.janken.SCISSORS;
+		RightAttackQueue.Enqueue(playerChoice.RightAttackType = playerChoice.janken[2]);
 	}
 
 	public void choosePaperRight(){
 		Debug.Log ("Chosen Paper on the right");
-		playerChoice.RightAttackType = HandleTurn.janken.PAPER;
+		RightAttackQueue.Enqueue(playerChoice.RightAttackType = playerChoice.janken[1]);
 	}
 
 	public void enemySelected(){
@@ -141,70 +148,69 @@ public class Combat_statemachine : MonoBehaviour {
 			// logic for the player 
 			if(PSM.pLHS != Player_statemachine.leftHand_state.INACTIVE && PSM.pRHS != Player_statemachine.rightHand_state.INACTIVE){
 				//Left Hand
-				if (playerChoice.LeftAttackType == HandleTurn.janken.ROCK) {
-					if (PerformList [i].RightAttackType == HandleTurn.janken.SCISSORS) {
+				if (playerChoice.LeftAttackType == playerChoice.janken[0]) {
+					if (PSM.rightIncoming.Peek() == playerChoice.janken[2]) {
 						//win
 						ESM.eRHS = Emeny_AIstatemachine.rightHand_state.INACTIVE;
-					} else if (PerformList [i].RightAttackType == HandleTurn.janken.PAPER) {
+						PSM.rightIncoming.Dequeue ();
+					} else if (PSM.rightIncoming.Peek() == playerChoice.janken[1] || PSM.rightIncoming.Peek() == playerChoice.janken[0]) {
 						//lose
 						PSM.pLHS = Player_statemachine.leftHand_state.INACTIVE;
-					} else { 
-						//draw
+						PSM.rightIncoming.Dequeue ();
+					}
+				} else if (playerChoice.LeftAttackType == playerChoice.janken[1]) {
+					if (PSM.rightIncoming.Peek() == playerChoice.janken[0]) {
+						//win
+						ESM.eRHS = Emeny_AIstatemachine.rightHand_state.INACTIVE;
+						PSM.rightIncoming.Dequeue ();
+					} else if (PSM.rightIncoming.Peek() == playerChoice.janken[2] || PSM.rightIncoming.Peek() == playerChoice.janken[1]) {
+						//lose
+						PSM.pLHS = Player_statemachine.leftHand_state.INACTIVE;
+						PSM.rightIncoming.Dequeue ();
+					}	
+				} else if (playerChoice.LeftAttackType == playerChoice.janken[2]) {
+					if (PSM.rightIncoming.Peek() == playerChoice.janken[1]) {
+						//win
+						ESM.eRHS = Emeny_AIstatemachine.rightHand_state.INACTIVE;
+						PSM.rightIncoming.Dequeue ();
+					} else if (PSM.rightIncoming.Peek() ==playerChoice.janken[0]||PSM.rightIncoming.Peek() == playerChoice.janken[2]) {
+						//lose
+						PSM.pLHS = Player_statemachine.leftHand_state.INACTIVE;
+						PSM.rightIncoming.Dequeue ();
 					}
 				}
-				else if (playerChoice.LeftAttackType == HandleTurn.janken.PAPER) {
-						if (PerformList [i].RightAttackType == HandleTurn.janken.ROCK) {
-							//win
-							ESM.eRHS = Emeny_AIstatemachine.rightHand_state.INACTIVE;
-						} else if (PerformList [i].RightAttackType == HandleTurn.janken.SCISSORS) {
-							//lose
-							PSM.pLHS = Player_statemachine.leftHand_state.INACTIVE;
-						} else { 
-							//draw
-						}	
-				}
-				else if (playerChoice.LeftAttackType == HandleTurn.janken.SCISSORS) {
-						if (PerformList [i].RightAttackType == HandleTurn.janken.PAPER) {
-							//win
-							ESM.eRHS = Emeny_AIstatemachine.rightHand_state.INACTIVE;
-						} else if (PerformList [i].RightAttackType == HandleTurn.janken.ROCK) {
-							//lose
-							PSM.pLHS = Player_statemachine.leftHand_state.INACTIVE;
-						} else { 
-							//draw
-						}	
 					//right hand
-					if (playerChoice.RightAttackType == HandleTurn.janken.ROCK) {
-						if (PerformList [i].LeftAttackType == HandleTurn.janken.SCISSORS) {
+				if (playerChoice.RightAttackType == playerChoice.janken[0]) {
+					if (PSM.rightIncoming.Peek() == playerChoice.janken[2]) {
 							//win
-							ESM.eLHS = Emeny_AIstatemachine.leftHand_state.INACTIVE;
-						} else if (PerformList [i].LeftAttackType == HandleTurn.janken.PAPER) {
+						ESM.eLHS = Emeny_AIstatemachine.leftHand_state.INACTIVE;
+						PSM.rightIncoming.Dequeue ();
+					} else if (PSM.rightIncoming.Peek() == playerChoice.janken[1]||PSM.rightIncoming.Peek() == playerChoice.janken[0]) {
 							//lose
-							PSM.pRHS = Player_statemachine.rightHand_state.INACTIVE;
-						} else { 
-							//draw
+						PSM.pRHS = Player_statemachine.rightHand_state.INACTIVE;
+						PSM.rightIncoming.Dequeue ();
 						}
 					}
-					else if (playerChoice.RightAttackType == HandleTurn.janken.PAPER) {
-						if (PerformList [i].LeftAttackType == HandleTurn.janken.ROCK) {
+				else if (playerChoice.RightAttackType == playerChoice.janken[1]) {
+					if (PSM.rightIncoming.Peek() == playerChoice.janken[0]) {
 							//win
-							ESM.eLHS = Emeny_AIstatemachine.leftHand_state.INACTIVE;
-						} else if (PerformList [i].LeftAttackType == HandleTurn.janken.SCISSORS) {
+						ESM.eLHS = Emeny_AIstatemachine.leftHand_state.INACTIVE;
+						PSM.rightIncoming.Dequeue ();
+					} else if (PSM.rightIncoming.Peek() == playerChoice.janken[2]||PSM.rightIncoming.Peek() == playerChoice.janken[1]) {
 							//lose
-							PSM.pRHS = Player_statemachine.rightHand_state.INACTIVE;
-						} else { 
-							//draw
+						PSM.pRHS = Player_statemachine.rightHand_state.INACTIVE;
+						PSM.rightIncoming.Dequeue ();
 						}	
 					}
-					else if (playerChoice.RightAttackType == HandleTurn.janken.SCISSORS) {
-						if (PerformList [i].LeftAttackType == HandleTurn.janken.PAPER) {
+				else if (playerChoice.RightAttackType == playerChoice.janken[2]) {
+					if (PSM.rightIncoming.Peek() == playerChoice.janken[1]) {
 							//win
-							ESM.eLHS = Emeny_AIstatemachine.leftHand_state.INACTIVE;
-						} else if (PerformList [i].LeftAttackType == HandleTurn.janken.ROCK) {
+						ESM.eLHS = Emeny_AIstatemachine.leftHand_state.INACTIVE;
+						PSM.rightIncoming.Dequeue ();
+					} else if (PSM.rightIncoming.Peek() == playerChoice.janken[0]||PSM.rightIncoming.Peek() == playerChoice.janken[2]) {
 							//lose
-							PSM.pRHS = Player_statemachine.rightHand_state.INACTIVE;
-						} else { 
-							//draw
+						PSM.pRHS = Player_statemachine.rightHand_state.INACTIVE;
+						PSM.rightIncoming.Dequeue ();
 						}	
 				}
 			}
@@ -215,5 +221,5 @@ public class Combat_statemachine : MonoBehaviour {
 		}
 	}
  }
-}
+
 
