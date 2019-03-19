@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Threading;
 
 public class Emeny_AIstatemachine : MonoBehaviour {
 	private Combat_statemachine CSM;
@@ -66,7 +67,7 @@ public class Emeny_AIstatemachine : MonoBehaviour {
 		}
 	}
 
-	void chooseAction(){
+	public void chooseAction(){
 		//record action chosen by the AI
 		HandleTurn myAttack = new HandleTurn ();
 		myAttack.Attacker = enemy.name;
@@ -74,6 +75,7 @@ public class Emeny_AIstatemachine : MonoBehaviour {
 		myAttack.AttackTarget = CSM.PlayerInBattle[Random.Range(0, CSM.PlayerInBattle.Count)];
 		myAttack.LeftAttackType = myAttack.janken[Random.Range(0,2)];
 		myAttack.RightAttackType = myAttack.janken[Random.Range(0,2)];
+		//Globals.executeAction.WaitOne(1000);
 		CSM.CollectActions (myAttack);
 	}
 

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,7 +13,7 @@ public class Combat_statemachine : MonoBehaviour {
 	//variable for timers
 	private int seconds_current = 0;
 	private int seconds_max = 60;
-
+	//intialize barrier to limit the action perturn to 4
 	//battle turn state
 	public enum turnState{
 		START,
@@ -56,18 +57,27 @@ public class Combat_statemachine : MonoBehaviour {
 		//how the battle is progressed each turn
 		switch(currentState){
 		case(turnState.START):
-				//DelayedAttribute (100);// Replace with transition animation
-				currentState = turnState.PLAYERCHOICE;
+			//DelayedAttribute (100);// Replace with transition animation
+			Globals.executeAction = new Semaphore (0, PlayerInBattle.Count);
+			PerformList = new List<HandleTurn>();	
+			currentState = turnState.PLAYERCHOICE;
 			break;
 		case(turnState.PLAYERCHOICE):
+			Thread p = new Thread (new ThreadStart (PSM.readyToBattle));
+			p.Start ();
+			p.Join ();
 			if (playerInput == PlayerGUI.DONE) {currentState = turnState.ENEMYCHOICE;}
 			break;
 		case(turnState.ENEMYCHOICE):
-			currentState = turnState.ACTION;
+			for (int i = 0; i < PlayerInBattle.Count - 1; i++) {
+				Thread e = new Thread (new ThreadStart (ESM.chooseAction));
+				e.Start ();
+			}
+			if (PerformList.Count == PlayerInBattle.Count) {currentState = turnState.ACTION;}
 			break;
 		case(turnState.ACTION):
 			//put in the logic here
-			battleLogic();
+			battleLogic ();
 			//DelayedAttribute (100);// Replace with transition animation
 			currentState = turnState.START;
 			break;
@@ -95,9 +105,7 @@ public class Combat_statemachine : MonoBehaviour {
 	}
 
 	public void CollectActions(HandleTurn input){
-		for(int count = 0 ;count < PlayerInBattle.Count; count++) {
 			PerformList.Add (input); // recorded actions chosen by enemy
-		}
 	}
 
 	public void actionChosen(){ // update the chosen type of action

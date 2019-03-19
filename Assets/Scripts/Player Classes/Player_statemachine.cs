@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 public class Player_statemachine : MonoBehaviour {
@@ -52,8 +53,9 @@ public class Player_statemachine : MonoBehaviour {
 			currentState = turnState.ACTION;
 			break;
 		case(turnState.ACTION): // idle
-			
-			currentState = turnState.START;
+			if (CSM.currentState == Combat_statemachine.turnState.START) {
+				currentState = turnState.START;
+			}
 			break;
 		case(turnState.LOSE):
 			
@@ -78,7 +80,8 @@ public class Player_statemachine : MonoBehaviour {
 			break;
 		}
 	}
-	void readyToBattle(){
+	public void readyToBattle(){
+		//Globals.executeAction.WaitOne(1000);
 		CSM.PerformList.Add (CSM.playerChoice);
 	}
 
