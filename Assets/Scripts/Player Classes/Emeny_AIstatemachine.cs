@@ -17,8 +17,8 @@ public class Emeny_AIstatemachine : MonoBehaviour {
 	}
 	public enum leftHand_state{ ACTIVE, INACTIVE}
 	public enum rightHand_state{ ACTIVE, INACTIVE}
-	public Queue<string> leftIncoming = new Queue<string> ();
-	public Queue<string> rightIncoming = new Queue<string> ();
+	public List<string> leftIncoming = new List<string> ();
+	public List<string> rightIncoming = new List<string> ();
 	public turnState currentState;
 	public leftHand_state eLHS;
 	public rightHand_state eRHS;
@@ -38,21 +38,26 @@ public class Emeny_AIstatemachine : MonoBehaviour {
 	void Update () {
 		switch (currentState) {
 		case(turnState.START):
+			//check if the enemy lost all the hands
 			if (eLHS == leftHand_state.INACTIVE && eRHS == rightHand_state.INACTIVE) {
 				currentState = turnState.LOSE;
+				this.gameObject.SetActive (false);
 			}
 			currentState = turnState.CHOOSEACTION;
 			break;
 		case(turnState.CHOOSEACTION):
-			//chooseAction ();
-			currentState = turnState.WAITING;
+			if (CSM.PSM.currentState == Player_statemachine.turnState.WAITING) {
+				chooseAction ();
+				currentState = turnState.WAITING;
+			}
 			break;
 		case(turnState.WAITING):
 			// change to ACTION once all player have chosen a move
-			chooseAction();
-			for (int i = 0; i < 2; i++) {
-				if (CSM.PerformList [i].AttackTarget == this) {
-					incomingAttack (i);
+			int attackCount = 0;
+			for (int i = 1; i < CSM.PerformList.Count; i++) {
+				if (CSM.PerformList [i].AttackTarget == this.gameObject) {
+					incomingAttack (attackCount);
+					attackCount++;
 				}
 			}
 			currentState = turnState.ACTION;
@@ -62,7 +67,7 @@ public class Emeny_AIstatemachine : MonoBehaviour {
 			currentState = turnState.START;
 			break;
 		case(turnState.LOSE):
-
+			Debug.Log (enemy.name +" is destroyed");
 			break;
 		}
 	}
@@ -71,20 +76,23 @@ public class Emeny_AIstatemachine : MonoBehaviour {
 		//record action chosen by the AI
 		HandleTurn myAttack = new HandleTurn ();
 		myAttack.Attacker = enemy.name;
-		myAttack.AttackGameObject = this.gameObject;
+		myAttack.AttackGameObject = gameObject;
 		myAttack.AttackTarget = CSM.PlayerInBattle[Random.Range(0, CSM.PlayerInBattle.Count)];
 		myAttack.LeftAttackType = myAttack.janken[Random.Range(0,2)];
 		myAttack.RightAttackType = myAttack.janken[Random.Range(0,2)];
 		//Globals.executeAction.WaitOne(1000);
+		Debug.Log(enemy.name + " is ready for battle");
 		CSM.CollectActions (myAttack);
 	}
 
 	public void isSelected(){
 		// update player choice of Attack target
-		CSM.playerChoice.AttackTarget = this.gameObject;
+
+			Debug.Log (this.gameObject + " is selected");
+			CSM.playerChoice.AttackTarget = this.gameObject; 
 	}
 	void incomingAttack(int index){
-		leftIncoming.Enqueue(CSM.PerformList[index].LeftAttackType);
-		rightIncoming.Enqueue(CSM.PerformList[index].RightAttackType);
+		leftIncoming.Add(CSM.PerformList[index].LeftAttackType);
+		rightIncoming.Add(CSM.PerformList[index].RightAttackType);
 	}
 }

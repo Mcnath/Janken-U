@@ -15,8 +15,8 @@ public class Player_statemachine : MonoBehaviour {
 	}
 	public enum leftHand_state{ ACTIVE, INACTIVE}
 	public enum rightHand_state{ ACTIVE, INACTIVE}
-	public Queue<string> leftIncoming = new Queue<string> ();
-	public Queue<string> rightIncoming = new Queue<string> ();
+	public List<string> leftIncoming = new List<string> ();
+	public List<string> rightIncoming = new List<string> ();
 	public turnState currentState;
 	public leftHand_state pLHS;
 	public rightHand_state pRHS;
@@ -33,32 +33,44 @@ public class Player_statemachine : MonoBehaviour {
 	void Update () {
 		switch (currentState) {
 		case(turnState.START):
+			//check if the player lost all the hands
 			if (pLHS == leftHand_state.INACTIVE && pRHS == rightHand_state.INACTIVE) {
 				currentState = turnState.LOSE;
-			}
+			} 
 			currentState = turnState.CHOOSEACTION;
 			break;
 		case(turnState.CHOOSEACTION):
-			//chooseAction ();
-			currentState = turnState.WAITING;
+			if (CSM.playerChoice.LeftAttackType != null 
+				&& CSM.playerChoice.LeftAttackType.Length != 0 
+				&& CSM.playerChoice.RightAttackType != null
+				&& CSM.playerChoice.RightAttackType.Length != 0 
+				&& CSM.playerChoice.AttackTarget != null) {
+				readyToBattle();
+				currentState = turnState.WAITING;
+			}
+			else {
+			//Debug.Log ("Complete your actions!!");
+			}
 			break;
 		case(turnState.WAITING):
 			// change to ACTION once all player have chosen a move\
-			readyToBattle();
-			for (int i = 0; i < 2 ; i++) {
+			int attackCount = 0;
+			for (int i = 1; i < CSM.PlayerInBattle.Count ; i++) {
 				if (CSM.PerformList [i].AttackTarget == this) {
-					incomingAttack(i);
+					incomingAttack(attackCount);
+					attackCount++;
 				}
 			}
 			currentState = turnState.ACTION;
 			break;
 		case(turnState.ACTION): // idle
 			if (CSM.currentState == Combat_statemachine.turnState.START) {
+				CSM.playerChoice = new HandleTurn();
 				currentState = turnState.START;
 			}
 			break;
 		case(turnState.LOSE):
-			
+			Debug.Log ("You Lose");
 			break;
 		}
 		//state of player's left hand
@@ -82,12 +94,15 @@ public class Player_statemachine : MonoBehaviour {
 	}
 	public void readyToBattle(){
 		//Globals.executeAction.WaitOne(1000);
+		//Debug.Log (this.gameObject.name + " is ready for battle");
+		CSM.playerChoice.Attacker = this.gameObject.name;
+		CSM.playerChoice.AttackGameObject = this.gameObject;
 		CSM.PerformList.Add (CSM.playerChoice);
 	}
 
 	void incomingAttack(int index){
-		Debug.Log("Taking: "+leftIncoming.Peek()+"and "+rightIncoming.Peek());
-		leftIncoming.Enqueue(CSM.PerformList[index].LeftAttackType);
-		rightIncoming.Enqueue(CSM.PerformList[index].RightAttackType);
+		leftIncoming.Add(CSM.PerformList[index].LeftAttackType);
+		rightIncoming.Add(CSM.PerformList[index].RightAttackType);
+		Debug.Log("Taking: "+leftIncoming[index]+"and "+rightIncoming[index]);
 	}
 }
