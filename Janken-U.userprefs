@@ -2,16 +2,15 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Combat system\Combat_statemachine.cs">
     <Files>
-      <File FileName="Assets\Scripts\Combat system\Combat_statemachine.cs" Line="147" Column="18" />
-      <File FileName="Assets\Scripts\Player Classes\Player_statemachine.cs" Line="100" Column="42" />
-      <File FileName="Assets\Scripts\Player Classes\Emeny_AIstatemachine.cs" Line="84" Column="47" />
-      <File FileName="Assets\Scripts\Combat system\Globals.cs" Line="8" Column="39" />
-      <File FileName="Assets\Scripts\Combat system\HandleTurn.cs" Line="12" Column="25" />
+      <File FileName="Assets\Scripts\Player Classes\Player_statemachine.cs" Line="67" Column="31" />
+      <File FileName="Assets\Scripts\Player Classes\Emeny_AIstatemachine.cs" Line="73" Column="4" />
+      <File FileName="Assets\Scripts\Combat system\HandleTurn.cs" Line="14" Column="2" />
+      <File FileName="Assets\Scripts\Combat system\Combat_statemachine.cs" Line="125" Column="33" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Breakpoint file="D:\SUTD\50.003 Elements of Software Contruction\Project\Janken-U\Assets\Scripts\Combat system\Combat_statemachine.cs" line="278" column="1" />
+      <Breakpoint file="D:\SUTD\50.003 Elements of Software Contruction\Project\Janken-U\Assets\Scripts\Combat system\Combat_statemachine.cs" line="291" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

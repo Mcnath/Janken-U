@@ -70,6 +70,7 @@ public class Emeny_AIstatemachine : MonoBehaviour {
 			Debug.Log (enemy.name +" is destroyed");
 			break;
 		}
+			
 	}
 
 	public void chooseAction(){

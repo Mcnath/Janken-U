@@ -65,7 +65,7 @@ public class Player_statemachine : MonoBehaviour {
 			break;
 		case(turnState.ACTION): // idle
 			if (CSM.currentState == Combat_statemachine.turnState.START) {
-				CSM.playerChoice = new HandleTurn();
+				Debug.Log("choosing");
 				currentState = turnState.START;
 			}
 			break;
@@ -94,7 +94,7 @@ public class Player_statemachine : MonoBehaviour {
 	}
 	public void readyToBattle(){
 		//Globals.executeAction.WaitOne(1000);
-		//Debug.Log (this.gameObject.name + " is ready for battle");
+		Debug.Log (this.gameObject.name + " is ready for battle");
 		CSM.playerChoice.Attacker = this.gameObject.name;
 		CSM.playerChoice.AttackGameObject = this.gameObject;
 		CSM.PerformList.Add (CSM.playerChoice);
