@@ -36,8 +36,9 @@ public class Player_statemachine : MonoBehaviour {
 			//check if the player lost all the hands
 			if (pLHS == leftHand_state.INACTIVE && pRHS == rightHand_state.INACTIVE) {
 				currentState = turnState.LOSE;
-			} 
-			currentState = turnState.CHOOSEACTION;
+			} else {
+				currentState = turnState.CHOOSEACTION;
+			}
 			break;
 		case(turnState.CHOOSEACTION):
 			if (CSM.playerChoice.LeftAttackType != null 
@@ -65,7 +66,6 @@ public class Player_statemachine : MonoBehaviour {
 			break;
 		case(turnState.ACTION): // idle
 			if (CSM.currentState == Combat_statemachine.turnState.START) {
-				Debug.Log("choosing");
 				currentState = turnState.START;
 			}
 			break;

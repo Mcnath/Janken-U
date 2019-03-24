@@ -42,8 +42,9 @@ public class Emeny_AIstatemachine : MonoBehaviour {
 			if (eLHS == leftHand_state.INACTIVE && eRHS == rightHand_state.INACTIVE) {
 				currentState = turnState.LOSE;
 				this.gameObject.SetActive (false);
+			} else {
+				currentState = turnState.CHOOSEACTION;
 			}
-			currentState = turnState.CHOOSEACTION;
 			break;
 		case(turnState.CHOOSEACTION):
 			if (CSM.PSM.currentState == Player_statemachine.turnState.WAITING) {
@@ -78,10 +79,13 @@ public class Emeny_AIstatemachine : MonoBehaviour {
 		HandleTurn myAttack = new HandleTurn ();
 		myAttack.Attacker = enemy.name;
 		myAttack.AttackGameObject = gameObject;
-		myAttack.AttackTarget = CSM.PlayerInBattle[Random.Range(0, CSM.PlayerInBattle.Count)];
+		myAttack.AttackTarget = CSM.PlayerInBattle [Random.Range (0, CSM.PlayerInBattle.Count)];
+		while (myAttack.AttackTarget == myAttack.AttackGameObject) {
+			myAttack.AttackTarget = CSM.PlayerInBattle [Random.Range (0, CSM.PlayerInBattle.Count)];
+		}
+		//myAttack.AttackTarget = CSM.PlayerInBattle[0];
 		myAttack.LeftAttackType = myAttack.janken[Random.Range(0,2)];
 		myAttack.RightAttackType = myAttack.janken[Random.Range(0,2)];
-		//Globals.executeAction.WaitOne(1000);
 		Debug.Log(enemy.name + " is ready for battle");
 		CSM.CollectActions (myAttack);
 	}
