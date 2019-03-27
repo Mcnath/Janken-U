@@ -6,13 +6,15 @@ using UnityEngine;
 
 public class HandleTurn {
 
-	public string[] janken =  { "ROCK", "PAPER", "SCISSORS" };
+	public enum janken:int { ROCK = 0 , PAPER = 1, SCISSORS = 2, NONE = 3 };
 	public string Attacker; //attack option
 	public GameObject AttackGameObject;// for animation
 	public GameObject AttackTarget;//choosen target for attack
-	public string LeftAttackType;//chosen attack type on Left Hand
-	public string RightAttackType;//chosen attack type on Left Hand
+	public janken LeftAttackType = janken.NONE;//chosen attack type on Left Hand
+	public janken RightAttackType = janken.NONE;//chosen attack type on the right hand
 	//attack is performed
-
+	public static janken randomJanken(){
+		return (janken)Random.Range(0, 2);
+	}
 
 }

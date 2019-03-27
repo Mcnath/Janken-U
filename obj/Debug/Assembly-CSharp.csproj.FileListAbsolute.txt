@@ -1,4 +1,3 @@
-D:\SUTD\50.003 Elements of Software Contruction\Project\Janken-U\obj\Debug\Assembly-CSharp.csprojResolveAssemblyReference.cache
 D:\SUTD\50.003 Elements of Software Contruction\Project\Janken-U\Temp\bin\Debug\Assembly-CSharp.dll
 D:\SUTD\50.003 Elements of Software Contruction\Project\Janken-U\Temp\bin\Debug\Assembly-CSharp.pdb
 D:\SUTD\50.003 Elements of Software Contruction\Project\Janken-U\Temp\bin\Debug\nunit.framework.dll
@@ -31,3 +30,6 @@ D:\SUTD\50.003 Elements of Software Contruction\Project\Janken-U\Temp\bin\Debug\
 D:\SUTD\50.003 Elements of Software Contruction\Project\Janken-U\Temp\bin\Debug\UnityEngine.VR.xml
 D:\SUTD\50.003 Elements of Software Contruction\Project\Janken-U\obj\Debug\Assembly-CSharp.dll
 D:\SUTD\50.003 Elements of Software Contruction\Project\Janken-U\obj\Debug\Assembly-CSharp.pdb
+D:\SUTD\50.003 Elements of Software Contruction\Project\Janken-U\obj\Debug\Assembly-CSharp.csprojAssemblyReference.cache
+D:\SUTD\50.003 Elements of Software Contruction\Project\Janken-U\obj\Debug\Assembly-CSharp.csproj.CoreCompileInputs.cache
+D:\SUTD\50.003 Elements of Software Contruction\Project\Janken-U\obj\Debug\Assembly-CSharp.csproj.CopyComplete

@@ -7,9 +7,9 @@ using UnityEngine.UI;
 public class Combat_statemachine : MonoBehaviour {
 
 	//Initialized players(may not need)
-	public Player_base player;
 	public Player_statemachine PSM;
-	private Emeny_AIstatemachine ESM; 
+	public Emeny_AIstatemachine ESM1, ESM2, ESM3;
+	private HandleTurn HT;
 	//variable for timers
 	private int seconds_current = 0;
 	private int seconds_max = 60;
@@ -25,7 +25,7 @@ public class Combat_statemachine : MonoBehaviour {
 	//List for storing existing player's information
 	public List<HandleTurn> PerformList = new List<HandleTurn> ();// collect all the actions via HandleTurn Class
 	public List<GameObject> PlayerInBattle = new List<GameObject>();// collect all the player existed in the field
-	//public List<GameObject> EnemyInBattle = new List<GameObject>();
+
 
 	//initialize player input
 	public enum PlayerGUI{ ACTIVATE, INPUT, DONE}
@@ -95,32 +95,32 @@ public class Combat_statemachine : MonoBehaviour {
 
 	public void chooseRockLeft(){
 		Debug.Log ("Chosen Rock on the left");
-		playerChoice.LeftAttackType = playerChoice.janken[0];
+		playerChoice.LeftAttackType = HandleTurn.janken.ROCK;
 	}
 
 	public void chooseScissorsLeft(){
 		Debug.Log ("Chosen Scissors on the left");
-		playerChoice.LeftAttackType = playerChoice.janken[2];
+		playerChoice.LeftAttackType = HandleTurn.janken.SCISSORS;
 	}
 
 	public void choosePaperLeft(){
 		Debug.Log ("Chosen Paper on the left");
-		playerChoice.LeftAttackType = playerChoice.janken[1];
+		playerChoice.LeftAttackType = HandleTurn.janken.PAPER;
 	}
 
 	public void chooseRockRight(){
 		Debug.Log ("Chosen Rock on the right");
-		playerChoice.RightAttackType = playerChoice.janken[0];
+		playerChoice.RightAttackType = HandleTurn.janken.ROCK;
 	}
 
 	public void chooseScissorsRight(){
 		Debug.Log ("Chosen Scissors on the right");
-		playerChoice.RightAttackType = playerChoice.janken[2];
+		playerChoice.RightAttackType = HandleTurn.janken.SCISSORS;
 	}
 
 	public void choosePaperRight(){
 		Debug.Log ("Chosen Paper on the right");
-		playerChoice.RightAttackType = playerChoice.janken[1];
+		playerChoice.RightAttackType = HandleTurn.janken.PAPER;
 	}
 
 	public void enemySelected(){
@@ -129,158 +129,68 @@ public class Combat_statemachine : MonoBehaviour {
 	}
 	public void battleLogic(){
 		Debug.Log ("Battle Start");
-		// logic for the player
-		Debug.Log ("Player's turn");
-		//Left Hand
-		for (int i = 1; i < PerformList.Count; i++) {
-			if (PerformList [i].AttackTarget == PlayerInBattle [0]) {
-				if (PSM.pLHS != Player_statemachine.leftHand_state.INACTIVE) {	
-					if (playerChoice.LeftAttackType == playerChoice.janken [0]) {
-						if (PerformList [i].RightAttackType == playerChoice.janken [2]) {
-							//win
-							ESM.eRHS = Emeny_AIstatemachine.rightHand_state.INACTIVE;
-							Debug.Log (ESM.name + ": Right hand destroyed");
-						} else if (PerformList [i].RightAttackType == playerChoice.janken [1] || PerformList [i].RightAttackType == playerChoice.janken [0]) {
-							//lose
-							PSM.pLHS = Player_statemachine.leftHand_state.INACTIVE;
-							Debug.Log (PSM.name + ": Left hand destroyed");
-						} else if (playerChoice.LeftAttackType == playerChoice.janken [1]) {
-							if (PerformList [i].RightAttackType == playerChoice.janken [0]) {
-								//win
-								ESM.eRHS = Emeny_AIstatemachine.rightHand_state.INACTIVE;
-								Debug.Log (ESM.name + ": Right hand destroyed");
-							} else if (PerformList [i].RightAttackType == playerChoice.janken [2] || PerformList [i].RightAttackType == playerChoice.janken [1]) {
-								//lose
-								PSM.pLHS = Player_statemachine.leftHand_state.INACTIVE;
-								Debug.Log (PSM.name + ": Left hand destroyed");
-							}	
-						} else if (playerChoice.LeftAttackType == playerChoice.janken [2]) {
-							if (PerformList [i].RightAttackType == playerChoice.janken [1]) {
-								//win
-								ESM.eRHS = Emeny_AIstatemachine.rightHand_state.INACTIVE;
-								Debug.Log (ESM.name + ": Right hand destroyed");
-							} else if (PerformList [i].RightAttackType == playerChoice.janken [0] || PerformList [i].RightAttackType == playerChoice.janken [2]) {
-								//lose
-								PSM.pLHS = Player_statemachine.leftHand_state.INACTIVE;
-								Debug.Log (PSM.name + ": Left hand destroyed");
-							}
+		for (int i = 0; i < PerformList.Count; i++){
+			for(int j = 0; j < 2; j++){
+				if(PerformList[j].AttackTarget == PerformList[i].AttackGameObject){
+					int resultLeft =  howToWin(PerformList[j].LeftAttackType, PerformList[i].RightAttackType);
+					int resultRight =  howToWin(PerformList[j].RightAttackType, PerformList[i].LeftAttackType);
+					if (resultLeft == 1) {
+						Debug.Log ( PerformList[j].Attacker + " win, " + PerformList[i].Attacker + " lose");
+						if(PerformList[i].AttackGameObject == GameObject.FindWithTag("Player")){
+							PerformList [i].AttackGameObject.GetComponent<Player_statemachine> ().player.RightHand_state = false;
+						}
+						else
+						{
+							PerformList[i].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.RightHand_state = false;
+						}
+					} else {
+						Debug.Log (PerformList[i].Attacker + " win, " + PerformList[j].Attacker + " lose");
+						if (PerformList[j].AttackGameObject == GameObject.FindWithTag("Player"))
+						{
+							PerformList[j].AttackGameObject.GetComponent<Player_statemachine>().player.LeftHand_state = false;
+						}
+						else
+						{
+							PerformList[j].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.LeftHand_state = false;
 						}
 					}
-				}
-
-				//right hand
-				if (PSM.pRHS != Player_statemachine.rightHand_state.INACTIVE) {
-					if (playerChoice.RightAttackType == playerChoice.janken [0]) {
-						if (PerformList [i].LeftAttackType == playerChoice.janken [2]) {
-							//win
-							ESM.eLHS = Emeny_AIstatemachine.leftHand_state.INACTIVE;
-							Debug.Log (ESM.name + ": Left hand destroyed");
-						} else if (PerformList [i].LeftAttackType == playerChoice.janken [1] || PerformList [i].LeftAttackType == playerChoice.janken [0]) {
-							//lose
-							PSM.pRHS = Player_statemachine.rightHand_state.INACTIVE;
-							Debug.Log (PSM.name + ": Right hand destroyed");
+					if (resultRight == 1) {
+						Debug.Log (PerformList[j].Attacker + " win, " + PerformList[i].Attacker + " lose");
+						if (PerformList[i].AttackGameObject == GameObject.FindWithTag("Player"))
+						{
+							PerformList[i].AttackGameObject.GetComponent<Player_statemachine>().player.LeftHand_state = false;
 						}
-					} else if (playerChoice.RightAttackType == playerChoice.janken [1]) {
-						if (PerformList [i].LeftAttackType == playerChoice.janken [0]) {
-							//win
-							ESM.eLHS = Emeny_AIstatemachine.leftHand_state.INACTIVE;
-							Debug.Log (ESM.name + ": Left hand destroyed");
-						} else if (PerformList [i].LeftAttackType == playerChoice.janken [2] || PerformList [i].LeftAttackType == playerChoice.janken [1]) {
-							//lose
-							PSM.pRHS = Player_statemachine.rightHand_state.INACTIVE;
-							Debug.Log (PSM.name + ": Right hand destroyed");
-						}	
-					} else if (playerChoice.RightAttackType == playerChoice.janken [2]) {
-						if (PerformList [i].LeftAttackType == playerChoice.janken [1]) {
-							//win
-							ESM.eLHS = Emeny_AIstatemachine.leftHand_state.INACTIVE;
-							Debug.Log (ESM.name + ": Left hand destroyed");
-						} else if (PerformList [i].LeftAttackType == playerChoice.janken [0] || PerformList [i].LeftAttackType == playerChoice.janken [2]) {
-							//lose
-							PSM.pRHS = Player_statemachine.rightHand_state.INACTIVE;
-							Debug.Log (PSM.name + ": Right hand destroyed");
-						}	
+						else
+						{
+							PerformList[i].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.LeftHand_state = false;
+						}
+					} else {
+						Debug.Log (PerformList[i].Attacker + " win, " + PerformList[j].Attacker + " lose");
+						if (PerformList[j].AttackGameObject == GameObject.FindWithTag("Player"))
+						{
+							PerformList[j].AttackGameObject.GetComponent<Player_statemachine>().player.RightHand_state = false;
+						}
+						else
+						{
+							PerformList[j].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.RightHand_state = false;
+						}
 					}
 				}
 			}
 		}
-//			// for enemy target enemy
-//		Debug.Log ("Enemy turn");
-//			for(int j = 1; j < PlayerInBattle.Count; j++){
-//			if (PerformList[j].AttackTarget != Emeny_AIstatemachine.leftHand_state.INACTIVE) {
-//				for (int i = 0; i < 2; i++) {
-//						if (.LeftAttackType == playerChoice.janken [0]) {
-//							if (PSM.rightIncoming [i] == playerChoice.janken [2]) {
-//								//win
-//								ESM.eRHS = Emeny_AIstatemachine.rightHand_state.INACTIVE;
-//								Debug.Log (ESM.name + ": Right hand destroyed");
-//							} else if (PSM.rightIncoming [i] == playerChoice.janken [1] || PSM.rightIncoming [i] == playerChoice.janken [0]) {
-//								//lose
-//								PSM.pLHS = Player_statemachine.leftHand_state.INACTIVE;
-//								Debug.Log (PSM.name + "Left hand destroyed");
-//							}
-//						} else if (playerChoice.LeftAttackType == playerChoice.janken [1]) {
-//							if (PSM.rightIncoming [i] == playerChoice.janken [0]) {
-//								//win
-//								ESM.eRHS = Emeny_AIstatemachine.rightHand_state.INACTIVE;
-//								Debug.Log (ESM.name + ": Right hand destroyed");
-//							} else if (PSM.rightIncoming [i] == playerChoice.janken [2] || PSM.rightIncoming [i] == playerChoice.janken [1]) {
-//								//lose
-//								PSM.pLHS = Player_statemachine.leftHand_state.INACTIVE;
-//								Debug.Log (PSM.name + "Left hand destroyed");
-//							}	
-//						} else if (playerChoice.LeftAttackType == playerChoice.janken [2]) {
-//							if (PSM.rightIncoming [i] == playerChoice.janken [1]) {
-//								//win
-//								ESM.eRHS = Emeny_AIstatemachine.rightHand_state.INACTIVE;
-//								Debug.Log (ESM.name + ": Right hand destroyed");
-//							} else if (PSM.rightIncoming [i] == playerChoice.janken [0] || PSM.rightIncoming [i] == playerChoice.janken [2]) {
-//								//lose
-//								PSM.pLHS = Player_statemachine.leftHand_state.INACTIVE;
-//								Debug.Log (PSM.name + "Left hand destroyed");
-//							}
-//						}
-//					}
-//				} //right hand
-//				else if (PSM.pRHS != Player_statemachine.rightHand_state.INACTIVE) {
-//					for (int i = 0; i < PSM.leftIncoming.Count; i++) {
-//					if (PerformList[i] == HandleTurn.janken [0]) {
-//						if (ESM.rightIncoming [i] == HandleTurn.janken [2]) {
-//								//win
-//								ESM.eLHS = Emeny_AIstatemachine.leftHand_state.INACTIVE;
-//								Debug.Log (ESM.name + "Left hand destroyed");
-//							} else if (PSM.rightIncoming [i] == playerChoice.janken [1] || PSM.rightIncoming [i] == playerChoice.janken [0]) {
-//								//lose
-//								PSM.pRHS = Player_statemachine.rightHand_state.INACTIVE;
-//								Debug.Log (PSM.name + "Right hand destroyed");
-//							}
-//						} else if (playerChoice.RightAttackType == playerChoice.janken [1]) {
-//							if (PSM.rightIncoming [i] == playerChoice.janken [0]) {
-//								//win
-//								ESM.eLHS = Emeny_AIstatemachine.leftHand_state.INACTIVE;
-//								Debug.Log (ESM.name + "Left hand destroyed");
-//							} else if (PSM.rightIncoming [i] == playerChoice.janken [2] || PSM.rightIncoming [i] == playerChoice.janken [1]) {
-//								//lose
-//								PSM.pRHS = Player_statemachine.rightHand_state.INACTIVE;
-//								Debug.Log (PSM.name + "Right hand destroyed");
-//							}	
-//						} else if (playerChoice.RightAttackType == playerChoice.janken [2]) {
-//							if (PSM.rightIncoming [i] == playerChoice.janken [1]) {
-//								//win
-//								ESM.eLHS = Emeny_AIstatemachine.leftHand_state.INACTIVE;
-//								Debug.Log (ESM.name + "Left hand destroyed");
-//							} else if (PSM.rightIncoming [i] == playerChoice.janken [0] || PSM.rightIncoming [i] == playerChoice.janken [2]) {
-//								//lose
-//								PSM.pRHS = Player_statemachine.rightHand_state.INACTIVE;
-//								Debug.Log (PSM.name + "Right hand destroyed");
-//							}	
-//						}
-//					} 
-//				}
-//				}
 		Debug.Log ("Battle End");
 		}
-		
+
+	public static int howToWin(HandleTurn.janken source, HandleTurn.janken target){
+		if (source == HandleTurn.janken.PAPER && target == HandleTurn.janken.ROCK) {
+			return 1;
+		}
+		else if (source == HandleTurn.janken.ROCK && target == HandleTurn.janken.SCISSORS) {
+			return 1;
+		}
+		else if (source == HandleTurn.janken.SCISSORS && target == HandleTurn.janken.PAPER) {
+			return 1;
+		}
+		return 0;
 	}
-
-
+	}

@@ -7,6 +7,7 @@ public class Player_base {
 	// superclass for any player object
 	public string name;
 	private int killCount;// collectively collect all the kills done by player 
-
+	public bool LeftHand_state;
+	public bool RightHand_state;
 
 }
