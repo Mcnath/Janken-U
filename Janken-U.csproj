@@ -90,6 +90,7 @@
     <Compile Include="Assets\Scripts\Player Classes\Emeny_AIstatemachine.cs" />
     <Compile Include="Assets\Scripts\Player Classes\Player_base.cs" />
     <Compile Include="Assets\Scripts\Player Classes\Player_statemachine.cs" />
+    <Compile Include="Assets\Scripts\Player Classes\countdown.cs" />
     <Compile Include="Assets\Scripts\Skills\AttackAll.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

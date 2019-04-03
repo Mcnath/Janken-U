@@ -8,8 +8,9 @@ public class Emeny_AIstatemachine : MonoBehaviour {
 	public Player_base enemy;
 	public HandleTurn myAttack;
 
-	// Initialized Enemy's turn progression
-	public enum turnState{
+
+    // Initialized Enemy's turn progression
+    public enum turnState{
 		START,
 		CHOOSEACTION,
 		WAITING,
@@ -25,7 +26,8 @@ public class Emeny_AIstatemachine : MonoBehaviour {
 		currentState = turnState.START;
 		enemy.LeftHand_state = true;
 		enemy.RightHand_state = true;
-		CSM = GameObject.Find("BattleManager").GetComponent<Combat_statemachine> ();
+
+        CSM = GameObject.Find("BattleManager").GetComponent<Combat_statemachine> ();
 		startPosition = transform.position;
 	}
 	
@@ -69,16 +71,19 @@ public class Emeny_AIstatemachine : MonoBehaviour {
 		//record action chosen by the AI
 		myAttack = new HandleTurn ();
 		myAttack.Attacker = enemy.name;
-		myAttack.AttackGameObject = this.gameObject;
-		myAttack.AttackTarget = CSM.PlayerInBattle [Random.Range (0, CSM.PlayerInBattle.Count)];
-		while (myAttack.AttackTarget == myAttack.AttackGameObject) {
-			myAttack.AttackTarget = CSM.PlayerInBattle [Random.Range (0, CSM.PlayerInBattle.Count)];
-		}
-		//myAttack.AttackTarget = CSM.PlayerInBattle[0];
-		myAttack.LeftAttackType = HandleTurn.randomJanken();
-		myAttack.RightAttackType = HandleTurn.randomJanken();
-		Debug.Log(enemy.name + " is ready for battle");
-		CSM.CollectActions (myAttack);
+        myAttack.AttackGameObject = this.gameObject;
+        myAttack.AttackTarget = CSM.PlayerInBattle[Random.Range(0, CSM.PlayerInBattle.Count)];
+        while (myAttack.AttackTarget == myAttack.AttackGameObject)
+        {
+            myAttack.AttackTarget = CSM.PlayerInBattle[Random.Range(0, CSM.PlayerInBattle.Count)];
+        }
+        //myAttack.AttackTarget = CSM.PlayerInBattle[0];
+        myAttack.LeftAttackType = HandleTurn.randomJanken();
+        myAttack.RightAttackType = HandleTurn.randomJanken();
+        Debug.Log(enemy.name + " is ready for battle");
+        CSM.CollectActions(myAttack);
+        
+		
 	}
 
 	public void isSelected(){

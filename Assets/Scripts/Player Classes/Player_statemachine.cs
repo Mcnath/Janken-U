@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Player_statemachine : MonoBehaviour {
 	private Combat_statemachine CSM;
-	public Player_base player;
+    public Player_base player;
 	public enum turnState{
 		START,
 		CHOOSEACTION,

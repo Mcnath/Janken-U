@@ -1,10 +1,21 @@
 fileFormatVersion: 2
 guid: 796f7dbd3a52f2e4db9c127879f1af7d
-timeCreated: 1550591424
-licenseType: Free
 MonoImporter:
+  externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - p1rock: {instanceID: 0}
+  - p1paper: {instanceID: 0}
+  - p1scissors: {instanceID: 0}
+  - p1rock2: {instanceID: 0}
+  - p1paper2: {instanceID: 0}
+  - p1scissors2: {instanceID: 0}
+  - p1left: {instanceID: 0}
+  - p1right: {instanceID: 0}
+  - PSM: {instanceID: 0}
+  - ESM1: {instanceID: 0}
+  - ESM2: {instanceID: 0}
+  - ESM3: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
