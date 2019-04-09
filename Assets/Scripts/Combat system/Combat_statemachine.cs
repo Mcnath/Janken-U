@@ -144,7 +144,7 @@ public class Combat_statemachine : MonoBehaviour {
 		//Debug.Log ("currentState: "+ currentState);
 		switch(currentState){
 		case(turnState.START):
-			//PerformList = new List<HandleTurn> ();
+			PerformList = new List<HandleTurn> ();
 			playerChoice = new HandleTurn ();
 			currentState = turnState.PLAYERCHOICE;
 			break;
@@ -242,7 +242,7 @@ public class Combat_statemachine : MonoBehaviour {
 	public void battleLogic(){
 		Debug.Log ("Battle Start");
 		for (int i = 0; i < PerformList.Count; i++){
-			for(int j = 0; j < 2; j++){
+			for(int j = 1; j < PerformList.Count; j++){
 				if(PerformList[j].AttackTarget == PerformList[i].AttackGameObject){
 					int resultLeft =  howToWin(PerformList[j].LeftAttackType, PerformList[i].RightAttackType);
 					int resultRight =  howToWin(PerformList[j].RightAttackType, PerformList[i].LeftAttackType);
@@ -648,6 +648,10 @@ public class Combat_statemachine : MonoBehaviour {
 			return 1;
 		}
 		else if (source == HandleTurn.janken.SCISSORS && target == HandleTurn.janken.PAPER) {
+			return 1;
+		}
+		else if(source == target)
+		{
 			return 1;
 		}
 		return 0;

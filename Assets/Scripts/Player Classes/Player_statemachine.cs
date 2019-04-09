@@ -52,12 +52,17 @@ public class Player_statemachine : MonoBehaviour {
 			}
 			break;
 		case(turnState.ACTION): // idle
-			if (CSM.currentState == Combat_statemachine.turnState.START) {
+			if (player.LeftHand_state == false && player.RightHand_state == false)//check if the player lost all the hands
+				{
+				currentState = turnState.LOSE;
+			}
+			else if (CSM.currentState == Combat_statemachine.turnState.START) {
 				currentState = turnState.START;
 			}
 			break;
 		case(turnState.LOSE):
 			Debug.Log ("You Lose");
+				Application.Quit();
 			break;
 		}
 	}
