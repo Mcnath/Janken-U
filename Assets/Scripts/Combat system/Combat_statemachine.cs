@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -84,6 +85,7 @@ public class Combat_statemachine : MonoBehaviour {
 		playerInput = PlayerGUI.ACTIVATE;
 		PlayerInBattle.AddRange (GameObject.FindGameObjectsWithTag("Player"));
 		PlayerInBattle.AddRange (GameObject.FindGameObjectsWithTag("AI"));
+		//player objects
         p1rock = GameObject.Find("playerleftR");
         p1paper = GameObject.Find("playerleftP");
         p1scissors = GameObject.Find("playerleftS");
@@ -106,37 +108,58 @@ public class Combat_statemachine : MonoBehaviour {
         rightR = GameObject.Find("Right_Rock");
         rightP = GameObject.Find("Right_Paper");
         rightS = GameObject.Find("Right_Scissors");
+		//enemy 1 objects
         e1paper = GameObject.Find("e1leftp");
         e1rock = GameObject.Find("e1leftr");
         e1scissors = GameObject.Find("e1lefts");
         e1paper2 = GameObject.Find("e1rightp");
         e1rock2 = GameObject.Find("e1rightr");
         e1scissors2 = GameObject.Find("e1rights");
-        e1paper.SetActive(false);
-        e1scissors.SetActive(false);
+		e1left = GameObject.Find("e1left");
+		e1right = GameObject.Find("e1right");
+		e1left.SetActive(true);
+		e1right.SetActive(true);
+		e1rock.SetActive(true);
+		e1rock2.SetActive(true);
+		e1paper.SetActive(false);
+		e1paper2.SetActive(false);
+		e1scissors.SetActive(false);
         e1scissors2.SetActive(false);
-        e1paper2.SetActive(false);
+		//enemy 2 objects
         e2paper = GameObject.Find("e2leftp");
         e2rock = GameObject.Find("e2leftr");
         e2scissors = GameObject.Find("e2lefts");
         e2paper2 = GameObject.Find("e2rightp");
         e2rock2 = GameObject.Find("e2rightr");
         e2scissors2 = GameObject.Find("e2rights");
-        e2paper.SetActive(false);
-        e2scissors.SetActive(false);
-        e2scissors2.SetActive(false);
-        e2paper2.SetActive(false);
-        e3paper = GameObject.Find("e3leftp");
+		e2left = GameObject.Find("e2left");
+		e2right = GameObject.Find("e2right");
+		e2left.SetActive(true);
+		e2right.SetActive(true);
+		e2rock.SetActive(true);
+		e2rock2.SetActive(true);
+		e2paper.SetActive(false);
+		e2paper2.SetActive(false);
+		e2scissors.SetActive(false);
+		e2scissors2.SetActive(false);
+		//enemy 3 objects
+		e3paper = GameObject.Find("e3leftp");
         e3rock = GameObject.Find("e3leftr");
         e3scissors = GameObject.Find("e3lefts");
         e3paper2 = GameObject.Find("e3rightp");
         e3rock2 = GameObject.Find("e3rightr");
         e3scissors2 = GameObject.Find("e3rights");
-        e3paper.SetActive(false);
-        e3scissors.SetActive(false);
-        e3scissors2.SetActive(false);
-        e3paper2.SetActive(false);
-    }
+		e3left = GameObject.Find("e3left");
+		e3right = GameObject.Find("e3right");
+		e3left.SetActive(true);
+		e3right.SetActive(true);
+		e3rock.SetActive(true);
+		e3rock2.SetActive(true);
+		e3paper.SetActive(false);
+		e3paper2.SetActive(false);
+		e3scissors.SetActive(false);
+		e3scissors2.SetActive(false);
+	}
 	
 	// Update is called once per frame
 	void Update () {
@@ -244,9 +267,10 @@ public class Combat_statemachine : MonoBehaviour {
 		for (int i = 0; i < PerformList.Count; i++){
 			for(int j = 1; j < PerformList.Count; j++){
 				if(PerformList[j].AttackTarget == PerformList[i].AttackGameObject){
-					int resultLeft =  howToWin(PerformList[j].LeftAttackType, PerformList[i].RightAttackType);
-					int resultRight =  howToWin(PerformList[j].RightAttackType, PerformList[i].LeftAttackType);
-                    if (PerformList[i].Attacker == "e1")
+					int resultLeft =  howToWin(PerformList[j].LeftAttackType, PerformList[i].LeftAttackType);
+					int resultRight =  howToWin(PerformList[j].RightAttackType, PerformList[i].RightAttackType);
+					// enemy sprite's change
+					if (PerformList[i].Attacker == "e1")
                     {
                         if (PerformList[i].LeftAttackType == HandleTurn.janken.ROCK)
                         {
@@ -480,159 +504,288 @@ public class Combat_statemachine : MonoBehaviour {
                             e3paper2.SetActive(false);
                         }
                     }
+					// Battle result and sprite's destruction
                     if (resultLeft == 1) {
 						Debug.Log ( PerformList[j].Attacker + " win, " + PerformList[i].Attacker + " lose");
-						if(PerformList[i].AttackGameObject == GameObject.FindWithTag("Player")){
-							PerformList [i].AttackGameObject.GetComponent<Player_statemachine> ().player.RightHand_state = false;
-                            p1right.SetActive(false);
-                            p1rock2.SetActive(false);
-                            p1paper2.SetActive(false);
-                            p1scissors2.SetActive(false);
-                            rightP.SetActive(false);
-                            rightR.SetActive(false);
-                            rightS.SetActive(false);
+						if(PerformList[i].AttackGameObject == GameObject.FindWithTag("Player") && 
+							PerformList[i].AttackGameObject.GetComponent<Player_statemachine>().player.LeftHand_state == true)
+						{
+							PerformList [i].AttackGameObject.GetComponent<Player_statemachine>().player.LeftHand_state = false;
+							try
+							{
+								p1left.SetActive(false);
+								p1rock2.SetActive(false);
+								p1paper2.SetActive(false);
+								p1scissors2.SetActive(false);
+								leftP.SetActive(false);
+								leftR.SetActive(false);
+								leftS.SetActive(false);
+							}
+							catch (Exception e)
+							{
+								Debug.Log("already removed");
+							}
 
-                        }
+						}
 						else
 						{
-							PerformList[i].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.RightHand_state = false;
-                            if (PerformList[i].Attacker == "e1")
+                            if (PerformList[i].Attacker == "e1" && PerformList[i].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.LeftHand_state == true)
                             {
-                                GameObject.Find("e1right").SetActive(false);
-                                GameObject.Find("e1rightr").SetActive(false);
-                                GameObject.Find("e1rightp").SetActive(false);
-                                GameObject.Find("e1rights").SetActive(false);
-                            }
-                            else if (PerformList[i].Attacker == "e2")
+								try
+								{
+									GameObject.Find("e1left").SetActive(false);
+									GameObject.Find("e1leftr").SetActive(false);
+									GameObject.Find("e1leftp").SetActive(false);
+									GameObject.Find("e1lefts").SetActive(false);
+									PerformList[i].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.LeftHand_state = false;
+								}
+								catch (Exception e)
+								{
+									Debug.Log("already removed");
+								}
+							}
+                            else if (PerformList[i].Attacker == "e2" && PerformList[i].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.LeftHand_state == true)
                             {
-                                GameObject.Find("e2right").SetActive(false);
-                                GameObject.Find("e2rightr").SetActive(false);
-                                GameObject.Find("e2rightp").SetActive(false);
-                                GameObject.Find("e2rights").SetActive(false);
-                            }
-                            else if (PerformList[i].Attacker == "e3")
+								try
+								{
+									GameObject.Find("e2left").SetActive(false);
+									GameObject.Find("e2leftr").SetActive(false);
+									GameObject.Find("e2leftp").SetActive(false);
+									GameObject.Find("e2lefts").SetActive(false);
+									PerformList[i].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.LeftHand_state = false;
+								}
+								catch (Exception e)
+								{
+									Debug.Log("already removed");
+								}
+							}
+                            else if (PerformList[i].Attacker == "e3" && PerformList[i].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.RightHand_state == true)
                             {
-                                GameObject.Find("e3right").SetActive(false);
-                                GameObject.Find("e3rightr").SetActive(false);
-                                GameObject.Find("e3rightp").SetActive(false);
-                                GameObject.Find("e3rights").SetActive(false);
-                            }
-                        }
+								try
+								{
+									GameObject.Find("e3left").SetActive(false);
+									GameObject.Find("e3leftr").SetActive(false);
+									GameObject.Find("e3leftp").SetActive(false);
+									GameObject.Find("e3lefts").SetActive(false);
+									PerformList[i].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.LeftHand_state = false;
+								}
+								catch (Exception e)
+								{
+									Debug.Log("already removed");
+								}
+							}
+							//PerformList[i].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.LeftHand_state = false;
+						}
 					} else {
 						Debug.Log (PerformList[i].Attacker + " win, " + PerformList[j].Attacker + " lose");
-						if (PerformList[j].AttackGameObject == GameObject.FindWithTag("Player"))
+						if (PerformList[j].AttackGameObject == GameObject.FindWithTag("Player") && PerformList[j].AttackGameObject.GetComponent<Player_statemachine>().player.LeftHand_state == true)
 						{
 							PerformList[j].AttackGameObject.GetComponent<Player_statemachine>().player.LeftHand_state = false;
-                            p1left.SetActive(false);
-                            p1rock.SetActive(false);
-                            p1paper.SetActive(false);
-                            p1scissors.SetActive(false);
-                            leftR.SetActive(false);
-                            leftP.SetActive(false);
-                            leftS.SetActive(false);
-                        }
+							try
+							{
+								p1left.SetActive(false);
+								p1rock.SetActive(false);
+								p1paper.SetActive(false);
+								p1scissors.SetActive(false);
+								leftR.SetActive(false);
+								leftP.SetActive(false);
+								leftS.SetActive(false);
+							}
+							catch (Exception e)
+							{
+								Debug.Log("already removed");
+							}
+						}
 						else
 						{
-							PerformList[j].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.LeftHand_state = false;
-                            if (PerformList[j].Attacker == "e1")
+                            if (PerformList[j].Attacker == "e1" && PerformList[j].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.LeftHand_state == true)
                             {
-                                GameObject.Find("e1left").SetActive(false);
-                                GameObject.Find("e1leftr").SetActive(false);
-                                GameObject.Find("e1lefts").SetActive(false);
-                                GameObject.Find("e1leftp").SetActive(false);
-                            }
-                            else if (PerformList[j].Attacker == "e2")
+								try
+								{
+									GameObject.Find("e1left").SetActive(false);
+									GameObject.Find("e1leftr").SetActive(false);
+									GameObject.Find("e1lefts").SetActive(false);
+									GameObject.Find("e1leftp").SetActive(false);
+									PerformList[j].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.LeftHand_state = false;
+								}
+								catch (Exception e)
+								{
+									Debug.Log("already removed");
+								}
+							}
+                            else if (PerformList[j].Attacker == "e2" && PerformList[j].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.LeftHand_state == true)
                             {
-                                GameObject.Find("e2left").SetActive(false);
-                                GameObject.Find("e2leftr").SetActive(false);
-                                GameObject.Find("e2lefts").SetActive(false);
-                                GameObject.Find("e2leftp").SetActive(false);
-                            }
-                            else if (PerformList[j].Attacker == "e3")
+								try
+								{
+									GameObject.Find("e2left").SetActive(false);
+									GameObject.Find("e2leftr").SetActive(false);
+									GameObject.Find("e2lefts").SetActive(false);
+									GameObject.Find("e2leftp").SetActive(false);
+									PerformList[j].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.LeftHand_state = false;
+								}
+								catch (Exception e)
+								{
+									Debug.Log("already removed");
+								}
+							}
+                            else if (PerformList[j].Attacker == "e3" && PerformList[j].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.LeftHand_state == true)
                             {
-                                GameObject.Find("e3left").SetActive(false);
-                                GameObject.Find("e3leftr").SetActive(false);
-                                GameObject.Find("e3lefts").SetActive(false);
-                                GameObject.Find("e3leftp").SetActive(false);
-                            }
-                        }
+								try
+								{
+									GameObject.Find("e3left").SetActive(false);
+									GameObject.Find("e3leftr").SetActive(false);
+									GameObject.Find("e3lefts").SetActive(false);
+									GameObject.Find("e3leftp").SetActive(false);
+									PerformList[j].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.LeftHand_state = false;
+								}
+								catch (Exception e)
+								{
+									Debug.Log("already removed");
+								}
+							}
+							//PerformList[j].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.LeftHand_state = false;
+						}
 					}
 					if (resultRight == 1) {
 						Debug.Log (PerformList[j].Attacker + " win, " + PerformList[i].Attacker + " lose");
-						if (PerformList[i].AttackGameObject == GameObject.FindWithTag("Player"))
+						if (PerformList[i].AttackGameObject == GameObject.FindWithTag("Player") && 
+							PerformList[i].AttackGameObject.GetComponent<Player_statemachine>().player.RightHand_state == true)
 						{
-							PerformList[i].AttackGameObject.GetComponent<Player_statemachine>().player.LeftHand_state = false;
-                            p1left.SetActive(false);
-                            p1rock.SetActive(false);
-                            p1paper.SetActive(false);
-                            p1scissors.SetActive(false);
-                            leftR.SetActive(false);
-                            leftP.SetActive(false);
-                            leftS.SetActive(false);
-                        }
+							PerformList[i].AttackGameObject.GetComponent<Player_statemachine>().player.RightHand_state = false;
+							try
+							{
+								p1right.SetActive(false);
+								p1rock.SetActive(false);
+								p1paper.SetActive(false);
+								p1scissors.SetActive(false);
+								rightR.SetActive(false);
+								rightP.SetActive(false);
+								rightS.SetActive(false);
+							}
+							catch (Exception e)
+							{
+								Debug.Log("already removed");
+							}
+						}
 						else
 						{
-							PerformList[i].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.LeftHand_state = false;
-                            if (PerformList[i].Attacker == "e1")
+                            if (PerformList[i].Attacker == "e1" && PerformList[i].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.RightHand_state == true)
                             {
-                                GameObject.Find("e1left").SetActive(false);
-                                GameObject.Find("e1leftr").SetActive(false);
-                                GameObject.Find("e1lefts").SetActive(false);
-                                GameObject.Find("e1leftp").SetActive(false);
+								try
+								{
+									GameObject.Find("e1right").SetActive(false);
+									GameObject.Find("e1rightr").SetActive(false);
+									GameObject.Find("e1rights").SetActive(false);
+									GameObject.Find("e1rightp").SetActive(false);
+									PerformList[i].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.RightHand_state = false;
+								}
+								catch(Exception e)
+								{
+									Debug.Log("already removed");
+								}
                             }
-                            else if (PerformList[i].Attacker == "e2")
+                            else if (PerformList[i].Attacker == "e2" && PerformList[i].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.RightHand_state == true)
                             {
-                                GameObject.Find("e2left").SetActive(false);
-                                GameObject.Find("e2leftr").SetActive(false);
-                                GameObject.Find("e2lefts").SetActive(false);
-                                GameObject.Find("e2leftp").SetActive(false);
-                            }
-                            else if (PerformList[i].Attacker == "e3")
+								try
+								{
+									GameObject.Find("e2right").SetActive(false);
+									GameObject.Find("e2rightr").SetActive(false);
+									GameObject.Find("e2rights").SetActive(false);
+									GameObject.Find("e2rightp").SetActive(false);
+									PerformList[i].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.RightHand_state = false;
+								}
+								catch (Exception e)
+								{
+									Debug.Log("already removed");
+								}
+							}
+                            else if (PerformList[i].Attacker == "e3" && PerformList[i].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.RightHand_state == true)
                             {
-                                GameObject.Find("e3left").SetActive(false);
-                                GameObject.Find("e3leftr").SetActive(false);
-                                GameObject.Find("e3lefts").SetActive(false);
-                                GameObject.Find("e3leftp").SetActive(false);
-                            }
-                        }
+								try
+								{
+									GameObject.Find("e3right").SetActive(false);
+									GameObject.Find("e3rightr").SetActive(false);
+									GameObject.Find("e3rights").SetActive(false);
+									GameObject.Find("e3rightp").SetActive(false);
+									PerformList[i].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.RightHand_state = false;
+								}
+								catch (Exception e)
+								{
+									Debug.Log("already removed");
+								}
+							}
+							//PerformList[i].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.RightHand_state = false;
+						}
 					} else {
 						Debug.Log (PerformList[i].Attacker + " win, " + PerformList[j].Attacker + " lose");
-						if (PerformList[j].AttackGameObject == GameObject.FindWithTag("Player"))
+						if (PerformList[j].AttackGameObject == GameObject.FindWithTag("Player") && 
+							PerformList[j].AttackGameObject.GetComponent<Player_statemachine>().player.RightHand_state == true)
 						{
 							PerformList[j].AttackGameObject.GetComponent<Player_statemachine>().player.RightHand_state = false;
-                            p1right.SetActive(false);
-                            p1rock2.SetActive(false);
-                            p1paper2.SetActive(false);
-                            p1scissors2.SetActive(false);
-                            rightP.SetActive(false);
-                            rightR.SetActive(false);
-                            rightS.SetActive(false);
-                        }
+							try
+							{
+								p1right.SetActive(false);
+								p1rock2.SetActive(false);
+								p1paper2.SetActive(false);
+								p1scissors2.SetActive(false);
+								rightP.SetActive(false);
+								rightR.SetActive(false);
+								rightS.SetActive(false);
+							}
+							catch (Exception e)
+							{
+								Debug.Log("already removed");
+							}
+						}
 						else
 						{
-							PerformList[j].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.RightHand_state = false;
-                            if (PerformList[j].Attacker == "e1")
+                            if (PerformList[j].Attacker == "e1" && PerformList[j].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.RightHand_state == true)
                             {
-                                GameObject.Find("e1right").SetActive(false);
-                                GameObject.Find("e1rightr").SetActive(false);
-                                GameObject.Find("e1rightp").SetActive(false);
-                                GameObject.Find("e1rights").SetActive(false);
-                            }
-                            else if (PerformList[j].Attacker == "e2")
+								try
+								{
+									GameObject.Find("e1right").SetActive(false);
+									GameObject.Find("e1rightr").SetActive(false);
+									GameObject.Find("e1rightp").SetActive(false);
+									GameObject.Find("e1rights").SetActive(false);
+									PerformList[j].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.RightHand_state = false;
+								}
+								catch (Exception e)
+								{
+									Debug.Log("already removed");
+								}
+							}
+                            else if (PerformList[j].Attacker == "e2" && PerformList[j].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.RightHand_state == true)
                             {
-                                GameObject.Find("e2right").SetActive(false);
-                                GameObject.Find("e2rightr").SetActive(false);
-                                GameObject.Find("e2rightp").SetActive(false);
-                                GameObject.Find("e2rights").SetActive(false);
-                            }
-                            else if (PerformList[j].Attacker == "e3")
+								try
+								{
+									GameObject.Find("e2right").SetActive(false);
+									GameObject.Find("e2rightr").SetActive(false);
+									GameObject.Find("e2rightp").SetActive(false);
+									GameObject.Find("e2rights").SetActive(false);
+									PerformList[j].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.RightHand_state = false;
+								}
+								catch (Exception e)
+								{
+									Debug.Log("already removed");
+								}
+							}
+                            else if (PerformList[j].Attacker == "e3" && PerformList[j].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.RightHand_state == true)
                             {
-                                GameObject.Find("e3right").SetActive(false);
-                                GameObject.Find("e3rightr").SetActive(false);
-                                GameObject.Find("e3rightp").SetActive(false);
-                                GameObject.Find("e3rights").SetActive(false);
-                            }
-                        }
+								try
+								{
+									GameObject.Find("e3right").SetActive(false);
+									GameObject.Find("e3rightr").SetActive(false);
+									GameObject.Find("e3rightp").SetActive(false);
+									GameObject.Find("e3rights").SetActive(false);
+									PerformList[j].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.RightHand_state = false;
+								}
+								catch (Exception e)
+								{
+									Debug.Log("already removed");
+								}
+							}
+							//PerformList[j].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.RightHand_state = false;
+						}
 					}
 				}
 			}

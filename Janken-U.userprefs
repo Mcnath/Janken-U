@@ -5,15 +5,13 @@
       <File FileName="Assets\Scripts\Player Classes\Player_statemachine.cs" Line="69" Column="4" />
       <File FileName="Assets\Scripts\Player Classes\Emeny_AIstatemachine.cs" Line="7" Column="13" />
       <File FileName="Assets\Scripts\Combat system\HandleTurn.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Combat system\Combat_statemachine.cs" Line="144" Column="18" />
+      <File FileName="Assets\Scripts\Combat system\Combat_statemachine.cs" Line="238" Column="1" />
       <File FileName="Assets\Scripts\Combat system\HandState.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Player Classes\Player_base.cs" Line="11" Column="14" />
+      <File FileName="Assets\Scripts\Player Classes\Player_base.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore>
-      <Breakpoint file="D:\SUTD\50.003 Elements of Software Contruction\Project\Janken-U\Assets\Scripts\Combat system\Combat_statemachine.cs" line="238" column="1" />
-    </BreakpointStore>
+    <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>
