@@ -14,7 +14,7 @@ public class Player_statemachine : MonoBehaviour {
 		LOSE
 	}
 	public turnState currentState;
-
+    public int count=0;
 
 	// Use this for initialization
 	void Start () {
@@ -39,7 +39,10 @@ public class Player_statemachine : MonoBehaviour {
 			if (CSM.playerChoice.AttackTarget != null && CSM.playerChoice.LeftAttackType != HandleTurn.janken.NONE 
 				&& CSM.playerChoice.RightAttackType != HandleTurn.janken.NONE) {
 				readyToBattle();
-				currentState = turnState.WAITING;
+                    //Extraturn;
+
+                    currentState = turnState.WAITING; 
+
 			}
 			else {
 			//Debug.Log ("Complete your actions!!");
@@ -66,7 +69,64 @@ public class Player_statemachine : MonoBehaviour {
 		Debug.Log (this.gameObject.name + " is ready for battle");
 		CSM.playerChoice.Attacker = this.gameObject.name;
 		CSM.playerChoice.AttackGameObject = this.gameObject;
-		CSM.PerformList.Add (CSM.playerChoice);
-	}
+        switch (CSM.playerChoice.skill)
+        {
+            case HandleTurn.skills.DoubleAttack:
+                CSM.PerformList.Add(CSM.playerChoice);
+                CSM.PerformList.Add(CSM.playerChoice);
+                break;
+            case HandleTurn.skills.AttackAll:
+                CSM.playerChoice.AttackTarget = GameObject.Find("Enemy 1");
+                CSM.PerformList.Add(CSM.playerChoice);
+                CSM.playerChoice.AttackTarget = GameObject.Find("Enemy 2");
+                CSM.PerformList.Add(CSM.playerChoice);
+                CSM.playerChoice.AttackTarget = GameObject.Find("Enemy 3");
+                CSM.PerformList.Add(CSM.playerChoice);
+                break;
+            case HandleTurn.skills.SplashAttack:
+                if(CSM.playerChoice.AttackTarget == GameObject.Find("Enemy 1"))
+                {
+                    CSM.PerformList.Add(CSM.playerChoice);
+                    CSM.playerChoice.AttackTarget = GameObject.Find("Enemy 2");
+                    CSM.PerformList.Add(CSM.playerChoice);
+                }
+                else if (CSM.playerChoice.AttackTarget == GameObject.Find("Enemy 2"))
+                {
+                    CSM.PerformList.Add(CSM.playerChoice);
+                    CSM.playerChoice.AttackTarget = GameObject.Find("Enemy 3");
+                    CSM.PerformList.Add(CSM.playerChoice);
+                }
+                else if (CSM.playerChoice.AttackTarget == GameObject.Find("Enemy 3"))
+                {
+                    CSM.PerformList.Add(CSM.playerChoice);
+                    CSM.playerChoice.AttackTarget = GameObject.Find("Enemy 1");
+                    CSM.PerformList.Add(CSM.playerChoice);
+                }
+                break;
+
+            //CSM.PerformList.Add(CSM.playerChoice);
+            case HandleTurn.skills.Wall:
+                CSM.PerformList.Add(CSM.playerChoice);
+                break;
+            case HandleTurn.skills.MinRisk:
+                CSM.PerformList.Add(CSM.playerChoice);
+                break;
+            case HandleTurn.skills.Recover:
+                //CSM.PerformList.Add(CSM.playerChoice);
+                break;
+            case HandleTurn.skills.ExtraTurn:
+                CSM.PerformList.Add(CSM.playerChoice);
+                break;
+            case HandleTurn.skills.Sleep:
+                break;
+            case HandleTurn.skills.DeniService:
+                CSM.PerformList.Add(CSM.playerChoice);
+                break;
+            case HandleTurn.skills.Attack:
+                CSM.PerformList.Add(CSM.playerChoice);
+                break;
+
+        }
+    }
 
 }

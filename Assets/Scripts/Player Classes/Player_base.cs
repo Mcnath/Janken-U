@@ -9,5 +9,8 @@ public class Player_base {
 	private int killCount;// collectively collect all the kills done by player 
 	public bool LeftHand_state;
 	public bool RightHand_state;
+    //testing skills only
+    public enum pillars { ISTD, ESD, ASD, EPD };
+    public pillars pillar = pillars.ESD;
 
 }

@@ -7,7 +7,7 @@ public class Emeny_AIstatemachine : MonoBehaviour {
 	public static Combat_statemachine CSM;
 	public Player_base enemy;
 	public HandleTurn myAttack;
-
+    public int count;
 
     // Initialized Enemy's turn progression
     public enum turnState{
@@ -51,6 +51,7 @@ public class Emeny_AIstatemachine : MonoBehaviour {
 			break;
 		case(turnState.WAITING):
 			// change to ACTION once all player have chosen a move
+
 			int c = CSM.PerformList.Count;
 			if (c <= 4) {
 				currentState = turnState.ACTION;
@@ -82,6 +83,9 @@ public class Emeny_AIstatemachine : MonoBehaviour {
         myAttack.RightAttackType = HandleTurn.randomJanken();
         Debug.Log(enemy.name + " is ready for battle");
         CSM.CollectActions(myAttack);
+        count++;
+
+
         
 		
 	}
