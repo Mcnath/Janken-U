@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Scenes/Battle_test.unity
+- path: Assets/Scenes/Multiplayer-Launcher.unity
   isLoaded: 1
   isActive: 1

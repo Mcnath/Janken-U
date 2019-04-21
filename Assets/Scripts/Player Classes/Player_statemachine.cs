@@ -62,7 +62,7 @@ public class Player_statemachine : MonoBehaviour {
 			break;
 		case(turnState.LOSE):
 			Debug.Log ("You Lose");
-				Application.Quit();
+				//Application.Quit();
 			break;
 		}
 	}
