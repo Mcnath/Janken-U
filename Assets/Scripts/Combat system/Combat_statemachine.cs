@@ -275,7 +275,7 @@ public class Combat_statemachine : MonoBehaviour {
                         break;
                     
                     case HandleTurn.skills.Recover:
-                        //if(PerformList.Count == PlayerInBattle.Count)
+                        //if (PerformList.Count == PlayerInBattle.Count -1)
                         //{
                             currentState = turnState.ACTION;
                         //}
@@ -686,18 +686,18 @@ public class Combat_statemachine : MonoBehaviour {
             //ISTD
             case HandleTurn.skills.DeniService:
                 { 
-                    if (playerChoice.AttackTarget == e1)
-                    {
-                        ESM1.myAttack.skill = HandleTurn.skills.Attack;
-                    }
-                    else if(playerChoice.AttackTarget == e2)
-                    {
-                        ESM2.myAttack.skill = HandleTurn.skills.Attack;
-                    }
-                    else if(playerChoice.AttackTarget == e3)
-                    {
-                        ESM3.myAttack.skill = HandleTurn.skills.Attack;
-                    }
+                    //if (playerChoice.AttackTarget == e1)
+                    //{
+                    //    ESM1.myAttack.skill = HandleTurn.skills.Attack;
+                    //}
+                    //else if(playerChoice.AttackTarget == e2)
+                    //{
+                    //    ESM2.myAttack.skill = HandleTurn.skills.Attack;
+                    //}
+                    //else if(playerChoice.AttackTarget == e3)
+                    //{
+                    //    ESM3.myAttack.skill = HandleTurn.skills.Attack;
+                    //}
                     battleLogic();
                     break;
                 }
@@ -1245,6 +1245,27 @@ public class Combat_statemachine : MonoBehaviour {
                 }
             }
         }
+        //for(int i = 0; i < PerformList.Count; i++)
+        //{
+        //    if (PerformList[i].AttackGameObject != GameObject.FindWithTag("Player"))
+        //    {
+        //        if(PerformList[i].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.RightHand_state == false&& PerformList[i].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.RightHand_state == false)
+        //        {
+        //            PerformList.Remove(PerformList[i].AttackGameObject.GetComponent<Emeny_AIstatemachine>().myAttack);
+        //        }
+
+        //    }
+        //    else
+        //    {
+        //        if (PerformList[i].AttackGameObject.GetComponent<Player_statemachine>().player.RightHand_state == false && PerformList[i].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.RightHand_state == false)
+        //        {
+        //            PerformList.Remove(playerChoice);
+        //        }
+
+        //    }
+
+        //}
+
         Debug.Log("Battle End");
     }
 

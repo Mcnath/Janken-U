@@ -78,9 +78,11 @@ public class Emeny_AIstatemachine : MonoBehaviour {
         {
             myAttack.AttackTarget = CSM.PlayerInBattle[Random.Range(0, CSM.PlayerInBattle.Count)];
         }
+
         //myAttack.AttackTarget = CSM.PlayerInBattle[0];
         myAttack.LeftAttackType = HandleTurn.randomJanken();
         myAttack.RightAttackType = HandleTurn.randomJanken();
+        //myAttack.skill = HandleTurn.randomSkill();
         Debug.Log(enemy.name + " is ready for battle");
         CSM.CollectActions(myAttack);
         count++;
