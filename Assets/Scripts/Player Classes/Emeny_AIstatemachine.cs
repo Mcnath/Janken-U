@@ -38,7 +38,7 @@ public class Emeny_AIstatemachine : MonoBehaviour {
 			//check if the enemy lost all the hands
 			if (enemy.LeftHand_state == false && enemy.RightHand_state == false) {
 				currentState = turnState.LOSE;
-				this.gameObject.SetActive (false);
+				
 			} else {
 				currentState = turnState.CHOOSEACTION;
 			}
@@ -58,19 +58,26 @@ public class Emeny_AIstatemachine : MonoBehaviour {
 			}
 			break;
 		case(turnState.ACTION): // idle
-			
-			currentState = turnState.START;
+			//check if the enemy lost all the hands
+			if (enemy.LeftHand_state == false && enemy.RightHand_state == false)
+			{
+				currentState = turnState.LOSE;
+			}
+			else if (CSM.currentState == Combat_statemachine.turnState.START)
+			{
+				myAttack = new HandleTurn();
+				currentState = turnState.START;
+			}
 			break;
 		case(turnState.LOSE):
 			Debug.Log (enemy.name +" is destroyed");
+			this.gameObject.SetActive(false);
 			break;
 		}
 			
 	}
-
 	public void chooseAction(){
 		//record action chosen by the AI
-		myAttack = new HandleTurn ();
 		myAttack.Attacker = enemy.name;
         myAttack.AttackGameObject = this.gameObject;
         myAttack.AttackTarget = CSM.PlayerInBattle[Random.Range(0, CSM.PlayerInBattle.Count)];

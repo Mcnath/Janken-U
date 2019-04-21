@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 D:/SUTD/50.003 Elements of Software Contruction/Project/Janken-U/Temp/bin/Debug/Assembly-CSharp.dll
 D:/SUTD/50.003 Elements of Software Contruction/Project/Janken-U/Temp/bin/Debug/Assembly-CSharp.pdb
 D:/SUTD/50.003 Elements of Software Contruction/Project/Janken-U/Temp/bin/Debug/nunit.framework.dll
@@ -391,3 +392,38 @@ D:/SUTD/50.003 Elements of Software Contruction/Project/Janken-U/obj/Debug/Assem
 /Users/hehe/Documents/GitHub/Janken-U/obj/Debug/Assembly-CSharp.csproj.CopyComplete
 /Users/hehe/Documents/GitHub/Janken-U/obj/Debug/Assembly-CSharp.dll
 /Users/hehe/Documents/GitHub/Janken-U/obj/Debug/Assembly-CSharp.pdb
+=======
+D:\SUTD\50.003 Elements of Software Contruction\Project\Janken-U\Temp\bin\Debug\Assembly-CSharp.dll
+D:\SUTD\50.003 Elements of Software Contruction\Project\Janken-U\Temp\bin\Debug\Assembly-CSharp.pdb
+D:\SUTD\50.003 Elements of Software Contruction\Project\Janken-U\Temp\bin\Debug\nunit.framework.dll
+D:\SUTD\50.003 Elements of Software Contruction\Project\Janken-U\Temp\bin\Debug\UnityEditor.dll
+D:\SUTD\50.003 Elements of Software Contruction\Project\Janken-U\Temp\bin\Debug\UnityEditor.iOS.Extensions.Common.dll
+D:\SUTD\50.003 Elements of Software Contruction\Project\Janken-U\Temp\bin\Debug\UnityEditor.iOS.Extensions.Xcode.dll
+D:\SUTD\50.003 Elements of Software Contruction\Project\Janken-U\Temp\bin\Debug\UnityEngine.Analytics.dll
+D:\SUTD\50.003 Elements of Software Contruction\Project\Janken-U\Temp\bin\Debug\UnityEngine.dll
+D:\SUTD\50.003 Elements of Software Contruction\Project\Janken-U\Temp\bin\Debug\UnityEngine.HoloLens.dll
+D:\SUTD\50.003 Elements of Software Contruction\Project\Janken-U\Temp\bin\Debug\UnityEngine.Networking.dll
+D:\SUTD\50.003 Elements of Software Contruction\Project\Janken-U\Temp\bin\Debug\UnityEngine.TestRunner.dll
+D:\SUTD\50.003 Elements of Software Contruction\Project\Janken-U\Temp\bin\Debug\UnityEngine.UI.dll
+D:\SUTD\50.003 Elements of Software Contruction\Project\Janken-U\Temp\bin\Debug\UnityEngine.VR.dll
+D:\SUTD\50.003 Elements of Software Contruction\Project\Janken-U\Temp\bin\Debug\Mono.Cecil.dll
+D:\SUTD\50.003 Elements of Software Contruction\Project\Janken-U\Temp\bin\Debug\Unity.SerializationLogic.dll
+D:\SUTD\50.003 Elements of Software Contruction\Project\Janken-U\Temp\bin\Debug\Unity.DataContract.dll
+D:\SUTD\50.003 Elements of Software Contruction\Project\Janken-U\Temp\bin\Debug\ICSharpCode.NRefactory.dll
+D:\SUTD\50.003 Elements of Software Contruction\Project\Janken-U\Temp\bin\Debug\Unity.UNetWeaver.dll
+D:\SUTD\50.003 Elements of Software Contruction\Project\Janken-U\Temp\bin\Debug\Unity.CecilTools.dll
+D:\SUTD\50.003 Elements of Software Contruction\Project\Janken-U\Temp\bin\Debug\Mono.Cecil.Pdb.dll
+D:\SUTD\50.003 Elements of Software Contruction\Project\Janken-U\Temp\bin\Debug\Mono.Cecil.Mdb.dll
+D:\SUTD\50.003 Elements of Software Contruction\Project\Janken-U\Temp\bin\Debug\UnityEngine.xml
+D:\SUTD\50.003 Elements of Software Contruction\Project\Janken-U\Temp\bin\Debug\UnityEditor.xml
+D:\SUTD\50.003 Elements of Software Contruction\Project\Janken-U\Temp\bin\Debug\UnityEngine.UI.xml
+D:\SUTD\50.003 Elements of Software Contruction\Project\Janken-U\Temp\bin\Debug\UnityEngine.Networking.xml
+D:\SUTD\50.003 Elements of Software Contruction\Project\Janken-U\Temp\bin\Debug\UnityEngine.TestRunner.xml
+D:\SUTD\50.003 Elements of Software Contruction\Project\Janken-U\Temp\bin\Debug\nunit.framework.xml
+D:\SUTD\50.003 Elements of Software Contruction\Project\Janken-U\Temp\bin\Debug\UnityEngine.Analytics.xml
+D:\SUTD\50.003 Elements of Software Contruction\Project\Janken-U\Temp\bin\Debug\UnityEngine.HoloLens.xml
+D:\SUTD\50.003 Elements of Software Contruction\Project\Janken-U\Temp\bin\Debug\UnityEngine.VR.xml
+D:\SUTD\50.003 Elements of Software Contruction\Project\Janken-U\obj\Debug\Assembly-CSharp.dll
+D:\SUTD\50.003 Elements of Software Contruction\Project\Janken-U\obj\Debug\Assembly-CSharp.pdb
+D:\SUTD\50.003 Elements of Software Contruction\Project\Janken-U\obj\Debug\Assembly-CSharp.csprojResolveAssemblyReference.cache
+>>>>>>> 393b6b260cee2ac98cb173e1c3a6de69a7e33ce9
