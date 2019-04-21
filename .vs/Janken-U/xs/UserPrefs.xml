@@ -1,7 +1,7 @@
 ﻿<Properties StartupConfiguration="{A4747C8D-C16C-460F-39EE-A424A7CC9735}|">
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Combat system/Combat_statemachine.cs">
     <Files>
-      <File FileName="Assets/Scripts/Combat system/Combat_statemachine.cs" Line="214" Column="28" />
+      <File FileName="Assets/Scripts/Combat system/Combat_statemachine.cs" Line="1935" Column="1" />
       <File FileName="Assets/Scripts/Player Classes/Emeny_AIstatemachine.cs" Line="92" Column="3" />
       <File FileName="Assets/Scripts/Skills/AttackAll.cs" Line="6" Column="34" />
       <File FileName="Assets/Scripts/Combat system/SkillSet.cs" Line="10" Column="1" />
@@ -24,6 +24,11 @@
               </Node>
             </Node>
           </Node>
+        </State>
+      </Pad>
+      <Pad Id="MonoDevelop.UnitTesting.TestPad">
+        <State name="__root__">
+          <Node name="Janken-U" expanded="True" selected="True" />
         </State>
       </Pad>
     </Pads>
