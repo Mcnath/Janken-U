@@ -258,7 +258,7 @@ public class Combat_statemachine : MonoBehaviour {
         switch (currentState)
         {
             case (turnState.START):
-                //PerformList = new List<HandleTurn> ();
+                PerformList = new List<HandleTurn> ();
                 playerChoice = new HandleTurn();
                 currentState = turnState.PLAYERCHOICE;
                 break;
@@ -378,6 +378,8 @@ public class Combat_statemachine : MonoBehaviour {
         PerformList.Add (input); // recorded actions chosen by enemy
 	}
 
+	// Attack options
+
 	public void chooseRockLeft(){
         p1rock.SetActive(true);
         p1paper.SetActive(false);
@@ -426,14 +428,15 @@ public class Combat_statemachine : MonoBehaviour {
 		playerChoice.RightAttackType = HandleTurn.janken.PAPER;
 	}
 
+	//enemy select
+
 	public void enemySelected(){
         // update player choice of Attack target
 
 		playerChoice.AttackTarget = this.gameObject;
 	}
 
-
-
+	//skills
 
     public void skillused()
     {

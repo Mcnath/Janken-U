@@ -36,15 +36,15 @@ public class Player_statemachine : MonoBehaviour {
 			}
 			break;
 		case(turnState.CHOOSEACTION):
-			if (CSM.playerChoice.AttackTarget != null && CSM.playerChoice.LeftAttackType != HandleTurn.janken.NONE 
-				&& CSM.playerChoice.RightAttackType != HandleTurn.janken.NONE) {
+			if ((CSM.playerChoice.AttackTarget != null && CSM.playerChoice.LeftAttackType != HandleTurn.janken.NONE 
+				&& CSM.playerChoice.RightAttackType != HandleTurn.janken.NONE) || (player.LeftHand_state == false
+				&& CSM.playerChoice.RightAttackType != HandleTurn.janken.NONE) || (player.RightHand_state == false
+				&& CSM.playerChoice.LeftAttackType != HandleTurn.janken.NONE)) {
 				readyToBattle();
                     //Extraturn;
-
-                    currentState = turnState.WAITING; 
-
+                currentState = turnState.WAITING; 
 			}
-			else {
+			else{
 			//Debug.Log ("Complete your actions!!");
 			}
 			break;

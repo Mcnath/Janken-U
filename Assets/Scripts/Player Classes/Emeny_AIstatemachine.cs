@@ -53,17 +53,11 @@ public class Emeny_AIstatemachine : MonoBehaviour {
 			// change to ACTION once all player have chosen a move
 
 			int c = CSM.PerformList.Count;
-			if (c <= 4) {
-				currentState = turnState.ACTION;
-			}
+			if (c <= CSM.PlayerInBattle.Count) {currentState = turnState.ACTION;}
 			break;
 		case(turnState.ACTION): // idle
 			//check if the enemy lost all the hands
-			if (enemy.LeftHand_state == false && enemy.RightHand_state == false)
-			{
-				currentState = turnState.LOSE;
-			}
-			else if (CSM.currentState == Combat_statemachine.turnState.START)
+			if (CSM.currentState == Combat_statemachine.turnState.START || CSM.currentState == Combat_statemachine.turnState.ENEMYCHOICE)
 			{
 				myAttack = new HandleTurn();
 				currentState = turnState.START;
@@ -71,6 +65,13 @@ public class Emeny_AIstatemachine : MonoBehaviour {
 			break;
 		case(turnState.LOSE):
 			Debug.Log (enemy.name +" is destroyed");
+				for (int i = 1; i < CSM.PlayerInBattle.Count; i++)
+				{
+					if (CSM.PlayerInBattle[i] == this)
+					{
+						CSM.PlayerInBattle.Remove(CSM.PlayerInBattle[i]);
+					}
+				}
 			this.gameObject.SetActive(false);
 			break;
 		}
@@ -92,11 +93,7 @@ public class Emeny_AIstatemachine : MonoBehaviour {
         //myAttack.skill = HandleTurn.randomSkill();
         Debug.Log(enemy.name + " is ready for battle");
         CSM.CollectActions(myAttack);
-        count++;
-
-
-        
-		
+        //count++;
 	}
 
 	public void isSelected(){
