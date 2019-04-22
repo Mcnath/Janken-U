@@ -280,8 +280,6 @@
     <Compile Include="Assets\Scripts\Player Classes\Player_base.cs" />
     <Compile Include="Assets\Scripts\Player Classes\Player_statemachine.cs" />
     <Compile Include="Assets\Scripts\Player Classes\countdown.cs" />
-    <Compile Include="Assets\Scripts\Selection\LoadToBattle.cs" />
-    <Compile Include="Assets\Scripts\Skills\AttackAll.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Photon\PhotonLibs\Photon3Unity3D.xml" />

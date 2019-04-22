@@ -116,24 +116,24 @@ public class PUN_Room : MonoBehaviourPunCallbacks, IInRoomCallbacks {
 		photonPlayers = PhotonNetwork.PlayerList;
 		playersInRoom = photonPlayers.Length;
 		myNumberInRoom = playersInRoom;
-		//PhotonNetwork.NickName = myNumberInRoom.ToString();
+		PhotonNetwork.NickName = myNumberInRoom.ToString();
 		//for delay start
-		//if (MultiplayerSetting.MS.delayStart)
-		//{
-		//	Debug.Log("Displayer players in room out of max players possible (" + playersInRoom + ":" + MultiplayerSetting.MS.delayStart);
-		//	if(playersInRoom > 1)
-		//	{
-		//		readyToCount = true;
-		//	}
-		//	if(playersInRoom == MultiplayerSetting.MS.maxPlayers)
-		//	{
-		//		readyToStart = true;
-		//		if (!PhotonNetwork.IsMasterClient) { return; }
-		//		PhotonNetwork.CurrentRoom.IsOpen = false;
-		//	}
-		//}
-		////for non-delay start
-		//else
+		if (MultiplayerSetting.MS.delayStart)
+		{
+			Debug.Log("Displayer players in room out of max players possible (" + playersInRoom + ":" + MultiplayerSetting.MS.maxPlayers);
+			if (playersInRoom > 1)
+			{
+				readyToCount = true;
+			}
+			if (playersInRoom == MultiplayerSetting.MS.maxPlayers)
+			{
+				readyToStart = true;
+				if (!PhotonNetwork.IsMasterClient) { return; }
+				PhotonNetwork.CurrentRoom.IsOpen = false;
+			}
+		}
+			//for non-delay start
+		else
 		{
 			StartGame();
 		}
@@ -144,9 +144,9 @@ public class PUN_Room : MonoBehaviourPunCallbacks, IInRoomCallbacks {
 		//load the multiplayer scene for all  players
 		isGameLoaded = true;
 		if (!PhotonNetwork.IsMasterClient){ return;}
-		if (multiplayersetting.multiplayersetting.delaystart)
+		if (MultiplayerSetting.MS.delayStart)
 		{
-			photonnetwork.currentroom.isopen = false;
+			PhotonNetwork.CurrentRoom.IsOpen = false;
 		}
 		PhotonNetwork.LoadLevel(MultiplayerSetting.MS.multiplayerScene);
 	}
@@ -156,7 +156,7 @@ public class PUN_Room : MonoBehaviourPunCallbacks, IInRoomCallbacks {
 		//restart the time for when players leave the room(DelayStart)
 		lessThanMaxPlayers = startingTime;
 		timeToStart = startingTime;
-		atMaxPlayers = 6;
+		atMaxPlayers = 3;
 		readyToCount = false;
 		readyToStart = false;
 	}
@@ -169,7 +169,7 @@ public class PUN_Room : MonoBehaviourPunCallbacks, IInRoomCallbacks {
 		playersInRoom++;
 		if (MultiplayerSetting.MS.delayStart)
 		{
-			Debug.Log("Displayer players in room out of max players possible (" + playersInRoom + ":" + MultiplayerSetting.MS.delayStart);
+			Debug.Log("Displayer players in room out of max players possible (" + playersInRoom + ":" + MultiplayerSetting.MS.maxPlayers);
 			if (playersInRoom > 1)
 			{
 				readyToCount = true;
@@ -187,13 +187,13 @@ public class PUN_Room : MonoBehaviourPunCallbacks, IInRoomCallbacks {
 	{
 		//called when multiplayer scene is loaded
 		currentScene = scene.buildIndex;
-		if(currentScene == multiplayerScene)
+		if(currentScene == MultiplayerSetting.MS.multiplayerScene)
 		{
 			isGameLoaded = true;
 			//for delay start game
 			if (MultiplayerSetting.MS.delayStart)
 			{
-					PV.RPC("RPC_LoadedGameScene", RpcTarget.MasterClient);
+				PV.RPC("RPC_LoadedGameScene", RpcTarget.MasterClient);
 			}
 				//for non-delay game
 			else
@@ -206,10 +206,10 @@ public class PUN_Room : MonoBehaviourPunCallbacks, IInRoomCallbacks {
 	[PunRPC]
 	private void RPC_LoadedGameScene()
 	{
-		//playersInGame++;
-		//if(playersInGame == PhotonNetwork.PlayerList.Length)
+		playersInGame++;
+		if(playersInGame == PhotonNetwork.PlayerList.Length)
 		{
-			PV.RPC("RPC_CreatePlayer", RpcTarget.All);
+			PV.RPC("CreatePlayer", RpcTarget.All);
 		}
 	}
 

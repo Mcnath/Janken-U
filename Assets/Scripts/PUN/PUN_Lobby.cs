@@ -67,7 +67,7 @@ public class PUN_Lobby : MonoBehaviourPunCallbacks
 	void CreateRoom()
 	{
 		int RandomRoomName = Random.Range(0, 10000);
-		RoomOptions roomOps = new RoomOptions() { IsVisible = true, IsOpen = true, MaxPlayers = MultiplayerSetting.MS.maxPlayers};
+		RoomOptions roomOps = new RoomOptions() { IsVisible = true, IsOpen = true, MaxPlayers = 4};
 		PhotonNetwork.CreateRoom("Room:" + RandomRoomName, roomOps);
 	}
 
