@@ -166,10 +166,7 @@ public class Combat_statemachine : MonoBehaviour {
 		currentState = turnState.START;
 		playerInput = PlayerGUI.ACTIVATE;
 		PlayerInBattle.AddRange (GameObject.FindGameObjectsWithTag("Player"));
-		PlayerInBattle.AddRange (GameObject.FindGameObjectsWithTag("AI"));
-        //e1 = GameObject.Find("Enemy 1");
-        //e2 = GameObject.Find("Enemy 2");
-        //e3 = GameObject.Find("Enemy 3"); 
+		PlayerInBattle.AddRange(GameObject.FindGameObjectsWithTag("AI"));
 
 
 		//player objects
@@ -344,7 +341,6 @@ public class Combat_statemachine : MonoBehaviour {
                 break;
             case (turnState.ACTION):
                 //put in the logic here
-                //battleLogic();
                 skillused();
                 // Replace with transition animation
                 currentState = turnState.START;
@@ -447,14 +443,6 @@ public class Combat_statemachine : MonoBehaviour {
         {
             case (HandleTurn.skills.AttackAll):
                 {
-                    //playerChoice.AttackTarget = e1;
-                    ////PerformList[i].AttackTarget = e1;
-                    //battleLogic();
-                    ////PerformList[i].AttackTarget = e2;
-                    //playerChoice.AttackTarget = e2;
-                    //battleLogic();
-                    ////PerformList[i].AttackTarget = e3;
-                    //playerChoice.AttackTarget = e3;
                     battleLogic();
 
 
