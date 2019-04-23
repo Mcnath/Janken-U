@@ -8,16 +8,16 @@ EditorBuildSettings:
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Multiplayer-Lobby.unity
     guid: 3448cb335d243234ca142b84caba9f7b
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Multiplayer.unity
     guid: 3de62e47ea542384ead84c980bb8ec9e
   - enabled: 0
     path: Assets/Scenes/Battle_multiplayer.unity
     guid: e11f030934e4bd841a31c02084658c95
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/Battle_test.unity
     guid: 09e3a3ef6a1091b4188f05b726ef2dd2
   - enabled: 0

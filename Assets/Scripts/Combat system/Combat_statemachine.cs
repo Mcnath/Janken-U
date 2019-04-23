@@ -53,14 +53,15 @@ public class Combat_statemachine : MonoBehaviour {
     public GameObject rightR;
     public GameObject rightP;
     public GameObject rightS;
-    //players
+	//player
+	public Player_statemachine PSM;
     public GameObject e1;
     public GameObject e2;
     public GameObject e3;
-    //Initialized players(may not need)
-    public Player_statemachine PSM;
-	public Emeny_AIstatemachine ESM1, ESM2, ESM3;
-	private HandleTurn HT;
+	//canvas for switch to battle scene
+	public GameObject battleCanvas;
+	public GameObject classSelectCanvas;
+	public GameObject resultCanvas;
 	//variable for timers
 	private int seconds_current = 0;
 	private int seconds_max = 60;
@@ -82,84 +83,6 @@ public class Combat_statemachine : MonoBehaviour {
 	public enum PlayerGUI{ ACTIVATE, INPUT, DONE}
 	public PlayerGUI playerInput;
 	public HandleTurn playerChoice;
-    //public List<GameObject> PlayerToManage = new List<GameObject>
-    //  //initialize attack choice here (initialize class first)
-    public void classSlectedISTD()
-    {
-        Debug.Log("ISTD");
-        PSM.player.pillar = Player_base.pillars.ISTD;
-    }
-    public void classSlectedEPD()
-    {
-        Debug.Log("EPD");
-        PSM.player.pillar = Player_base.pillars.EPD;
-    }
-    public void classSlectedESD()
-    {
-        Debug.Log("ESD");
-        PSM.player.pillar = Player_base.pillars.ESD;
-    }
-    public void classSlectedASD()
-    {
-        Debug.Log("ASD");
-        PSM.player.pillar = Player_base.pillars.ASD;
-    }
-    
-    public void skillsSelectedAttack()
-    {
-        Debug.Log("Attack");
-        playerChoice.skill = HandleTurn.skills.Attack;
-    }
-    public void skillsSelectedClassSkill1()
-    {
-        switch (PSM.player.pillar)
-        {
-            case Player_base.pillars.ASD:
-                Debug.Log("BuildAWall");
-                playerChoice.skill = HandleTurn.skills.Wall;
-                break;
-            case Player_base.pillars.EPD:
-                Debug.Log("DoubleAttack");
-                playerChoice.skill = HandleTurn.skills.DoubleAttack;
-                break;
-            case Player_base.pillars.ESD:
-                Debug.Log("MinRisk");
-                playerChoice.skill = HandleTurn.skills.MinRisk;
-                break;
-            case Player_base.pillars.ISTD:
-                Debug.Log("DenialofService");
-                playerChoice.skill = HandleTurn.skills.DeniService;
-                break;
-        }
-    }
-    public void skillsSelectedClassSkill2()
-    {
-        switch (PSM.player.pillar)
-        {
-            case Player_base.pillars.ASD:
-                Debug.Log("ExtraTurn");
-                playerChoice.skill = HandleTurn.skills.ExtraTurn;
-                break;
-            case Player_base.pillars.EPD:
-                Debug.Log("SplashAttack");
-                playerChoice.skill = HandleTurn.skills.SplashAttack;
-                break;
-            case Player_base.pillars.ESD:
-                Debug.Log("Sleep");
-                playerChoice.skill = HandleTurn.skills.Sleep;
-                break;
-            case Player_base.pillars.ISTD:
-                Debug.Log("AttackAll");
-                playerChoice.skill = HandleTurn.skills.AttackAll;
-                break;
-        }
-    }
-    public void skillsSelectedRecover()
-    {
-        Debug.Log("Recover");
-        playerChoice.skill = HandleTurn.skills.Recover;
-    }
-
 
     //initialization of state
     void Start () {
@@ -245,7 +168,11 @@ public class Combat_statemachine : MonoBehaviour {
         e3paper2.SetActive(false);
         e3scissors.SetActive(false);
         e3scissors2.SetActive(false);
-
+		// canvas
+		battleCanvas = GameObject.Find("BattleCanvas");
+		classSelectCanvas = GameObject.Find("ClassSelectionCanvas");
+		battleCanvas.SetActive(false);
+		classSelectCanvas.SetActive(true);
 
 
     }
@@ -377,7 +304,35 @@ public class Combat_statemachine : MonoBehaviour {
         
         PerformList.Add (input); // recorded actions chosen by enemy
 	}
-
+	//initialize attack choice here (initialize class first)
+	public void classSlectedISTD()
+	{
+		Debug.Log("ISTD");
+		PSM.player.pillar = Player_base.pillars.ISTD;
+		battleCanvas.SetActive(true);
+		classSelectCanvas.SetActive(false);
+	}
+	public void classSlectedEPD()
+	{
+		Debug.Log("EPD");
+		PSM.player.pillar = Player_base.pillars.EPD;
+		battleCanvas.SetActive(true);
+		classSelectCanvas.SetActive(false);
+	}
+	public void classSlectedESD()
+	{
+		Debug.Log("ESD");
+		PSM.player.pillar = Player_base.pillars.ESD;
+		battleCanvas.SetActive(true);
+		classSelectCanvas.SetActive(false);
+	}
+	public void classSlectedASD()
+	{
+		Debug.Log("ASD");
+		PSM.player.pillar = Player_base.pillars.ASD;
+		battleCanvas.SetActive(true);
+		classSelectCanvas.SetActive(false);
+	}
 	// Attack options
 
 	public void chooseRockLeft(){
@@ -437,8 +392,62 @@ public class Combat_statemachine : MonoBehaviour {
 	}
 
 	//skills
+	public void skillsSelectedAttack()
+	{
+		Debug.Log("Attack");
+		playerChoice.skill = HandleTurn.skills.Attack;
+	}
+	public void skillsSelectedClassSkill1()
+	{
+		switch (PSM.player.pillar)
+		{
+			case Player_base.pillars.ASD:
+				Debug.Log("BuildAWall");
+				playerChoice.skill = HandleTurn.skills.Wall;
+				break;
+			case Player_base.pillars.EPD:
+				Debug.Log("DoubleAttack");
+				playerChoice.skill = HandleTurn.skills.DoubleAttack;
+				break;
+			case Player_base.pillars.ESD:
+				Debug.Log("MinRisk");
+				playerChoice.skill = HandleTurn.skills.MinRisk;
+				break;
+			case Player_base.pillars.ISTD:
+				Debug.Log("DenialofService");
+				playerChoice.skill = HandleTurn.skills.DeniService;
+				break;
+		}
+	}
+	public void skillsSelectedClassSkill2()
+	{
+		switch (PSM.player.pillar)
+		{
+			case Player_base.pillars.ASD:
+				Debug.Log("ExtraTurn");
+				playerChoice.skill = HandleTurn.skills.ExtraTurn;
+				break;
+			case Player_base.pillars.EPD:
+				Debug.Log("SplashAttack");
+				playerChoice.skill = HandleTurn.skills.SplashAttack;
+				break;
+			case Player_base.pillars.ESD:
+				Debug.Log("Sleep");
+				playerChoice.skill = HandleTurn.skills.Sleep;
+				break;
+			case Player_base.pillars.ISTD:
+				Debug.Log("AttackAll");
+				playerChoice.skill = HandleTurn.skills.AttackAll;
+				break;
+		}
+	}
+	public void skillsSelectedRecover()
+	{
+		Debug.Log("Recover");
+		playerChoice.skill = HandleTurn.skills.Recover;
+	}
 
-    public void skillused()
+	public void skillused()
     {
         Debug.Log("Battle Start");
 
