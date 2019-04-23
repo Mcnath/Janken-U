@@ -53,14 +53,15 @@ public class Combat_statemachine : MonoBehaviour {
     public GameObject rightR;
     public GameObject rightP;
     public GameObject rightS;
-    //players
+	//player
+	public Player_statemachine PSM;
     public GameObject e1;
     public GameObject e2;
     public GameObject e3;
-    //Initialized players(may not need)
-    public Player_statemachine PSM;
-	public Emeny_AIstatemachine ESM1, ESM2, ESM3;
-	private HandleTurn HT;
+	//canvas for switch to battle scene
+	public GameObject battleCanvas;
+	public GameObject classSelectCanvas;
+	public GameObject resultCanvas;
 	//variable for timers
 	private int seconds_current = 0;
 	private int seconds_max = 60;
@@ -82,94 +83,13 @@ public class Combat_statemachine : MonoBehaviour {
 	public enum PlayerGUI{ ACTIVATE, INPUT, DONE}
 	public PlayerGUI playerInput;
 	public HandleTurn playerChoice;
-    //public List<GameObject> PlayerToManage = new List<GameObject>
-    //  //initialize attack choice here (initialize class first)
-    public void classSlectedISTD()
-    {
-        Debug.Log("ISTD");
-        PSM.player.pillar = Player_base.pillars.ISTD;
-    }
-    public void classSlectedEPD()
-    {
-        Debug.Log("EPD");
-        PSM.player.pillar = Player_base.pillars.EPD;
-    }
-    public void classSlectedESD()
-    {
-        Debug.Log("ESD");
-        PSM.player.pillar = Player_base.pillars.ESD;
-    }
-    public void classSlectedASD()
-    {
-        Debug.Log("ASD");
-        PSM.player.pillar = Player_base.pillars.ASD;
-    }
-    
-    public void skillsSelectedAttack()
-    {
-        Debug.Log("Attack");
-        playerChoice.skill = HandleTurn.skills.Attack;
-    }
-    public void skillsSelectedClassSkill1()
-    {
-        switch (PSM.player.pillar)
-        {
-            case Player_base.pillars.ASD:
-                Debug.Log("BuildAWall");
-                playerChoice.skill = HandleTurn.skills.Wall;
-                break;
-            case Player_base.pillars.EPD:
-                Debug.Log("DoubleAttack");
-                playerChoice.skill = HandleTurn.skills.DoubleAttack;
-                break;
-            case Player_base.pillars.ESD:
-                Debug.Log("MinRisk");
-                playerChoice.skill = HandleTurn.skills.MinRisk;
-                break;
-            case Player_base.pillars.ISTD:
-                Debug.Log("DenialofService");
-                playerChoice.skill = HandleTurn.skills.DeniService;
-                break;
-        }
-    }
-    public void skillsSelectedClassSkill2()
-    {
-        switch (PSM.player.pillar)
-        {
-            case Player_base.pillars.ASD:
-                Debug.Log("ExtraTurn");
-                playerChoice.skill = HandleTurn.skills.ExtraTurn;
-                break;
-            case Player_base.pillars.EPD:
-                Debug.Log("SplashAttack");
-                playerChoice.skill = HandleTurn.skills.SplashAttack;
-                break;
-            case Player_base.pillars.ESD:
-                Debug.Log("Sleep");
-                playerChoice.skill = HandleTurn.skills.Sleep;
-                break;
-            case Player_base.pillars.ISTD:
-                Debug.Log("AttackAll");
-                playerChoice.skill = HandleTurn.skills.AttackAll;
-                break;
-        }
-    }
-    public void skillsSelectedRecover()
-    {
-        Debug.Log("Recover");
-        playerChoice.skill = HandleTurn.skills.Recover;
-    }
-
 
     //initialization of state
     void Start () {
 		currentState = turnState.START;
 		playerInput = PlayerGUI.ACTIVATE;
 		PlayerInBattle.AddRange (GameObject.FindGameObjectsWithTag("Player"));
-		PlayerInBattle.AddRange (GameObject.FindGameObjectsWithTag("AI"));
-        //e1 = GameObject.Find("Enemy 1");
-        //e2 = GameObject.Find("Enemy 2");
-        //e3 = GameObject.Find("Enemy 3"); 
+		PlayerInBattle.AddRange(GameObject.FindGameObjectsWithTag("AI"));
 
 
 		//player objects
@@ -190,12 +110,20 @@ public class Combat_statemachine : MonoBehaviour {
         p1right = GameObject.Find("playerright");
         p1left.SetActive(true);
         p1right.SetActive(true);
+
+        //enemies
+        e1 = GameObject.Find("Enemy 1");
+        e2 = GameObject.Find("Enemy 2");
+        e3 = GameObject.Find("Enemy 3");
+
+		//Buttons
         leftR = GameObject.Find("Left_Rock");
         leftP = GameObject.Find("Left_Paper");
         leftS = GameObject.Find("Left_Scissors");
         rightR = GameObject.Find("Right_Rock");
         rightP = GameObject.Find("Right_Paper");
         rightS = GameObject.Find("Right_Scissors");
+
 		//enemy 1 objects
         e1paper = GameObject.Find("e1leftp");
         e1rock = GameObject.Find("e1leftr");
@@ -248,7 +176,11 @@ public class Combat_statemachine : MonoBehaviour {
         e3paper2.SetActive(false);
         e3scissors.SetActive(false);
         e3scissors2.SetActive(false);
-
+		// canvas
+		battleCanvas = GameObject.Find("BattleCanvas");
+		classSelectCanvas = GameObject.Find("ClassSelectionCanvas");
+		battleCanvas.SetActive(false);
+		classSelectCanvas.SetActive(true);
 
 
     }
@@ -256,12 +188,13 @@ public class Combat_statemachine : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
+        GameResult();
         //how the battle is progressed each turn
         //Debug.Log ("currentState: "+ currentState);
         switch (currentState)
         {
             case (turnState.START):
-                //PerformList = new List<HandleTurn> ();
+                PerformList = new List<HandleTurn> ();
                 playerChoice = new HandleTurn();
                 currentState = turnState.PLAYERCHOICE;
                 break;
@@ -344,9 +277,8 @@ public class Combat_statemachine : MonoBehaviour {
                 break;
             case (turnState.ACTION):
                 //put in the logic here
-                //battleLogic();
                 skillused();
-                // Replace with transition animation
+				// Replace with transition animation
                 currentState = turnState.START;
                 break;
         }
@@ -370,60 +302,7 @@ public class Combat_statemachine : MonoBehaviour {
                 break;
         }
     }
-//=======
-		//e3left = GameObject.Find("e3left");
-		//e3right = GameObject.Find("e3right");
-		//e3left.SetActive(true);
-		//e3right.SetActive(true);
-		//e3rock.SetActive(true);
-		//e3rock2.SetActive(true);
-		//e3paper.SetActive(false);
-		//e3paper2.SetActive(false);
-		//e3scissors.SetActive(false);
-		//e3scissors2.SetActive(false);
-	//}
-	
-	//// Update is called once per frame
-	//void Update () {
-	//	//how the battle is progressed each turn
-	//	//Debug.Log ("currentState: "+ currentState);
-	//	switch(currentState){
-	//	case(turnState.START):
-	//		//PerformList = new List<HandleTurn> ();
-	//		playerChoice = new HandleTurn ();
-	//		currentState = turnState.PLAYERCHOICE;
-	//		break;
-	//	case(turnState.PLAYERCHOICE):
-	//		if (playerInput == PlayerGUI.DONE) {currentState = turnState.ENEMYCHOICE;}
-	//		break;
-	//	case(turnState.ENEMYCHOICE):
-	//		if (PerformList.Count == PlayerInBattle.Count) {currentState = turnState.ACTION;}
-	//		break;
-	//	case(turnState.ACTION):
-	//		//put in the logic here
-	//		battleLogic ();
-	//		// Replace with transition animation
-	//		currentState = turnState.START;
-	//		break;
-	//	}
 
-	//	//how the player turn is progressed
-	//	//Debug.Log ("playerInput: "+ playerInput);
-	//	switch (playerInput){
-	//	case(PlayerGUI.ACTIVATE):
-	//		playerInput = PlayerGUI.INPUT;
-	//		break;
-	//	case(PlayerGUI.INPUT):
-	//		if (playerChoice.AttackTarget != null) {
-	//			playerInput = PlayerGUI.DONE;
-	//		}
-	//		break;
-	//	case(PlayerGUI.DONE):
-	//		if(currentState == turnState.PLAYERCHOICE){playerInput = PlayerGUI.ACTIVATE;}
-	//		break;
-	//	}	
-	//}
-//>>>>>>> 393b6b260cee2ac98cb173e1c3a6de69a7e33ce9
 
 	void timerPlayer(){
 		//counting down the time and force skip player's turn if no action taken after time limit
@@ -434,6 +313,36 @@ public class Combat_statemachine : MonoBehaviour {
         
         PerformList.Add (input); // recorded actions chosen by enemy
 	}
+	//initialize attack choice here (initialize class first)
+	public void classSlectedISTD()
+	{
+		Debug.Log("ISTD");
+		PSM.player.pillar = Player_base.pillars.ISTD;
+		battleCanvas.SetActive(true);
+		classSelectCanvas.SetActive(false);
+	}
+	public void classSlectedEPD()
+	{
+		Debug.Log("EPD");
+		PSM.player.pillar = Player_base.pillars.EPD;
+		battleCanvas.SetActive(true);
+		classSelectCanvas.SetActive(false);
+	}
+	public void classSlectedESD()
+	{
+		Debug.Log("ESD");
+		PSM.player.pillar = Player_base.pillars.ESD;
+		battleCanvas.SetActive(true);
+		classSelectCanvas.SetActive(false);
+	}
+	public void classSlectedASD()
+	{
+		Debug.Log("ASD");
+		PSM.player.pillar = Player_base.pillars.ASD;
+		battleCanvas.SetActive(true);
+		classSelectCanvas.SetActive(false);
+	}
+	// Attack options
 
 	public void chooseRockLeft(){
         p1rock.SetActive(true);
@@ -483,16 +392,71 @@ public class Combat_statemachine : MonoBehaviour {
 		playerChoice.RightAttackType = HandleTurn.janken.PAPER;
 	}
 
+	//enemy select
+
 	public void enemySelected(){
         // update player choice of Attack target
 
 		playerChoice.AttackTarget = this.gameObject;
 	}
 
+	//skills
+	public void skillsSelectedAttack()
+	{
+		Debug.Log("Attack");
+		playerChoice.skill = HandleTurn.skills.Attack;
+	}
+	public void skillsSelectedClassSkill1()
+	{
+		switch (PSM.player.pillar)
+		{
+			case Player_base.pillars.ASD:
+				Debug.Log("BuildAWall");
+				playerChoice.skill = HandleTurn.skills.Wall;
+				break;
+			case Player_base.pillars.EPD:
+				Debug.Log("DoubleAttack");
+				playerChoice.skill = HandleTurn.skills.DoubleAttack;
+				break;
+			case Player_base.pillars.ESD:
+				Debug.Log("MinRisk");
+				playerChoice.skill = HandleTurn.skills.MinRisk;
+				break;
+			case Player_base.pillars.ISTD:
+				Debug.Log("DenialofService");
+				playerChoice.skill = HandleTurn.skills.DeniService;
+				break;
+		}
+	}
+	public void skillsSelectedClassSkill2()
+	{
+		switch (PSM.player.pillar)
+		{
+			case Player_base.pillars.ASD:
+				Debug.Log("ExtraTurn");
+				playerChoice.skill = HandleTurn.skills.ExtraTurn;
+				break;
+			case Player_base.pillars.EPD:
+				Debug.Log("SplashAttack");
+				playerChoice.skill = HandleTurn.skills.SplashAttack;
+				break;
+			case Player_base.pillars.ESD:
+				Debug.Log("Sleep");
+				playerChoice.skill = HandleTurn.skills.Sleep;
+				break;
+			case Player_base.pillars.ISTD:
+				Debug.Log("AttackAll");
+				playerChoice.skill = HandleTurn.skills.AttackAll;
+				break;
+		}
+	}
+	public void skillsSelectedRecover()
+	{
+		Debug.Log("Recover");
+		playerChoice.skill = HandleTurn.skills.Recover;
+	}
 
-
-
-    public void skillused()
+	public void skillused()
     {
         Debug.Log("Battle Start");
 
@@ -500,14 +464,6 @@ public class Combat_statemachine : MonoBehaviour {
         {
             case (HandleTurn.skills.AttackAll):
                 {
-                    //playerChoice.AttackTarget = e1;
-                    ////PerformList[i].AttackTarget = e1;
-                    //battleLogic();
-                    ////PerformList[i].AttackTarget = e2;
-                    //playerChoice.AttackTarget = e2;
-                    //battleLogic();
-                    ////PerformList[i].AttackTarget = e3;
-                    //playerChoice.AttackTarget = e3;
                     battleLogic();
 
 
@@ -781,586 +737,7 @@ public class Combat_statemachine : MonoBehaviour {
     }
 
 
-//    public void battleLogic()
-//    {
-//        Debug.Log("Battle Start");
-//        for (int i = 0; i < PerformList.Count; i++)
-//        {
-//            for (int j = 1; j < PerformList.Count; j++)
-//            {
-//                if (PerformList[j].AttackTarget == PerformList[i].AttackGameObject)
-//                {
-//                    int resultLeft = howToWin(PerformList[j].LeftAttackType, PerformList[i].LeftAttackType);
-//                    int resultRight = howToWin(PerformList[j].RightAttackType, PerformList[i].RightAttackType);
-//                    // enemy sprite's change
-//                    if (PerformList[i].Attacker == "e1")
-//                    {
-//                        if (PerformList[i].LeftAttackType == HandleTurn.janken.ROCK)
-//                        {
-//                            e1rock.SetActive(true);
-//                            e1scissors.SetActive(false);
-//                            e1paper.SetActive(false);
-//                        }
-//                        else if (PerformList[i].LeftAttackType == HandleTurn.janken.PAPER)
-//                        {
-//                            e1rock.SetActive(false);
-//                            e1scissors.SetActive(false);
-//                            e1paper.SetActive(true);
-//                        }
-//                        else if (PerformList[i].LeftAttackType == HandleTurn.janken.SCISSORS)
-//                        {
-//                            e1rock.SetActive(false);
-//                            e1scissors.SetActive(true);
-//                            e1paper.SetActive(false);
-//                        }
-//                        else if (PerformList[i].RightAttackType == HandleTurn.janken.ROCK)
-//                        {
-//                            e1rock2.SetActive(true);
-//                            e1scissors2.SetActive(false);
-//                            e1paper2.SetActive(false);
-//                        }
-//                        else if (PerformList[i].RightAttackType == HandleTurn.janken.PAPER)
-//                        {
-//                            e1rock2.SetActive(false);
-//                            e1scissors2.SetActive(false);
-//                            e1paper2.SetActive(true);
-//                        }
-//                        else if (PerformList[i].RightAttackType == HandleTurn.janken.SCISSORS)
-//                        {
-//                            e1rock2.SetActive(false);
-//                            e1scissors2.SetActive(true);
-//                            e1paper2.SetActive(false);
-//                        }
-//                    }
-//                    else if (PerformList[i].Attacker == "e2")
-//                    {
-//                        if (PerformList[i].LeftAttackType == HandleTurn.janken.ROCK)
-//                        {
-//                            e2rock.SetActive(true);
-//                            e2scissors.SetActive(false);
-//                            e2paper.SetActive(false);
-//                        }
-//                        else if (PerformList[i].LeftAttackType == HandleTurn.janken.PAPER)
-//                        {
-//                            e2rock.SetActive(false);
-//                            e2scissors.SetActive(false);
-//                            e2paper.SetActive(true);
-//                        }
-//                        else if (PerformList[i].LeftAttackType == HandleTurn.janken.SCISSORS)
-//                        {
-//                            e2rock.SetActive(false);
-//                            e2scissors.SetActive(true);
-//                            e2paper.SetActive(false);
-//                        }
-//                        else if (PerformList[i].RightAttackType == HandleTurn.janken.ROCK)
-//                        {
-//                            e2rock2.SetActive(true);
-//                            e2scissors2.SetActive(false);
-//                            e2paper2.SetActive(false);
-//                        }
-//                        else if (PerformList[i].RightAttackType == HandleTurn.janken.PAPER)
-//                        {
-//                            e2rock2.SetActive(false);
-//                            e2scissors2.SetActive(false);
-//                            e2paper2.SetActive(true);
-//                        }
-//                        else if (PerformList[i].RightAttackType == HandleTurn.janken.SCISSORS)
-//                        {
-//                            e2rock2.SetActive(false);
-//                            e2scissors2.SetActive(true);
-//                            e2paper2.SetActive(false);
-//                        }
-//                    }
-//                    else if (PerformList[i].Attacker == "e3")
-//                    {
-//                        if (PerformList[i].LeftAttackType == HandleTurn.janken.ROCK)
-//                        {
-//                            e3rock.SetActive(true);
-//                            e3scissors.SetActive(false);
-//                            e3paper.SetActive(false);
-//                        }
-//                        else if (PerformList[i].LeftAttackType == HandleTurn.janken.PAPER)
-//                        {
-//                            e3rock.SetActive(false);
-//                            e3scissors.SetActive(false);
-//                            e3paper.SetActive(true);
-//                        }
-//                        else if (PerformList[i].LeftAttackType == HandleTurn.janken.SCISSORS)
-//                        {
-//                            e3rock.SetActive(false);
-//                            e3scissors.SetActive(true);
-//                            e3paper.SetActive(false);
-//                        }
-//                        else if (PerformList[i].RightAttackType == HandleTurn.janken.ROCK)
-//                        {
-//                            e3rock2.SetActive(true);
-//                            e3scissors2.SetActive(false);
-//                            e3paper2.SetActive(false);
-//                        }
-//                        else if (PerformList[i].RightAttackType == HandleTurn.janken.PAPER)
-//                        {
-//                            e3rock2.SetActive(false);
-//                            e3scissors2.SetActive(false);
-//                            e3paper2.SetActive(true);
-//                        }
-//                        else if (PerformList[i].RightAttackType == HandleTurn.janken.SCISSORS)
-//                        {
-//                            e3rock2.SetActive(false);
-//                            e3scissors2.SetActive(true);
-//                            e3paper2.SetActive(false);
-//                        }
-//                    }
-//                    if (PerformList[j].Attacker == "e1")
-//                    {
-//                        if (PerformList[j].LeftAttackType == HandleTurn.janken.ROCK)
-//                        {
-//                            e1rock.SetActive(true);
-//                            e1scissors.SetActive(false);
-//                            e1paper.SetActive(false);
-//                        }
-//                        else if (PerformList[j].LeftAttackType == HandleTurn.janken.PAPER)
-//                        {
-//                            e1rock.SetActive(false);
-//                            e1scissors.SetActive(false);
-//                            e1paper.SetActive(true);
-//                        }
-//                        else if (PerformList[j].LeftAttackType == HandleTurn.janken.SCISSORS)
-//                        {
-//                            e1rock.SetActive(false);
-//                            e1scissors.SetActive(true);
-//                            e1paper.SetActive(false);
-//                        }
-//                        else if (PerformList[j].RightAttackType == HandleTurn.janken.ROCK)
-//                        {
-//                            e1rock2.SetActive(true);
-//                            e1scissors2.SetActive(false);
-//                            e1paper2.SetActive(false);
-//                        }
-//                        else if (PerformList[j].RightAttackType == HandleTurn.janken.PAPER)
-//                        {
-//                            e1rock2.SetActive(false);
-//                            e1scissors2.SetActive(false);
-//                            e1paper2.SetActive(true);
-//                        }
-//                        else if (PerformList[j].RightAttackType == HandleTurn.janken.SCISSORS)
-//                        {
-//                            e1rock2.SetActive(false);
-//                            e1scissors2.SetActive(true);
-//                            e1paper2.SetActive(false);
-//                        }
-//                    }
-//                    else if (PerformList[j].Attacker == "e2")
-//                    {
-//                        if (PerformList[j].LeftAttackType == HandleTurn.janken.ROCK)
-//                        {
-//                            e2rock.SetActive(true);
-//                            e2scissors.SetActive(false);
-//                            e2paper.SetActive(false);
-//                        }
-//                        else if (PerformList[j].LeftAttackType == HandleTurn.janken.PAPER)
-//                        {
-//                            e2rock.SetActive(false);
-//                            e2scissors.SetActive(false);
-//                            e2paper.SetActive(true);
-//                        }
-//                        else if (PerformList[j].LeftAttackType == HandleTurn.janken.SCISSORS)
-//                        {
-//                            e2rock.SetActive(false);
-//                            e2scissors.SetActive(true);
-//                            e2paper.SetActive(false);
-//                        }
-//                        else if (PerformList[j].RightAttackType == HandleTurn.janken.ROCK)
-//                        {
-//                            e2rock2.SetActive(true);
-//                            e2scissors2.SetActive(false);
-//                            e2paper2.SetActive(false);
-//                        }
-//                        else if (PerformList[j].RightAttackType == HandleTurn.janken.PAPER)
-//                        {
-//                            e2rock2.SetActive(false);
-//                            e2scissors2.SetActive(false);
-//                            e2paper2.SetActive(true);
-//                        }
-//                        else if (PerformList[j].RightAttackType == HandleTurn.janken.SCISSORS)
-//                        {
-//                            e2rock2.SetActive(false);
-//                            e2scissors2.SetActive(true);
-//                            e2paper2.SetActive(false);
-//                        }
-//                    }
-//                    else if (PerformList[j].Attacker == "e3")
-//                    {
-//                        if (PerformList[j].LeftAttackType == HandleTurn.janken.ROCK)
-//                        {
-//                            e3rock.SetActive(true);
-//                            e3scissors.SetActive(false);
-//                            e3paper.SetActive(false);
-//                        }
-//                        else if (PerformList[j].LeftAttackType == HandleTurn.janken.PAPER)
-//                        {
-//                            e3rock.SetActive(false);
-//                            e3scissors.SetActive(false);
-//                            e3paper.SetActive(true);
-//                        }
-//                        else if (PerformList[j].LeftAttackType == HandleTurn.janken.SCISSORS)
-//                        {
-//                            e3rock.SetActive(false);
-//                            e3scissors.SetActive(true);
-//                            e3paper.SetActive(false);
-//                        }
-//                        else if (PerformList[j].RightAttackType == HandleTurn.janken.ROCK)
-//                        {
-//                            e3rock2.SetActive(true);
-//                            e3scissors2.SetActive(false);
-//                            e3paper2.SetActive(false);
-//                        }
-//                        else if (PerformList[j].RightAttackType == HandleTurn.janken.PAPER)
-//                        {
-//                            e3rock2.SetActive(false);
-//                            e3scissors2.SetActive(false);
-//                            e3paper2.SetActive(true);
-//                        }
-//                        else if (PerformList[j].RightAttackType == HandleTurn.janken.SCISSORS)
-//                        {
-//                            e3rock2.SetActive(false);
-//                            e3scissors2.SetActive(true);
-//                            e3paper2.SetActive(false);
-//                        }
-//                    }
-//                    // Battle result and sprite's destruction
-//                    if (resultLeft == 1)
-//                    {
-//                        Debug.Log(PerformList[j].Attacker + " win, " + PerformList[i].Attacker + " lose");
-//                        if (PerformList[i].AttackGameObject == GameObject.FindWithTag("Player") &&
-//                            PerformList[i].AttackGameObject.GetComponent<Player_statemachine>().player.LeftHand_state == true)
-//                        {
-//                            PerformList[i].AttackGameObject.GetComponent<Player_statemachine>().player.LeftHand_state = false;
-//                            try
-//                            {
-//                                p1left.SetActive(false);
-//                                p1rock2.SetActive(false);
-//                                p1paper2.SetActive(false);
-//                                p1scissors2.SetActive(false);
-//                                leftP.SetActive(false);
-//                                leftR.SetActive(false);
-//                                leftS.SetActive(false);
-//                            }
-//                            catch (Exception e)
-//                            {
-//                                Debug.Log("already removed");
-//                            }
 
-//                        }
-//                        else
-//                        {
-//                            if (PerformList[i].Attacker == "e1" && PerformList[i].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.LeftHand_state == true)
-//                            {
-//                                try
-//                                {
-//                                    GameObject.Find("e1left").SetActive(false);
-//                                    GameObject.Find("e1leftr").SetActive(false);
-//                                    GameObject.Find("e1leftp").SetActive(false);
-//                                    GameObject.Find("e1lefts").SetActive(false);
-//                                    PerformList[i].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.LeftHand_state = false;
-//                                }
-//                                catch (Exception e)
-//                                {
-//                                    Debug.Log("already removed");
-//                                }
-//                            }
-//                            else if (PerformList[i].Attacker == "e2" && PerformList[i].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.LeftHand_state == true)
-//                            {
-//                                try
-//                                {
-//                                    GameObject.Find("e2left").SetActive(false);
-//                                    GameObject.Find("e2leftr").SetActive(false);
-//                                    GameObject.Find("e2leftp").SetActive(false);
-//                                    GameObject.Find("e2lefts").SetActive(false);
-//                                    PerformList[i].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.LeftHand_state = false;
-//                                }
-//                                catch (Exception e)
-//                                {
-//                                    Debug.Log("already removed");
-//                                }
-//                            }
-//                            else if (PerformList[i].Attacker == "e3" && PerformList[i].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.RightHand_state == true)
-//                            {
-//                                try
-//                                {
-//                                    GameObject.Find("e3left").SetActive(false);
-//                                    GameObject.Find("e3leftr").SetActive(false);
-//                                    GameObject.Find("e3leftp").SetActive(false);
-//                                    GameObject.Find("e3lefts").SetActive(false);
-//                                    PerformList[i].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.LeftHand_state = false;
-//                                }
-//                                catch (Exception e)
-//                                {
-//                                    Debug.Log("already removed");
-//                                }
-//                            }
-//                            //PerformList[i].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.LeftHand_state = false;
-//                        }
-//                    }
-//                    else
-//                    {
-//                        Debug.Log(PerformList[i].Attacker + " win, " + PerformList[j].Attacker + " lose");
-//                        if (PerformList[j].AttackGameObject == GameObject.FindWithTag("Player") && PerformList[j].AttackGameObject.GetComponent<Player_statemachine>().player.LeftHand_state == true)
-//                        {
-//                            PerformList[j].AttackGameObject.GetComponent<Player_statemachine>().player.LeftHand_state = false;
-//                            try
-//                            {
-//                                p1left.SetActive(false);
-//                                p1rock.SetActive(false);
-//                                p1paper.SetActive(false);
-//                                p1scissors.SetActive(false);
-//                                leftR.SetActive(false);
-//                                leftP.SetActive(false);
-//                                leftS.SetActive(false);
-//                            }
-//                            catch (Exception e)
-//                            {
-//                                Debug.Log("already removed");
-//                            }
-//                        }
-//                        else
-//                        {
-//                            if (PerformList[j].Attacker == "e1" && PerformList[j].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.LeftHand_state == true)
-//                            {
-//                                try
-//                                {
-//                                    GameObject.Find("e1left").SetActive(false);
-//                                    GameObject.Find("e1leftr").SetActive(false);
-//                                    GameObject.Find("e1lefts").SetActive(false);
-//                                    GameObject.Find("e1leftp").SetActive(false);
-//                                    PerformList[j].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.LeftHand_state = false;
-//                                }
-//                                catch (Exception e)
-//                                {
-//                                    Debug.Log("already removed");
-//                                }
-//                            }
-//                            else if (PerformList[j].Attacker == "e2" && PerformList[j].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.LeftHand_state == true)
-//                            {
-//                                try
-//                                {
-//                                    GameObject.Find("e2left").SetActive(false);
-//                                    GameObject.Find("e2leftr").SetActive(false);
-//                                    GameObject.Find("e2lefts").SetActive(false);
-//                                    GameObject.Find("e2leftp").SetActive(false);
-//                                    PerformList[j].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.LeftHand_state = false;
-//                                }
-//                                catch (Exception e)
-//                                {
-//                                    Debug.Log("already removed");
-//                                }
-//                            }
-//                            else if (PerformList[j].Attacker == "e3" && PerformList[j].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.LeftHand_state == true)
-//                            {
-//                                try
-//                                {
-//                                    GameObject.Find("e3left").SetActive(false);
-//                                    GameObject.Find("e3leftr").SetActive(false);
-//                                    GameObject.Find("e3lefts").SetActive(false);
-//                                    GameObject.Find("e3leftp").SetActive(false);
-//                                    PerformList[j].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.LeftHand_state = false;
-//                                }
-//                                catch (Exception e)
-//                                {
-//                                    Debug.Log("already removed");
-//                                }
-//                            }
-//                            //PerformList[j].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.LeftHand_state = false;
-//                        }
-//                    }
-//                    if (resultRight == 1)
-//                    {
-//                        Debug.Log(PerformList[j].Attacker + " win, " + PerformList[i].Attacker + " lose");
-//                        if (PerformList[i].AttackGameObject == GameObject.FindWithTag("Player") &&
-//                            PerformList[i].AttackGameObject.GetComponent<Player_statemachine>().player.RightHand_state == true)
-//                        {
-//                            PerformList[i].AttackGameObject.GetComponent<Player_statemachine>().player.RightHand_state = false;
-//                            try
-//                            {
-//                                p1right.SetActive(false);
-//                                p1rock.SetActive(false);
-//                                p1paper.SetActive(false);
-//                                p1scissors.SetActive(false);
-//                                rightR.SetActive(false);
-//                                rightP.SetActive(false);
-//                                rightS.SetActive(false);
-//                            }
-//                            catch (Exception e)
-//                            {
-//                                Debug.Log("already removed");
-//                            }
-//                        }
-//                        else
-//                        {
-//                            if (PerformList[i].Attacker == "e1" && PerformList[i].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.RightHand_state == true)
-//                            {
-//                                try
-//                                {
-//                                    GameObject.Find("e1right").SetActive(false);
-//                                    GameObject.Find("e1rightr").SetActive(false);
-//                                    GameObject.Find("e1rights").SetActive(false);
-//                                    GameObject.Find("e1rightp").SetActive(false);
-//                                    PerformList[i].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.RightHand_state = false;
-//                                }
-//                                catch (Exception e)
-//                                {
-//                                    Debug.Log("already removed");
-//                                }
-//                            }
-//                            else if (PerformList[i].Attacker == "e2" && PerformList[i].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.RightHand_state == true)
-//                            {
-//                                try
-//                                {
-//                                    GameObject.Find("e2right").SetActive(false);
-//                                    GameObject.Find("e2rightr").SetActive(false);
-//                                    GameObject.Find("e2rights").SetActive(false);
-//                                    GameObject.Find("e2rightp").SetActive(false);
-//                                    PerformList[i].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.RightHand_state = false;
-//                                }
-//                                catch (Exception e)
-//                                {
-//                                    Debug.Log("already removed");
-//                                }
-//                            }
-//                            else if (PerformList[i].Attacker == "e3" && PerformList[i].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.RightHand_state == true)
-//                            {
-//                                try
-//                                {
-//                                    GameObject.Find("e3right").SetActive(false);
-//                                    GameObject.Find("e3rightr").SetActive(false);
-//                                    GameObject.Find("e3rights").SetActive(false);
-//                                    GameObject.Find("e3rightp").SetActive(false);
-//                                    PerformList[i].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.RightHand_state = false;
-//                                }
-//                                catch (Exception e)
-//                                {
-//                                    Debug.Log("already removed");
-//                                }
-//                            }
-//                            //PerformList[i].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.RightHand_state = false;
-//                        }
-//                    }
-//                    else
-//                    {
-//                        Debug.Log(PerformList[i].Attacker + " win, " + PerformList[j].Attacker + " lose");
-//                        if (PerformList[j].AttackGameObject == GameObject.FindWithTag("Player") &&
-//                            PerformList[j].AttackGameObject.GetComponent<Player_statemachine>().player.RightHand_state == true)
-//                        {
-//                            PerformList[j].AttackGameObject.GetComponent<Player_statemachine>().player.RightHand_state = false;
-//                            try
-//                            {
-//                                p1right.SetActive(false);
-//                                p1rock2.SetActive(false);
-//                                p1paper2.SetActive(false);
-//                                p1scissors2.SetActive(false);
-//                                rightP.SetActive(false);
-//                                rightR.SetActive(false);
-//                                rightS.SetActive(false);
-//                            }
-//                            catch (Exception e)
-//                            {
-//                                Debug.Log("already removed");
-//                            }
-//                        }
-//                        else
-//                        {
-//                            if (PerformList[j].Attacker == "e1" && PerformList[j].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.RightHand_state == true)
-//                            {
-//                                try
-//                                {
-//                                    GameObject.Find("e1right").SetActive(false);
-//                                    GameObject.Find("e1rightr").SetActive(false);
-//                                    GameObject.Find("e1rightp").SetActive(false);
-//                                    GameObject.Find("e1rights").SetActive(false);
-//                                    PerformList[j].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.RightHand_state = false;
-//                                }
-//                                catch (Exception e)
-//                                {
-//                                    Debug.Log("already removed");
-//                                }
-//                            }
-//                            else if (PerformList[j].Attacker == "e2" && PerformList[j].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.RightHand_state == true)
-//                            {
-//                                try
-//                                {
-//                                    GameObject.Find("e2right").SetActive(false);
-//                                    GameObject.Find("e2rightr").SetActive(false);
-//                                    GameObject.Find("e2rightp").SetActive(false);
-//                                    GameObject.Find("e2rights").SetActive(false);
-//                                    PerformList[j].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.RightHand_state = false;
-//                                }
-//                                catch (Exception e)
-//                                {
-//                                    Debug.Log("already removed");
-//                                }
-//                            }
-//                            else if (PerformList[j].Attacker == "e3" && PerformList[j].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.RightHand_state == true)
-//                            {
-//                                try
-//                                {
-//                                    GameObject.Find("e3right").SetActive(false);
-//                                    GameObject.Find("e3rightr").SetActive(false);
-//                                    GameObject.Find("e3rightp").SetActive(false);
-//                                    GameObject.Find("e3rights").SetActive(false);
-//                                    PerformList[j].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.RightHand_state = false;
-//                                }
-//                                catch (Exception e)
-//                                {
-//                                    Debug.Log("already removed");
-//                                }
-//                            }
-//                            //PerformList[j].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.RightHand_state = false;
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//        //for(int i = 0; i < PerformList.Count; i++)
-//        //{
-//        //    if (PerformList[i].AttackGameObject != GameObject.FindWithTag("Player"))
-//        //    {
-//        //        if(PerformList[i].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.RightHand_state == false&& PerformList[i].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.RightHand_state == false)
-//        //        {
-//        //            PerformList.Remove(PerformList[i].AttackGameObject.GetComponent<Emeny_AIstatemachine>().myAttack);
-//        //        }
-
-//        //    }
-//        //    else
-//        //    {
-//        //        if (PerformList[i].AttackGameObject.GetComponent<Player_statemachine>().player.RightHand_state == false && PerformList[i].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.RightHand_state == false)
-//        //        {
-//        //            PerformList.Remove(playerChoice);
-//        //        }
-
-//        //    }
-
-//        //}
-
-//        Debug.Log("Battle End");
-//    }
-
-//    public static int howToWin(HandleTurn.janken source, HandleTurn.janken target)
-//    {
-//        if (source == HandleTurn.janken.PAPER && target == HandleTurn.janken.ROCK)
-//        {
-//            return 1;
-//        }
-//        else if (source == HandleTurn.janken.ROCK && target == HandleTurn.janken.SCISSORS)
-//        {
-//            return 1;
-//        }
-//        else if (source == HandleTurn.janken.SCISSORS && target == HandleTurn.janken.PAPER)
-//        {
-//            return 1;
-//        }
-//        return 0;
-//    }
-//}
-//=======
 	public void battleLogic() {
 		Debug.Log("Battle Start");
 		for (int i = 0; i < PerformList.Count; i++) {
@@ -1930,5 +1307,28 @@ public class Combat_statemachine : MonoBehaviour {
 		return 0;
 	}
 
+	public void GameResult()
+	{
+		Debug.Log("Checking the result");
+		if(PSM.currentState == Player_statemachine.turnState.LOSE)
+		{
+			battleCanvas.SetActive(false);
+			classSelectCanvas.SetActive(false);
+			resultCanvas.SetActive(true);
+			winText.SetActive(false);
+			loseText.SetActive(true);
+			restartButton.SetActive(true);
+			exitButton.SetActive(true);
+		}
+		else if(e1.GetComponent<Emeny_AIstatemachine>().currentState == Emeny_AIstatemachine.turnState.LOSE && e2.GetComponent<Emeny_AIstatemachine>().currentState == Emeny_AIstatemachine.turnState.LOSE && e3.GetComponent<Emeny_AIstatemachine>().currentState == Emeny_AIstatemachine.turnState.LOSE)
+		{
+			battleCanvas.SetActive(false);
+			classSelectCanvas.SetActive(false);
+			resultCanvas.SetActive(true);
+			winText.SetActive(true);
+			loseText.SetActive(false);
+			restartButton.SetActive(true);
+			exitButton.SetActive(true);
+		}
 	}
-
+}
