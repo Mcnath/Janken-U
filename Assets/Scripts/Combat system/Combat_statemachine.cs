@@ -4,6 +4,8 @@ using System.Threading;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+
 public class Combat_statemachine : MonoBehaviour {
     //Initialized player skills
     public GameObject Attack;
@@ -62,6 +64,11 @@ public class Combat_statemachine : MonoBehaviour {
 	public GameObject battleCanvas;
 	public GameObject classSelectCanvas;
 	public GameObject resultCanvas;
+	//Elements in resultCanvas
+	public GameObject winText;
+	public GameObject loseText;
+	public GameObject restartButton;
+	public GameObject exitButton;
 	//variable for timers
 	private int seconds_current = 0;
 	private int seconds_max = 60;
@@ -94,37 +101,17 @@ public class Combat_statemachine : MonoBehaviour {
 
 		//player objects
 
-        p1rock = GameObject.Find("playerleftR");
-        p1paper = GameObject.Find("playerleftP");
-        p1scissors = GameObject.Find("playerleftS");
         p1rock.SetActive(true);
         p1paper.SetActive(false);
         p1scissors.SetActive(false);
-        p1rock2 = GameObject.Find("playerrightR");
-        p1paper2 = GameObject.Find("playerrightP");
-        p1scissors2 = GameObject.Find("playerrightS");
         p1rock2.SetActive(true);
         p1paper2.SetActive(false);
         p1scissors2.SetActive(false);
-        p1left = GameObject.Find("playerleft");
-        p1right = GameObject.Find("playerright");
         p1left.SetActive(true);
         p1right.SetActive(true);
-        leftR = GameObject.Find("Left_Rock");
-        leftP = GameObject.Find("Left_Paper");
-        leftS = GameObject.Find("Left_Scissors");
-        rightR = GameObject.Find("Right_Rock");
-        rightP = GameObject.Find("Right_Paper");
-        rightS = GameObject.Find("Right_Scissors");
+
 		//enemy 1 objects
-        e1paper = GameObject.Find("e1leftp");
-        e1rock = GameObject.Find("e1leftr");
-        e1scissors = GameObject.Find("e1lefts");
-        e1paper2 = GameObject.Find("e1rightp");
-        e1rock2 = GameObject.Find("e1rightr");
-        e1scissors2 = GameObject.Find("e1rights");
-		e1left = GameObject.Find("e1left");
-		e1right = GameObject.Find("e1right");
+
 		e1left.SetActive(true);
 		e1right.SetActive(true);
 		e1rock.SetActive(true);
@@ -135,14 +122,7 @@ public class Combat_statemachine : MonoBehaviour {
         e1scissors2.SetActive(false);
 
 		//enemy 2 objects
-        e2paper = GameObject.Find("e2leftp");
-        e2rock = GameObject.Find("e2leftr");
-        e2scissors = GameObject.Find("e2lefts");
-        e2paper2 = GameObject.Find("e2rightp");
-        e2rock2 = GameObject.Find("e2rightr");
-        e2scissors2 = GameObject.Find("e2rights");
-		e2left = GameObject.Find("e2left");
-		e2right = GameObject.Find("e2right");
+
 		e2left.SetActive(true);
 		e2right.SetActive(true);
 		e2rock.SetActive(true);
@@ -152,14 +132,7 @@ public class Combat_statemachine : MonoBehaviour {
 		e2scissors.SetActive(false);
 		e2scissors2.SetActive(false);
 		//enemy 3 objects
-		e3paper = GameObject.Find("e3leftp");
-        e3rock = GameObject.Find("e3leftr");
-        e3scissors = GameObject.Find("e3lefts");
-        e3paper2 = GameObject.Find("e3rightp");
-        e3rock2 = GameObject.Find("e3rightr");
-        e3scissors2 = GameObject.Find("e3rights");
-        e3left = GameObject.Find("e3left");
-        e3right = GameObject.Find("e3right");
+
         e3left.SetActive(true);
         e3right.SetActive(true);
         e3rock.SetActive(true);
@@ -171,11 +144,12 @@ public class Combat_statemachine : MonoBehaviour {
 		// canvas
 		battleCanvas = GameObject.Find("BattleCanvas");
 		classSelectCanvas = GameObject.Find("ClassSelectionCanvas");
+		resultCanvas = GameObject.Find("ResultCanvas");
 		battleCanvas.SetActive(false);
 		classSelectCanvas.SetActive(true);
+		resultCanvas.SetActive(false);
 
-
-    }
+	}
 
     // Update is called once per frame
     void Update()
@@ -269,7 +243,8 @@ public class Combat_statemachine : MonoBehaviour {
             case (turnState.ACTION):
                 //put in the logic here
                 skillused();
-                // Replace with transition animation
+				// Replace with transition animation
+				GameResult();
                 currentState = turnState.START;
                 break;
         }
@@ -726,8 +701,6 @@ public class Combat_statemachine : MonoBehaviour {
         }
 
     }
-
-
 
 	public void battleLogic() {
 		Debug.Log("Battle Start");
@@ -1298,5 +1271,43 @@ public class Combat_statemachine : MonoBehaviour {
 		return 0;
 	}
 
+	//after battle selection
+	public void OnRestartButtonClicked()
+	{
+		Debug.Log("Restarting the game");
+		SceneManager.LoadScene("Battle_test");
 	}
+
+	public void OnExitButtonClicked()
+	{
+		Debug.Log("Exiting the game");
+		Application.Quit();
+	}
+
+	public void GameResult()
+	{
+		Debug.Log("Checking the result");
+		if(PSM.currentState == Player_statemachine.turnState.LOSE)
+		{
+			battleCanvas.SetActive(false);
+			classSelectCanvas.SetActive(false);
+			resultCanvas.SetActive(true);
+			winText.SetActive(false);
+			loseText.SetActive(true);
+			restartButton.SetActive(true);
+			exitButton.SetActive(true);
+		}
+		else if(e1 == false && e2 == false && e3 == false)
+		{
+			battleCanvas.SetActive(false);
+			classSelectCanvas.SetActive(false);
+			resultCanvas.SetActive(true);
+			winText.SetActive(true);
+			loseText.SetActive(false);
+			restartButton.SetActive(true);
+			exitButton.SetActive(true);
+		}
+	}
+
+}
 

@@ -59,7 +59,7 @@ public class Player_statemachine : MonoBehaviour {
 				{
 				currentState = turnState.LOSE;
 			}
-			else if (CSM.currentState == Combat_statemachine.turnState.START) {
+			else {
 				currentState = turnState.START;
 			}
 			break;

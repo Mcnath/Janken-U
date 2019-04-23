@@ -198,7 +198,7 @@ public class PUN_Room : MonoBehaviourPunCallbacks, IInRoomCallbacks {
 				//for non-delay game
 			else
 			{
-				CreatePlayer();
+				RPC_CreatePlayer();
 			}
 		}
 	}
@@ -209,11 +209,11 @@ public class PUN_Room : MonoBehaviourPunCallbacks, IInRoomCallbacks {
 		playersInGame++;
 		if(playersInGame == PhotonNetwork.PlayerList.Length)
 		{
-			PV.RPC("CreatePlayer", RpcTarget.All);
+			PV.RPC("RPC_CreatePlayer", RpcTarget.AllBuffered);
 		}
 	}
 
-	private void CreatePlayer()
+	private void RPC_CreatePlayer()
 	{
 		//creates player network controller but not player character
 		PhotonNetwork.Instantiate(Path.Combine("PhotonPrefab", "PhotonNetworkPlayer"), transform.position, Quaternion.identity, 0);
