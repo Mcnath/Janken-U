@@ -110,6 +110,11 @@ public class Combat_statemachine : MonoBehaviour {
         p1left.SetActive(true);
         p1right.SetActive(true);
 
+        //enemys
+        e1 = GameObject.Find("Enemy 1");
+        e2 = GameObject.Find("Enemy 2");
+        e3 = GameObject.Find("Enemy 3");
+
 		//enemy 1 objects
 
 		e1left.SetActive(true);
@@ -154,6 +159,7 @@ public class Combat_statemachine : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
+        GameResult();
         //how the battle is progressed each turn
         //Debug.Log ("currentState: "+ currentState);
         switch (currentState)
@@ -244,7 +250,7 @@ public class Combat_statemachine : MonoBehaviour {
                 //put in the logic here
                 skillused();
 				// Replace with transition animation
-				GameResult();
+				
                 currentState = turnState.START;
                 break;
         }
@@ -1297,7 +1303,7 @@ public class Combat_statemachine : MonoBehaviour {
 			restartButton.SetActive(true);
 			exitButton.SetActive(true);
 		}
-		else if(e1 == false && e2 == false && e3 == false)
+		else if(e1.GetComponent<Emeny_AIstatemachine>().currentState == Emeny_AIstatemachine.turnState.LOSE && e2.GetComponent<Emeny_AIstatemachine>().currentState == Emeny_AIstatemachine.turnState.LOSE && e3.GetComponent<Emeny_AIstatemachine>().currentState == Emeny_AIstatemachine.turnState.LOSE)
 		{
 			battleCanvas.SetActive(false);
 			classSelectCanvas.SetActive(false);
