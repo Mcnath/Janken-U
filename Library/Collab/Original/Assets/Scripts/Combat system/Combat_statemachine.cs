@@ -4,48 +4,17 @@ using System.Threading;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+
 public class Combat_statemachine : MonoBehaviour {
-    //Initialized player skills
-    public GameObject Attack;
+	public Animator ani;
+	public Animator c1;
+	public Animator c2;
+	//Initialized player skills
+	public GameObject Attack;
     public GameObject Recover;
     public GameObject DoubleAttack;
-    public GameObject AttackAll;
-    //Initialized player jankens
-    public GameObject p1rock;
-    public GameObject p1paper;
-    public GameObject p1scissors;
-    public GameObject p1rock2;
-    public GameObject p1paper2;
-    public GameObject p1scissors2;
-    public GameObject p1left;
-    public GameObject p1right;
-    //e1janken
-    public GameObject e1rock;
-    public GameObject e1paper;
-    public GameObject e1scissors;
-    public GameObject e1rock2;
-    public GameObject e1paper2;
-    public GameObject e1scissors2;
-    public GameObject e1left;
-    public GameObject e1right;
-    //e2janken
-    public GameObject e2rock;
-    public GameObject e2paper;
-    public GameObject e2scissors;
-    public GameObject e2rock2;
-    public GameObject e2paper2;
-    public GameObject e2scissors2;
-    public GameObject e2left;
-    public GameObject e2right;
-    //e3janken
-    public GameObject e3rock;
-    public GameObject e3paper;
-    public GameObject e3scissors;
-    public GameObject e3rock2;
-    public GameObject e3paper2;
-    public GameObject e3scissors2;
-    public GameObject e3left;
-    public GameObject e3right;
+    public GameObject AttackAll;   
     //playerpanel
     public GameObject leftR;
     public GameObject leftP;
@@ -62,6 +31,12 @@ public class Combat_statemachine : MonoBehaviour {
 	public GameObject battleCanvas;
 	public GameObject classSelectCanvas;
 	public GameObject resultCanvas;
+	//variable for objects form resultCanvas
+	public GameObject winText;
+	public GameObject loseText;
+	public GameObject restartButton;
+	public GameObject exitButton;
+
 	//variable for timers
 	private int seconds_current = 0;
 	private int seconds_max = 60;
@@ -86,6 +61,9 @@ public class Combat_statemachine : MonoBehaviour {
 
     //initialization of state
     void Start () {
+		ani.GetComponent<Animator>();
+		c1.GetComponent<Animator>();
+		c2.GetComponent<Animator>();
 		currentState = turnState.START;
 		playerInput = PlayerGUI.ACTIVATE;
 		PlayerInBattle.AddRange (GameObject.FindGameObjectsWithTag("Player"));
@@ -94,93 +72,27 @@ public class Combat_statemachine : MonoBehaviour {
 
 		//player objects
 
-        p1rock = GameObject.Find("playerleftR");
-        p1paper = GameObject.Find("playerleftP");
-        p1scissors = GameObject.Find("playerleftS");
-        p1rock.SetActive(true);
-        p1paper.SetActive(false);
-        p1scissors.SetActive(false);
-        p1rock2 = GameObject.Find("playerrightR");
-        p1paper2 = GameObject.Find("playerrightP");
-        p1scissors2 = GameObject.Find("playerrightS");
-        p1rock2.SetActive(true);
-        p1paper2.SetActive(false);
-        p1scissors2.SetActive(false);
-        p1left = GameObject.Find("playerleft");
-        p1right = GameObject.Find("playerright");
-        p1left.SetActive(true);
-        p1right.SetActive(true);
+       
+		leftR = GameObject.Find("Left_Rock");
+		leftP = GameObject.Find("Left_Paper");
+		leftS = GameObject.Find("Left_Scissors");
+		rightR = GameObject.Find("Right_Rock");
+		rightP = GameObject.Find("Right_Paper");
+		rightS = GameObject.Find("Right_Scissors");
 
-        //enemies
-        e1 = GameObject.Find("Enemy 1");
+		//enemies
+		e1 = GameObject.Find("Enemy 1");
         e2 = GameObject.Find("Enemy 2");
         e3 = GameObject.Find("Enemy 3");
 
-		//Buttons
-        leftR = GameObject.Find("Left_Rock");
-        leftP = GameObject.Find("Left_Paper");
-        leftS = GameObject.Find("Left_Scissors");
-        rightR = GameObject.Find("Right_Rock");
-        rightP = GameObject.Find("Right_Paper");
-        rightS = GameObject.Find("Right_Scissors");
-
-		//enemy 1 objects
-        e1paper = GameObject.Find("e1leftp");
-        e1rock = GameObject.Find("e1leftr");
-        e1scissors = GameObject.Find("e1lefts");
-        e1paper2 = GameObject.Find("e1rightp");
-        e1rock2 = GameObject.Find("e1rightr");
-        e1scissors2 = GameObject.Find("e1rights");
-		e1left = GameObject.Find("e1left");
-		e1right = GameObject.Find("e1right");
-		e1left.SetActive(true);
-		e1right.SetActive(true);
-		e1rock.SetActive(true);
-		e1rock2.SetActive(true);
-		e1paper.SetActive(false);
-		e1paper2.SetActive(false);
-		e1scissors.SetActive(false);
-        e1scissors2.SetActive(false);
-
-		//enemy 2 objects
-        e2paper = GameObject.Find("e2leftp");
-        e2rock = GameObject.Find("e2leftr");
-        e2scissors = GameObject.Find("e2lefts");
-        e2paper2 = GameObject.Find("e2rightp");
-        e2rock2 = GameObject.Find("e2rightr");
-        e2scissors2 = GameObject.Find("e2rights");
-		e2left = GameObject.Find("e2left");
-		e2right = GameObject.Find("e2right");
-		e2left.SetActive(true);
-		e2right.SetActive(true);
-		e2rock.SetActive(true);
-		e2rock2.SetActive(true);
-		e2paper.SetActive(false);
-		e2paper2.SetActive(false);
-		e2scissors.SetActive(false);
-		e2scissors2.SetActive(false);
-		//enemy 3 objects
-		e3paper = GameObject.Find("e3leftp");
-        e3rock = GameObject.Find("e3leftr");
-        e3scissors = GameObject.Find("e3lefts");
-        e3paper2 = GameObject.Find("e3rightp");
-        e3rock2 = GameObject.Find("e3rightr");
-        e3scissors2 = GameObject.Find("e3rights");
-        e3left = GameObject.Find("e3left");
-        e3right = GameObject.Find("e3right");
-        e3left.SetActive(true);
-        e3right.SetActive(true);
-        e3rock.SetActive(true);
-        e3rock2.SetActive(true);
-        e3paper.SetActive(false);
-        e3paper2.SetActive(false);
-        e3scissors.SetActive(false);
-        e3scissors2.SetActive(false);
+		
 		// canvas
 		battleCanvas = GameObject.Find("BattleCanvas");
 		classSelectCanvas = GameObject.Find("ClassSelectionCanvas");
+		resultCanvas = GameObject.Find("ResultCanvas");
 		battleCanvas.SetActive(false);
 		classSelectCanvas.SetActive(true);
+		resultCanvas.SetActive(false);
 
 
     }
@@ -320,6 +232,11 @@ public class Combat_statemachine : MonoBehaviour {
 		PSM.player.pillar = Player_base.pillars.ISTD;
 		battleCanvas.SetActive(true);
 		classSelectCanvas.SetActive(false);
+		ani.SetBool("istd", true);
+		c1.SetBool("istd", true);
+		c2.SetBool("istd", true);
+		ani.SetBool("lefthand", true);
+		ani.SetBool("righthand", true);
 	}
 	public void classSlectedEPD()
 	{
@@ -327,6 +244,11 @@ public class Combat_statemachine : MonoBehaviour {
 		PSM.player.pillar = Player_base.pillars.EPD;
 		battleCanvas.SetActive(true);
 		classSelectCanvas.SetActive(false);
+		ani.SetBool("epd", true);
+		c1.SetBool("epd", true);
+		c2.SetBool("epd", true);
+		ani.SetBool("lefthand", true);
+		ani.SetBool("righthand", true);
 	}
 	public void classSlectedESD()
 	{
@@ -334,6 +256,11 @@ public class Combat_statemachine : MonoBehaviour {
 		PSM.player.pillar = Player_base.pillars.ESD;
 		battleCanvas.SetActive(true);
 		classSelectCanvas.SetActive(false);
+		ani.SetBool("esd", true);
+		c1.SetBool("esd", true);
+		c2.SetBool("esd", true);
+		ani.SetBool("lefthand", true);
+		ani.SetBool("righthand", true);
 	}
 	public void classSlectedASD()
 	{
@@ -341,54 +268,65 @@ public class Combat_statemachine : MonoBehaviour {
 		PSM.player.pillar = Player_base.pillars.ASD;
 		battleCanvas.SetActive(true);
 		classSelectCanvas.SetActive(false);
+		ani.SetBool("asd", true);
+		c1.SetBool("asd", true);
+		c2.SetBool("asd", true);
+		ani.SetBool("lefthand", true);
+		ani.SetBool("righthand", true);
 	}
 	// Attack options
 
-	public void chooseRockLeft(){
-        p1rock.SetActive(true);
-        p1paper.SetActive(false);
-        p1scissors.SetActive(false);
-        Debug.Log ("Chosen Rock on the left");
+	public void chooseRockLeft()
+	{
+		ani.SetBool("leftscissors", false);
+		ani.SetBool("leftpaper", false);
+		ani.SetBool("leftrock", true);
+		Debug.Log("Chosen Rock on the left");
 		playerChoice.LeftAttackType = HandleTurn.janken.ROCK;
 	}
 
-	public void chooseScissorsLeft(){
-        p1rock.SetActive(false);
-        p1paper.SetActive(false);
-        p1scissors.SetActive(true);
-        Debug.Log ("Chosen Scissors on the left");
+		public void chooseScissorsLeft()
+	{
+		ani.SetBool("leftscissors", true);
+		ani.SetBool("leftpaper", false);
+		ani.SetBool("leftrock", false);
+		Debug.Log("Chosen Scissors on the left");
 		playerChoice.LeftAttackType = HandleTurn.janken.SCISSORS;
 	}
 
-	public void choosePaperLeft(){
-        p1rock.SetActive(false);
-        p1paper.SetActive(true);
-        p1scissors.SetActive(false);
-        Debug.Log ("Chosen Paper on the left");
+	public void choosePaperLeft()
+	{
+		ani.SetBool("leftpaper", true);
+		ani.SetBool("leftscissors", false);
+		ani.SetBool("leftrock", false);
+		Debug.Log("Chosen Paper on the left");
 		playerChoice.LeftAttackType = HandleTurn.janken.PAPER;
 	}
 
-	public void chooseRockRight(){
-        p1rock2.SetActive(true);
-        p1paper2.SetActive(false);
-        p1scissors2.SetActive(false);
-        Debug.Log ("Chosen Rock on the right");
+	public void chooseRockRight()
+	{
+		ani.SetBool("rightrock", true);
+		ani.SetBool("rightscissors", false);
+		ani.SetBool("rightpaper", false);
+		Debug.Log("Chosen Rock on the right");
 		playerChoice.RightAttackType = HandleTurn.janken.ROCK;
 	}
 
-	public void chooseScissorsRight(){
-        p1rock2.SetActive(false);
-        p1paper2.SetActive(false);
-        p1scissors2.SetActive(true);
-        Debug.Log ("Chosen Scissors on the right");
+	public void chooseScissorsRight()
+	{
+		ani.SetBool("rightscissors", true);
+		ani.SetBool("rightpaper", false);
+		ani.SetBool("rightrock", false);
+		Debug.Log("Chosen Scissors on the right");
 		playerChoice.RightAttackType = HandleTurn.janken.SCISSORS;
 	}
 
-	public void choosePaperRight(){
-        p1rock2.SetActive(false);
-        p1paper2.SetActive(true);
-        p1scissors2.SetActive(false);
-        Debug.Log ("Chosen Paper on the right");
+	public void choosePaperRight()
+	{
+		ani.SetBool("rightpaper", true);
+		ani.SetBool("rightscissors", false);
+		ani.SetBool("rightrock", false);
+		Debug.Log("Chosen Paper on the right");
 		playerChoice.RightAttackType = HandleTurn.janken.PAPER;
 	}
 
@@ -508,11 +446,9 @@ public class Combat_statemachine : MonoBehaviour {
                                             try
                                             {
                                                 PSM.player.RightHand_state = true;
-                                                p1right.SetActive(true);
-                                                p1rock2.SetActive(true);
-                                                p1paper2.SetActive(true);
-                                                p1scissors2.SetActive(true);
-                                                rightP.SetActive(true);
+												ani.SetBool("righthand", true);
+												ani.SetTrigger("recover");
+												rightP.SetActive(true);
                                                 rightR.SetActive(true);
                                                 rightS.SetActive(true);
                                                 count++;
@@ -531,12 +467,9 @@ public class Combat_statemachine : MonoBehaviour {
                                             try
                                             {
                                                 PSM.player.LeftHand_state = true;
-                                                p1left.SetActive(true);
-                                                p1rock.SetActive(true);
-                                                p1paper.SetActive(true);
-                                                p1scissors.SetActive(true);
-
-                                                leftP.SetActive(true);
+												ani.SetBool("lefthand", true);
+												ani.SetTrigger("recover");
+												leftP.SetActive(true);
                                                 leftR.SetActive(true);
                                                 leftS.SetActive(true);
                                                 count++;
@@ -573,11 +506,8 @@ public class Combat_statemachine : MonoBehaviour {
                         try
                         {
                             PSM.player.RightHand_state = true;
-                            p1right.SetActive(true);
-                            p1rock2.SetActive(true);
-                            p1paper2.SetActive(true);
-                            p1scissors2.SetActive(true);
-                            rightP.SetActive(true);
+							ani.SetBool("righthand", true);
+							rightP.SetActive(true);
                             rightR.SetActive(true);
                             rightS.SetActive(true);
                            
@@ -595,12 +525,8 @@ public class Combat_statemachine : MonoBehaviour {
                         try
                         {
                             PSM.player.LeftHand_state = true;
-                            p1left.SetActive(true);
-                            p1rock.SetActive(true);
-                            p1paper.SetActive(true);
-                            p1scissors.SetActive(true);
-
-                            leftP.SetActive(true);
+							ani.SetBool("lefthand", true);
+							leftP.SetActive(true);
                             leftR.SetActive(true);
                             leftS.SetActive(true);
                            
@@ -623,11 +549,8 @@ public class Combat_statemachine : MonoBehaviour {
                         try
                         {
                             PSM.player.RightHand_state = true;
-                            p1right.SetActive(true);
-                            p1rock2.SetActive(true);
-                            p1paper2.SetActive(true);
-                            p1scissors2.SetActive(true);
-                            rightP.SetActive(true);
+							ani.SetBool("righthand", true);
+							rightP.SetActive(true);
                             rightR.SetActive(true);
                             rightS.SetActive(true);
 
@@ -645,12 +568,8 @@ public class Combat_statemachine : MonoBehaviour {
                         try
                         {
                             PSM.player.LeftHand_state = true;
-                            p1left.SetActive(true);
-                            p1rock.SetActive(true);
-                            p1paper.SetActive(true);
-                            p1scissors.SetActive(true);
-
-                            leftP.SetActive(true);
+							ani.SetBool("lefthand", true);
+							leftP.SetActive(true);
                             leftR.SetActive(true);
                             leftS.SetActive(true);
 
@@ -673,11 +592,8 @@ public class Combat_statemachine : MonoBehaviour {
                         try
                         {
                             PSM.player.RightHand_state = true;
-                            p1right.SetActive(true);
-                            p1rock2.SetActive(true);
-                            p1paper2.SetActive(true);
-                            p1scissors2.SetActive(true);
-                            rightP.SetActive(true);
+							ani.SetBool("righthand", true);
+							rightP.SetActive(true);
                             rightR.SetActive(true);
                             rightS.SetActive(true);
 
@@ -695,12 +611,8 @@ public class Combat_statemachine : MonoBehaviour {
                         try
                         {
                             PSM.player.LeftHand_state = true;
-                            p1left.SetActive(true);
-                            p1rock.SetActive(true);
-                            p1paper.SetActive(true);
-                            p1scissors.SetActive(true);
-
-                            leftP.SetActive(true);
+							ani.SetBool("lefthand", true);
+							leftP.SetActive(true);
                             leftR.SetActive(true);
                             leftS.SetActive(true);
 
@@ -745,241 +657,8 @@ public class Combat_statemachine : MonoBehaviour {
 				if (PerformList[j].AttackTarget == PerformList[i].AttackGameObject) {
 					int resultLeft = howToWin(PerformList[j].LeftAttackType, PerformList[i].LeftAttackType);
 					int resultRight = howToWin(PerformList[j].RightAttackType, PerformList[i].RightAttackType);
-					// enemy sprite's change
-					if (PerformList[i].Attacker == "e1")
-					{
-						if (PerformList[i].LeftAttackType == HandleTurn.janken.ROCK)
-						{
-							e1rock.SetActive(true);
-							e1scissors.SetActive(false);
-							e1paper.SetActive(false);
-						}
-						else if (PerformList[i].LeftAttackType == HandleTurn.janken.PAPER)
-						{
-							e1rock.SetActive(false);
-							e1scissors.SetActive(false);
-							e1paper.SetActive(true);
-						}
-						else if (PerformList[i].LeftAttackType == HandleTurn.janken.SCISSORS)
-						{
-							e1rock.SetActive(false);
-							e1scissors.SetActive(true);
-							e1paper.SetActive(false);
-						}
-						else if (PerformList[i].RightAttackType == HandleTurn.janken.ROCK)
-						{
-							e1rock2.SetActive(true);
-							e1scissors2.SetActive(false);
-							e1paper2.SetActive(false);
-						}
-						else if (PerformList[i].RightAttackType == HandleTurn.janken.PAPER)
-						{
-							e1rock2.SetActive(false);
-							e1scissors2.SetActive(false);
-							e1paper2.SetActive(true);
-						}
-						else if (PerformList[i].RightAttackType == HandleTurn.janken.SCISSORS)
-						{
-							e1rock2.SetActive(false);
-							e1scissors2.SetActive(true);
-							e1paper2.SetActive(false);
-						}
-					}
-					else if (PerformList[i].Attacker == "e2")
-					{
-						if (PerformList[i].LeftAttackType == HandleTurn.janken.ROCK)
-						{
-							e2rock.SetActive(true);
-							e2scissors.SetActive(false);
-							e2paper.SetActive(false);
-						}
-						else if (PerformList[i].LeftAttackType == HandleTurn.janken.PAPER)
-						{
-							e2rock.SetActive(false);
-							e2scissors.SetActive(false);
-							e2paper.SetActive(true);
-						}
-						else if (PerformList[i].LeftAttackType == HandleTurn.janken.SCISSORS)
-						{
-							e2rock.SetActive(false);
-							e2scissors.SetActive(true);
-							e2paper.SetActive(false);
-						}
-						else if (PerformList[i].RightAttackType == HandleTurn.janken.ROCK)
-						{
-							e2rock2.SetActive(true);
-							e2scissors2.SetActive(false);
-							e2paper2.SetActive(false);
-						}
-						else if (PerformList[i].RightAttackType == HandleTurn.janken.PAPER)
-						{
-							e2rock2.SetActive(false);
-							e2scissors2.SetActive(false);
-							e2paper2.SetActive(true);
-						}
-						else if (PerformList[i].RightAttackType == HandleTurn.janken.SCISSORS)
-						{
-							e2rock2.SetActive(false);
-							e2scissors2.SetActive(true);
-							e2paper2.SetActive(false);
-						}
-					}
-					else if (PerformList[i].Attacker == "e3")
-					{
-						if (PerformList[i].LeftAttackType == HandleTurn.janken.ROCK)
-						{
-							e3rock.SetActive(true);
-							e3scissors.SetActive(false);
-							e3paper.SetActive(false);
-						}
-						else if (PerformList[i].LeftAttackType == HandleTurn.janken.PAPER)
-						{
-							e3rock.SetActive(false);
-							e3scissors.SetActive(false);
-							e3paper.SetActive(true);
-						}
-						else if (PerformList[i].LeftAttackType == HandleTurn.janken.SCISSORS)
-						{
-							e3rock.SetActive(false);
-							e3scissors.SetActive(true);
-							e3paper.SetActive(false);
-						}
-						else if (PerformList[i].RightAttackType == HandleTurn.janken.ROCK)
-						{
-							e3rock2.SetActive(true);
-							e3scissors2.SetActive(false);
-							e3paper2.SetActive(false);
-						}
-						else if (PerformList[i].RightAttackType == HandleTurn.janken.PAPER)
-						{
-							e3rock2.SetActive(false);
-							e3scissors2.SetActive(false);
-							e3paper2.SetActive(true);
-						}
-						else if (PerformList[i].RightAttackType == HandleTurn.janken.SCISSORS)
-						{
-							e3rock2.SetActive(false);
-							e3scissors2.SetActive(true);
-							e3paper2.SetActive(false);
-						}
-					}
-					if (PerformList[j].Attacker == "e1")
-					{
-						if (PerformList[j].LeftAttackType == HandleTurn.janken.ROCK)
-						{
-							e1rock.SetActive(true);
-							e1scissors.SetActive(false);
-							e1paper.SetActive(false);
-						}
-						else if (PerformList[j].LeftAttackType == HandleTurn.janken.PAPER)
-						{
-							e1rock.SetActive(false);
-							e1scissors.SetActive(false);
-							e1paper.SetActive(true);
-						}
-						else if (PerformList[j].LeftAttackType == HandleTurn.janken.SCISSORS)
-						{
-							e1rock.SetActive(false);
-							e1scissors.SetActive(true);
-							e1paper.SetActive(false);
-						}
-						else if (PerformList[j].RightAttackType == HandleTurn.janken.ROCK)
-						{
-							e1rock2.SetActive(true);
-							e1scissors2.SetActive(false);
-							e1paper2.SetActive(false);
-						}
-						else if (PerformList[j].RightAttackType == HandleTurn.janken.PAPER)
-						{
-							e1rock2.SetActive(false);
-							e1scissors2.SetActive(false);
-							e1paper2.SetActive(true);
-						}
-						else if (PerformList[j].RightAttackType == HandleTurn.janken.SCISSORS)
-						{
-							e1rock2.SetActive(false);
-							e1scissors2.SetActive(true);
-							e1paper2.SetActive(false);
-						}
-					}
-					else if (PerformList[j].Attacker == "e2")
-					{
-						if (PerformList[j].LeftAttackType == HandleTurn.janken.ROCK)
-						{
-							e2rock.SetActive(true);
-							e2scissors.SetActive(false);
-							e2paper.SetActive(false);
-						}
-						else if (PerformList[j].LeftAttackType == HandleTurn.janken.PAPER)
-						{
-							e2rock.SetActive(false);
-							e2scissors.SetActive(false);
-							e2paper.SetActive(true);
-						}
-						else if (PerformList[j].LeftAttackType == HandleTurn.janken.SCISSORS)
-						{
-							e2rock.SetActive(false);
-							e2scissors.SetActive(true);
-							e2paper.SetActive(false);
-						}
-						else if (PerformList[j].RightAttackType == HandleTurn.janken.ROCK)
-						{
-							e2rock2.SetActive(true);
-							e2scissors2.SetActive(false);
-							e2paper2.SetActive(false);
-						}
-						else if (PerformList[j].RightAttackType == HandleTurn.janken.PAPER)
-						{
-							e2rock2.SetActive(false);
-							e2scissors2.SetActive(false);
-							e2paper2.SetActive(true);
-						}
-						else if (PerformList[j].RightAttackType == HandleTurn.janken.SCISSORS)
-						{
-							e2rock2.SetActive(false);
-							e2scissors2.SetActive(true);
-							e2paper2.SetActive(false);
-						}
-					}
-					else if (PerformList[j].Attacker == "e3")
-					{
-						if (PerformList[j].LeftAttackType == HandleTurn.janken.ROCK)
-						{
-							e3rock.SetActive(true);
-							e3scissors.SetActive(false);
-							e3paper.SetActive(false);
-						}
-						else if (PerformList[j].LeftAttackType == HandleTurn.janken.PAPER)
-						{
-							e3rock.SetActive(false);
-							e3scissors.SetActive(false);
-							e3paper.SetActive(true);
-						}
-						else if (PerformList[j].LeftAttackType == HandleTurn.janken.SCISSORS)
-						{
-							e3rock.SetActive(false);
-							e3scissors.SetActive(true);
-							e3paper.SetActive(false);
-						}
-						else if (PerformList[j].RightAttackType == HandleTurn.janken.ROCK)
-						{
-							e3rock2.SetActive(true);
-							e3scissors2.SetActive(false);
-							e3paper2.SetActive(false);
-						}
-						else if (PerformList[j].RightAttackType == HandleTurn.janken.PAPER)
-						{
-							e3rock2.SetActive(false);
-							e3scissors2.SetActive(false);
-							e3paper2.SetActive(true);
-						}
-						else if (PerformList[j].RightAttackType == HandleTurn.janken.SCISSORS)
-						{
-							e3rock2.SetActive(false);
-							e3scissors2.SetActive(true);
-							e3paper2.SetActive(false);
-						}
-					}
+					
+					
 					// Battle result and sprite's destruction
 					if (resultLeft == 1) {
 						Debug.Log(PerformList[j].Attacker + " win, " + PerformList[i].Attacker + " lose");
@@ -989,10 +668,11 @@ public class Combat_statemachine : MonoBehaviour {
 							PerformList[i].AttackGameObject.GetComponent<Player_statemachine>().player.LeftHand_state = false;
 							try
 							{
-								p1left.SetActive(false);
-								p1rock.SetActive(false);
-								p1paper.SetActive(false);
-								p1scissors.SetActive(false);
+								ani.SetBool("leftrock", false);
+								ani.SetBool("leftpaper", false);
+								ani.SetBool("leftscissors", false);
+								ani.SetBool("lefthand", false);
+								ani.SetTrigger("losing");
 								leftP.SetActive(false);
 								leftR.SetActive(false);
 								leftS.SetActive(false);
@@ -1010,10 +690,7 @@ public class Combat_statemachine : MonoBehaviour {
 								try
 								{
 									PerformList[i].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.LeftHand_state = false;
-									GameObject.Find("e1left").SetActive(false);
-									GameObject.Find("e1leftr").SetActive(false);
-									GameObject.Find("e1leftp").SetActive(false);
-									GameObject.Find("e1lefts").SetActive(false);
+									
 								}
 								catch (Exception e)
 								{
@@ -1025,10 +702,7 @@ public class Combat_statemachine : MonoBehaviour {
 								try
 								{
 									PerformList[i].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.LeftHand_state = false;
-									GameObject.Find("e2left").SetActive(false);
-									GameObject.Find("e2leftr").SetActive(false);
-									GameObject.Find("e2leftp").SetActive(false);
-									GameObject.Find("e2lefts").SetActive(false);
+									
 								}
 								catch (Exception e)
 								{
@@ -1040,10 +714,7 @@ public class Combat_statemachine : MonoBehaviour {
 								try
 								{
 									PerformList[i].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.LeftHand_state = false;
-									GameObject.Find("e3left").SetActive(false);
-									GameObject.Find("e3leftr").SetActive(false);
-									GameObject.Find("e3leftp").SetActive(false);
-									GameObject.Find("e3lefts").SetActive(false);
+									
 								}
 								catch (Exception e)
 								{
@@ -1059,10 +730,11 @@ public class Combat_statemachine : MonoBehaviour {
 							PerformList[j].AttackGameObject.GetComponent<Player_statemachine>().player.LeftHand_state = false;
 							try
 							{
-								p1left.SetActive(false);
-								p1rock.SetActive(false);
-								p1paper.SetActive(false);
-								p1scissors.SetActive(false);
+								ani.SetBool("leftrock", false);
+								ani.SetBool("leftpaper", false);
+								ani.SetBool("leftscissors", false);
+								ani.SetBool("lefthand", false);
+								ani.SetTrigger("losing");
 								leftR.SetActive(false);
 								leftP.SetActive(false);
 								leftS.SetActive(false);
@@ -1079,10 +751,7 @@ public class Combat_statemachine : MonoBehaviour {
 								try
 								{
 									PerformList[j].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.LeftHand_state = false;
-									GameObject.Find("e1left").SetActive(false);
-									GameObject.Find("e1leftr").SetActive(false);
-									GameObject.Find("e1lefts").SetActive(false);
-									GameObject.Find("e1leftp").SetActive(false);
+									
 								}
 								catch (Exception e)
 								{
@@ -1094,10 +763,7 @@ public class Combat_statemachine : MonoBehaviour {
 								try
 								{
 									PerformList[j].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.LeftHand_state = false;
-									GameObject.Find("e2left").SetActive(false);
-									GameObject.Find("e2leftr").SetActive(false);
-									GameObject.Find("e2lefts").SetActive(false);
-									GameObject.Find("e2leftp").SetActive(false);
+									
 								}
 								catch (Exception e)
 								{
@@ -1109,10 +775,7 @@ public class Combat_statemachine : MonoBehaviour {
 								try
 								{
 									PerformList[j].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.LeftHand_state = false;
-									GameObject.Find("e3left").SetActive(false);
-									GameObject.Find("e3leftr").SetActive(false);
-									GameObject.Find("e3lefts").SetActive(false);
-									GameObject.Find("e3leftp").SetActive(false);
+									
 								}
 								catch (Exception e)
 								{
@@ -1130,10 +793,11 @@ public class Combat_statemachine : MonoBehaviour {
 							PerformList[i].AttackGameObject.GetComponent<Player_statemachine>().player.RightHand_state = false;
 							try
 							{
-								p1right.SetActive(false);
-								p1rock2.SetActive(false);
-								p1paper2.SetActive(false);
-								p1scissors2.SetActive(false);
+								ani.SetBool("rightrock", false);
+								ani.SetBool("rightpaper", false);
+								ani.SetBool("rightscissors", false);
+								ani.SetBool("righthand", false);
+								ani.SetTrigger("losing");
 								rightR.SetActive(false);
 								rightP.SetActive(false);
 								rightS.SetActive(false);
@@ -1150,10 +814,7 @@ public class Combat_statemachine : MonoBehaviour {
 								try
 								{
 									PerformList[i].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.RightHand_state = false;
-									GameObject.Find("e1right").SetActive(false);
-									GameObject.Find("e1rightr").SetActive(false);
-									GameObject.Find("e1rights").SetActive(false);
-									GameObject.Find("e1rightp").SetActive(false);
+									
 								}
 								catch (Exception e)
 								{
@@ -1165,10 +826,7 @@ public class Combat_statemachine : MonoBehaviour {
 								try
 								{
 									PerformList[i].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.RightHand_state = false;
-									GameObject.Find("e2right").SetActive(false);
-									GameObject.Find("e2rightr").SetActive(false);
-									GameObject.Find("e2rights").SetActive(false);
-									GameObject.Find("e2rightp").SetActive(false);
+									
 								}
 								catch (Exception e)
 								{
@@ -1180,10 +838,7 @@ public class Combat_statemachine : MonoBehaviour {
 								try
 								{
 									PerformList[i].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.RightHand_state = false;
-									GameObject.Find("e3right").SetActive(false);
-									GameObject.Find("e3rightr").SetActive(false);
-									GameObject.Find("e3rights").SetActive(false);
-									GameObject.Find("e3rightp").SetActive(false);
+									
 								}
 								catch (Exception e)
 								{
@@ -1200,10 +855,11 @@ public class Combat_statemachine : MonoBehaviour {
 							PerformList[j].AttackGameObject.GetComponent<Player_statemachine>().player.RightHand_state = false;
 							try
 							{
-								p1right.SetActive(false);
-								p1rock2.SetActive(false);
-								p1paper2.SetActive(false);
-								p1scissors2.SetActive(false);
+								ani.SetBool("rightrock", false);
+								ani.SetBool("rightpaper", false);
+								ani.SetBool("rightscissors", false);
+								ani.SetBool("righthand", false);
+								ani.SetTrigger("losing");
 								rightP.SetActive(false);
 								rightR.SetActive(false);
 								rightS.SetActive(false);
@@ -1220,10 +876,7 @@ public class Combat_statemachine : MonoBehaviour {
 								try
 								{
 									PerformList[j].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.RightHand_state = false;
-									GameObject.Find("e1right").SetActive(false);
-									GameObject.Find("e1rightr").SetActive(false);
-									GameObject.Find("e1rightp").SetActive(false);
-									GameObject.Find("e1rights").SetActive(false);
+									
 								}
 								catch (Exception e)
 								{
@@ -1235,10 +888,7 @@ public class Combat_statemachine : MonoBehaviour {
 								try
 								{
 									PerformList[j].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.RightHand_state = false;
-									GameObject.Find("e2right").SetActive(false);
-									GameObject.Find("e2rightr").SetActive(false);
-									GameObject.Find("e2rightp").SetActive(false);
-									GameObject.Find("e2rights").SetActive(false);
+									
 								}
 								catch (Exception e)
 								{
@@ -1250,10 +900,7 @@ public class Combat_statemachine : MonoBehaviour {
 								try
 								{
 									PerformList[j].AttackGameObject.GetComponent<Emeny_AIstatemachine>().enemy.RightHand_state = false;
-									GameObject.Find("e3right").SetActive(false);
-									GameObject.Find("e3rightr").SetActive(false);
-									GameObject.Find("e3rightp").SetActive(false);
-									GameObject.Find("e3rights").SetActive(false);
+									
 								}
 								catch (Exception e)
 								{
@@ -1307,9 +954,20 @@ public class Combat_statemachine : MonoBehaviour {
 		return 0;
 	}
 
+	public void OnRestartButtonClicked(){
+		Debug.Log("Restarting the battle");
+		SceneManager.LoadScene("Battle_test");
+	}
+
+	public void OnExitButtonClicked()
+	{
+		Debug.Log("Going back to main menu");
+		SceneManager.LoadScene("Main Menu");
+	}
+
 	public void GameResult()
 	{
-		Debug.Log("Checking the result");
+		//Debug.Log("Checking the result");
 		if(PSM.currentState == Player_statemachine.turnState.LOSE)
 		{
 			battleCanvas.SetActive(false);
@@ -1331,4 +989,5 @@ public class Combat_statemachine : MonoBehaviour {
 			exitButton.SetActive(true);
 		}
 	}
+
 }

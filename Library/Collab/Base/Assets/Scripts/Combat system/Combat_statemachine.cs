@@ -4,6 +4,8 @@ using System.Threading;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+
 public class Combat_statemachine : MonoBehaviour {
     //Initialized player skills
     public GameObject Attack;
@@ -62,6 +64,12 @@ public class Combat_statemachine : MonoBehaviour {
 	public GameObject battleCanvas;
 	public GameObject classSelectCanvas;
 	public GameObject resultCanvas;
+	//variable for objects form resultCanvas
+	public GameObject winText;
+	public GameObject loseText;
+	public GameObject restartButton;
+	public GameObject exitButton;
+
 	//variable for timers
 	private int seconds_current = 0;
 	private int seconds_max = 60;
@@ -110,21 +118,18 @@ public class Combat_statemachine : MonoBehaviour {
         p1right = GameObject.Find("playerright");
         p1left.SetActive(true);
         p1right.SetActive(true);
-<<<<<<< HEAD
+		leftR = GameObject.Find("Left_Rock");
+		leftP = GameObject.Find("Left_Paper");
+		leftS = GameObject.Find("Left_Scissors");
+		rightR = GameObject.Find("Right_Rock");
+		rightP = GameObject.Find("Right_Paper");
+		rightS = GameObject.Find("Right_Scissors");
 
-        //enemys
-        e1 = GameObject.Find("Enemy 1");
+		//enemies
+		e1 = GameObject.Find("Enemy 1");
         e2 = GameObject.Find("Enemy 2");
         e3 = GameObject.Find("Enemy 3");
 
-=======
-        leftR = GameObject.Find("Left_Rock");
-        leftP = GameObject.Find("Left_Paper");
-        leftS = GameObject.Find("Left_Scissors");
-        rightR = GameObject.Find("Right_Rock");
-        rightP = GameObject.Find("Right_Paper");
-        rightS = GameObject.Find("Right_Scissors");
->>>>>>> parent of 139fbcc7... All
 		//enemy 1 objects
         e1paper = GameObject.Find("e1leftp");
         e1rock = GameObject.Find("e1leftr");
@@ -180,8 +185,10 @@ public class Combat_statemachine : MonoBehaviour {
 		// canvas
 		battleCanvas = GameObject.Find("BattleCanvas");
 		classSelectCanvas = GameObject.Find("ClassSelectionCanvas");
+		resultCanvas = GameObject.Find("ResultCanvas");
 		battleCanvas.SetActive(false);
 		classSelectCanvas.SetActive(true);
+		resultCanvas.SetActive(false);
 
 
     }
@@ -279,12 +286,7 @@ public class Combat_statemachine : MonoBehaviour {
             case (turnState.ACTION):
                 //put in the logic here
                 skillused();
-<<<<<<< HEAD
 				// Replace with transition animation
-				
-=======
-                // Replace with transition animation
->>>>>>> parent of 139fbcc7... All
                 currentState = turnState.START;
                 break;
         }
@@ -1313,9 +1315,17 @@ public class Combat_statemachine : MonoBehaviour {
 		return 0;
 	}
 
+	public void OnRestartButtonClicked(){
+		Debug.Log("Restarting the battle");
+		SceneManager.LoadScene("Battle_test");
 	}
 
-<<<<<<< HEAD
+	public void OnExitButtonClicked()
+	{
+		Debug.Log("Going back to main menu");
+		SceneManager.LoadScene("Main Menu");
+	}
+
 	public void GameResult()
 	{
 		Debug.Log("Checking the result");
@@ -1342,6 +1352,3 @@ public class Combat_statemachine : MonoBehaviour {
 	}
 
 }
-
-=======
->>>>>>> parent of 139fbcc7... All
