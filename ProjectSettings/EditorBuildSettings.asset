@@ -9,12 +9,15 @@ EditorBuildSettings:
     path: Assets/Scenes/Main Menu.unity
     guid: baa5da345afa8f744af3757eec473b7e
   - enabled: 1
-    path: Assets/Scenes/Multiplayer-Lobby.unity
-    guid: 3448cb335d243234ca142b84caba9f7b
-  - enabled: 1
-    path: Assets/Scenes/Multiplayer.unity
-    guid: 3de62e47ea542384ead84c980bb8ec9e
-  - enabled: 1
     path: Assets/Scenes/Battle_test.unity
     guid: 09e3a3ef6a1091b4188f05b726ef2dd2
+  - enabled: 1
+    path: Assets/Scenes/Multiplayer_Lobby.unity
+    guid: 3448cb335d243234ca142b84caba9f7b
+  - enabled: 1
+    path: Assets/Scenes/Multiplayer_Battle_test.unity
+    guid: 1dd43046d8e822d478bd0acea3969978
+  - enabled: 0
+    path: Assets/Scenes/Multiplayer.unity
+    guid: 3de62e47ea542384ead84c980bb8ec9e
   m_configObjects: {}

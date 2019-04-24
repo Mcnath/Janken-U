@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Photon.Pun;
 using Photon.Realtime;
 
@@ -77,7 +78,11 @@ public class PUN_Lobby : MonoBehaviourPunCallbacks
 		CreateRoom(); // create room with different name
 	}
 
-
+	public void OnClickedExitButton()
+	{
+		PhotonNetwork.Disconnect();
+		SceneManager.LoadScene("Main Menu");
+	}
 
 
 }

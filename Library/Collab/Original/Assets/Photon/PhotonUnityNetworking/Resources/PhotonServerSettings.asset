@@ -3,8 +3,9 @@
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -15,7 +16,7 @@ MonoBehaviour:
     AppIdRealtime: 1b612d13-819b-4a35-b148-df842e20efc6
     AppIdChat: 
     AppIdVoice: 
-    AppVersion: 0
+    AppVersion: 
     UseNameServer: 1
     FixedRegion: 
     Server: 
@@ -28,11 +29,8 @@ MonoBehaviour:
   EnableSupportLogger: 0
   RunInBackground: 1
   RpcList:
-  - ClickRpc
-  - DestroyRpc
   - DestroySpaceship
   - Fire
   - RespawnSpaceship
-  - RPC_LoadedGameScene
   DisableAutoOpenWizard: 1
-  ShowSettings: 1
+  ShowSettings: 0
